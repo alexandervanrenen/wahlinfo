@@ -1,0 +1,301 @@
+id;name;bundesland
+0;Keiner;0
+1;Flensburg - Schleswig;1
+2;Nordfriesland - Dithmarschen Nord;1
+3;Steinburg - Dithmarschen S�d;1
+4;Rendsburg-Eckernf�rde;1
+5;Kiel;1
+6;Pl�n - Neum�nster;1
+7;Pinneberg;1
+8;Segeberg - Stormarn-Nord;1
+9;Ostholstein;1
+10;Herzogtum Lauenburg - Stormarn-S�d;1
+11;L�beck;1
+12;Wismar - Nordwestmecklenburg - Parchim;13
+13;Schwerin - Ludwigslust;13
+14;Rostock;13
+15;Stralsund - Nordvorpommern - R�gen;13
+16;Greifswald - Demmin - Ostvorpommern;13
+17;Bad Doberan - G�strow - M�ritz;13
+18;Neubrandenburg - Mecklenburg-Strelitz - Uecker-Randow;13
+19;Hamburg-Mitte;2
+20;Hamburg-Altona;2
+21;Hamburg-Eimsb�ttel;2
+22;Hamburg-Nord;2
+23;Hamburg-Wandsbek;2
+24;Hamburg-Bergedorf - Harburg;2
+25;Aurich - Emden;3
+26;Unterems;3
+27;Friesland - Wilhelmshaven;3
+28;Oldenburg - Ammerland;3
+29;Delmenhorst - Wesermarsch - Oldenburg-Land;3
+30;Cuxhaven - Stade II;3
+31;Stade I - Rotenburg II;3
+32;Mittelems;3
+33;Cloppenburg - Vechta;3
+34;Diepholz - Nienburg I;3
+35;Osterholz - Verden;3
+36;Rotenburg I - Soltau-Fallingbostel;3
+37;Harburg;3
+38;L�chow-Dannenberg - L�neburg;3
+39;Osnabr�ck-Land;3
+40;Stadt Osnabr�ck;3
+41;Nienburg II - Schaumburg;3
+42;Stadt Hannover I;3
+43;Stadt Hannover II;3
+44;Hannover-Land I;3
+45;Celle - Uelzen;3
+46;Gifhorn - Peine;3
+47;Hameln-Pyrmont - Holzminden;3
+48;Hannover-Land II;3
+49;Hildesheim;3
+50;Salzgitter - Wolfenb�ttel;3
+51;Braunschweig;3
+52;Helmstedt - Wolfsburg;3
+53;Goslar - Northeim - Osterode;3
+54;G�ttingen;3
+55;Bremen I;4
+56;Bremen II - Bremerhaven;4
+57;Prignitz - Ostprignitz-Ruppin - Havelland I;12
+58;Uckermark - Barnim I;12
+59;Oberhavel - Havelland II;12
+60;M�rkisch-Oderland - Barnim II;12
+61;Brandenburg an der Havel - Potsdam-Mittelmark I - Havelland III - Teltow-Fl�ming I;12
+62;Potsdam - Potsdam-Mittelmark II - Teltow-Fl�ming II;12
+63;Dahme-Spreewald - Teltow-Fl�ming III - Oberspreewald-Lausitz I;12
+64;Frankfurt (Oder) - Oder-Spree;12
+65;Cottbus - Spree-Nei�e;12
+66;Elbe-Elster - Oberspreewald-Lausitz II;12
+67;Altmark;15
+68;B�rde - Jerichower Land;15
+69;Harz;15
+70;Magdeburg;15
+71;Dessau - Wittenberg;15
+72;Anhalt;15
+73;Halle;15
+74;Burgenland - Saalekreis;15
+75;Mansfeld;15
+76;Berlin-Mitte;11
+77;Berlin-Pankow;11
+78;Berlin-Reinickendorf;11
+79;Berlin-Spandau - Charlottenburg Nord;11
+80;Berlin-Steglitz - Zehlendorf;11
+81;Berlin-Charlottenburg - Wilmersdorf;11
+82;Berlin-Tempelhof - Sch�neberg;11
+83;Berlin-Neuk�lln;11
+84;Berlin-Friedrichshain - Kreuzberg - Prenzlauer Berg Ost;11
+85;Berlin-Treptow - K�penick;11
+86;Berlin-Marzahn - Hellersdorf;11
+87;Berlin-Lichtenberg;11
+88;Aachen;5
+89;Kreis Aachen;5
+90;Heinsberg;5
+91;D�ren;5
+92;Erftkreis I;5
+93;Euskirchen - Erftkreis II;5
+94;K�ln I;5
+95;K�ln II;5
+96;K�ln III;5
+97;Bonn;5
+98;Rhein-Sieg-Kreis I;5
+99;Rhein-Sieg-Kreis II;5
+100;Oberbergischer Kreis;5
+101;Rheinisch-Bergischer Kreis;5
+102;Leverkusen - K�ln IV;5
+103;Wuppertal I;5
+104;Solingen - Remscheid - Wuppertal II;5
+105;Mettmann I;5
+106;Mettmann II;5
+107;D�sseldorf I;5
+108;D�sseldorf II;5
+109;Neuss I;5
+110;M�nchengladbach;5
+111;Krefeld I - Neuss II;5
+112;Viersen;5
+113;Kleve;5
+114;Wesel I;5
+115;Krefeld II - Wesel II;5
+116;Duisburg I;5
+117;Duisburg II;5
+118;Oberhausen - Wesel III;5
+119;M�lheim - Essen I;5
+120;Essen II;5
+121;Essen III;5
+122;Recklinghausen I;5
+123;Recklinghausen II;5
+124;Gelsenkirchen;5
+125;Steinfurt I - Borken I;5
+126;Bottrop - Recklinghausen III;5
+127;Borken II;5
+128;Coesfeld - Steinfurt II;5
+129;Steinfurt III;5
+130;M�nster;5
+131;Warendorf;5
+132;G�tersloh;5
+133;Bielefeld;5
+134;Herford - Minden-L�bbecke II;5
+135;Minden-L�bbecke I;5
+136;Lippe I;5
+137;H�xter - Lippe II;5
+138;Paderborn;5
+139;Hagen - Ennepe-Ruhr-Kreis I;5
+140;Ennepe-Ruhr-Kreis II;5
+141;Bochum I;5
+142;Herne - Bochum II;5
+143;Dortmund I;5
+144;Dortmund II;5
+145;Unna I;5
+146;Hamm - Unna II;5
+147;Soest;5
+148;Hochsauerlandkreis;5
+149;Siegen-Wittgenstein;5
+150;Olpe - M�rkischer Kreis I;5
+151;M�rkischer Kreis II;5
+152;Nordsachsen;14
+153;Leipzig I;14
+154;Leipzig II;14
+155;Leipzig-Land;14
+156;Mei�en;14
+157;Bautzen I;14
+158;G�rlitz;14
+159;S�chsische Schweiz - Osterzgebirge;14
+160;Dresden I;14
+161;Dresden II - Bautzen II;14
+162;Mittelsachsen;14
+163;Chemnitz;14
+164;Chemnitzer Umland - Erzgebirgskreis II;14
+165;Erzgebirgskreis I;14
+166;Zwickau;14
+167;Vogtlandkreis;14
+168;Waldeck;6
+169;Kassel;6
+170;Werra-Mei�ner - Hersfeld-Rotenburg;6
+171;Schwalm-Eder;6
+172;Marburg;6
+173;Lahn-Dill;6
+174;Gie�en;6
+175;Fulda;6
+176;Hochtaunus;6
+177;Wetterau;6
+178;Rheingau-Taunus - Limburg;6
+179;Wiesbaden;6
+180;Hanau;6
+181;Main-Taunus;6
+182;Frankfurt am Main I;6
+183;Frankfurt am Main II;6
+184;Gro�-Gerau;6
+185;Offenbach;6
+186;Darmstadt;6
+187;Odenwald;6
+188;Bergstra�e;6
+189;Eichsfeld - Nordhausen - Unstrut-Hainich-Kreis I;16
+190;Eisenach - Wartburgkreis - Unstrut-Hainich-Kreis II;16
+191;Kyffh�userkreis - S�mmerda - Weimarer Land I;16
+192;Gotha - Ilm-Kreis;16
+193;Erfurt - Weimar - Weimarer Land II;16
+194;Gera - Jena - Saale-Holzland-Kreis;16
+195;Greiz - Altenburger Land;16
+196;Sonneberg - Saalfeld-Rudolstadt - Saale-Orla-Kreis;16
+197;Suhl - Schmalkalden-Meiningen - Hildburghausen;16
+198;Neuwied;7
+199;Ahrweiler;7
+200;Koblenz;7
+201;Mosel/Rhein-Hunsr�ck;7
+202;Kreuznach;7
+203;Bitburg;7
+204;Trier;7
+205;Montabaur;7
+206;Mainz;7
+207;Worms;7
+208;Ludwigshafen/Frankenthal;7
+209;Neustadt - Speyer;7
+210;Kaiserslautern;7
+211;Pirmasens;7
+212;S�dpfalz;7
+213;Alt�tting;9
+214;Erding - Ebersberg;9
+215;Freising;9
+216;F�rstenfeldbruck;9
+217;Ingolstadt;9
+218;M�nchen-Nord;9
+219;M�nchen-Ost;9
+220;M�nchen-S�d;9
+221;M�nchen-West/Mitte;9
+222;M�nchen-Land;9
+223;Rosenheim;9
+224;Starnberg;9
+225;Traunstein;9
+226;Weilheim;9
+227;Deggendorf;9
+228;Landshut;9
+229;Passau;9
+230;Rottal-Inn;9
+231;Straubing;9
+232;Amberg;9
+233;Regensburg;9
+234;Schwandorf;9
+235;Weiden;9
+236;Bamberg;9
+237;Bayreuth;9
+238;Coburg;9
+239;Hof;9
+240;Kulmbach;9
+241;Ansbach;9
+242;Erlangen;9
+243;F�rth;9
+244;N�rnberg-Nord;9
+245;N�rnberg-S�d;9
+246;Roth;9
+247;Aschaffenburg;9
+248;Bad Kissingen;9
+249;Main-Spessart;9
+250;Schweinfurt;9
+251;W�rzburg;9
+252;Augsburg-Stadt;9
+253;Augsburg-Land;9
+254;Donau-Ries;9
+255;Neu-Ulm;9
+256;Oberallg�u;9
+257;Ostallg�u;9
+258;Stuttgart I;8
+259;Stuttgart II;8
+260;B�blingen;8
+261;Esslingen;8
+262;N�rtingen;8
+263;G�ppingen;8
+264;Waiblingen;8
+265;Ludwigsburg;8
+266;Neckar-Zaber;8
+267;Heilbronn;8
+268;Schw�bisch Hall - Hohenlohe;8
+269;Backnang - Schw�bisch Gm�nd;8
+270;Aalen - Heidenheim;8
+271;Karlsruhe-Stadt;8
+272;Karlsruhe-Land;8
+273;Rastatt;8
+274;Heidelberg;8
+275;Mannheim;8
+276;Odenwald - Tauber;8
+277;Rhein-Neckar;8
+278;Bruchsal - Schwetzingen;8
+279;Pforzheim;8
+280;Calw;8
+281;Freiburg;8
+282;L�rrach - M�llheim;8
+283;Emmendingen - Lahr;8
+284;Offenburg;8
+285;Rottweil - Tuttlingen;8
+286;Schwarzwald-Baar;8
+287;Konstanz;8
+288;Waldshut;8
+289;Reutlingen;8
+290;T�bingen;8
+291;Ulm;8
+292;Biberach;8
+293;Bodensee;8
+294;Ravensburg;8
+295;Zollernalb - Sigmaringen;8
+296;Saarbr�cken;10
+297;Saarlouis;10
+298;St. Wendel;10
+299;Homburg;10
