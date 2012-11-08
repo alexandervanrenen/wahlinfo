@@ -33,6 +33,7 @@ public class Parser {
 		CSVReader reader = new CSVReader(new FileReader(inputFilePath), ';');
 		List<String[]> data = reader.readAll();
 		reader.close();
+		data.remove(0); // drop schema line
 
 		// write file		
 		CSVWriter writer = new CSVWriter(new FileWriter(outputFilePath), '|', CSVWriter.NO_QUOTE_CHARACTER);
@@ -51,6 +52,7 @@ public class Parser {
 		CSVReader reader = new CSVReader(new FileReader(inputFilePath), ';');
 		List<String[]> data = reader.readAll();
 		reader.close();
+		data.remove(0); // drop schema line
 
 		// write file
 		CSVWriter writer = new CSVWriter(new FileWriter(outputFilePath), '|', CSVWriter.NO_QUOTE_CHARACTER);
@@ -69,10 +71,13 @@ public class Parser {
 		CSVReader reader = new CSVReader(new FileReader(inputFilePath), ';');
 		List<String[]> data = reader.readAll();
 		reader.close();
+		data.remove(0); // drop schema line
 
 		// store identifier of the parties
-		for (String[] iter : data)
-			parteiMap.put(iter[2], Integer.decode(iter[0]));
+		for (int i = 0; i < data.size(); i++) {
+			parteiMap.put(data.get(i)[2], Integer.decode(data.get(i)[0]));
+			data.set(i, new String[] {data.get(i)[0], data.get(i)[1], data.get(i)[2], "white", "0", "2009"});
+		}
 
 		// write file
 		CSVWriter writer = new CSVWriter(new FileWriter(outputFilePath), '|', CSVWriter.NO_QUOTE_CHARACTER);
@@ -91,14 +96,25 @@ public class Parser {
 		CSVReader reader = new CSVReader(new FileReader(inputFilePath), ';');
 		List<String[]> data = reader.readAll();
 		reader.close();
+		data.remove(0); // drop schema line
 		
-		// map party name to party id
-		for (String[] iter : data)
-			if (iter[5].compareTo("") == 0)
-				iter[5] = "0"; else // AAA a candidate without a party
+		// clean up data
+		for (String[] iter : data) {
+			// fix candidates without a list
+			if (iter[4].length() == 0)
+				iter[4] = "0";
+
+			// fix candidates without a party and map party name to party id
+			if (iter[5].length() == 0)
+				iter[5] = "0"; else
 				if(parteiMap.containsKey(iter[5]))
 					iter[5] = parteiMap.get(iter[5]).toString(); else
 					throw new IOException("found unknown partei '" + iter[5] + "'in candidate " + iter[7]);
+
+			// fix candidates without a wahlkreis
+			if (iter[6].length() == 0)
+				iter[6] = "0";
+		}
 		
 		// write file
 		CSVWriter writer = new CSVWriter(new FileWriter(outputFilePath), '|', CSVWriter.NO_QUOTE_CHARACTER);
