@@ -19,13 +19,13 @@ public class BundeslandResource {
 	@Produces({ MediaType.APPLICATION_JSON })
 	public List<Bundesland> findAll() {
 		System.out.println("findAll");
-		return dao.findAll();
-//		Bundesland bundesland = new Bundesland();
-//		bundesland.setId(1);
-//		bundesland.setName("ü");
-//		List<Bundesland> bundeslaender = new ArrayList<Bundesland>();
-//		bundeslaender.add(bundesland);
-//		return bundeslaender;
+//		return dao.findAll();
+		Bundesland bundesland = new Bundesland();
+		bundesland.setId(1);
+		bundesland.setName("Bayern");
+		List<Bundesland> bundeslaender = new ArrayList<Bundesland>();
+		bundeslaender.add(bundesland);
+		return bundeslaender;
 	}
 	
 	@GET @Path("search/{query}")
