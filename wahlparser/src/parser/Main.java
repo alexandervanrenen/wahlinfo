@@ -2,9 +2,14 @@ package parser;
 
 import java.io.IOException;
 
+/**
+ * @author alex
+ * stating point of the program
+ */
 public class Main {
 
 	/**
+	 * no args ..
 	 * @param args
 	 */
 	public static void main(String[] args) {
@@ -38,7 +43,7 @@ public class Main {
 
 		// load stimmen (has to be done before loading the kandidatas)
 		try {
-			parser.readStimmen("Stimmen.csv", "Stimmen.tbl");
+			parser.loadStimmen("Stimmen.csv");
 		} catch (IOException e) {
 			System.out.println("fail loading stimmen");
 			e.printStackTrace();
@@ -51,8 +56,13 @@ public class Main {
 			System.out.println("fail loading kandidaten");
 			e.printStackTrace();
 		}
-		
-		parser.generateVotes();
+
+		// generate the votes
+		try {
+			parser.generateVotes2009("Stimmen.tbl");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
 		System.out.println("done =)");
 	}

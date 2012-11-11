@@ -10,39 +10,21 @@ import java.util.List;
 import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.CSVWriter;
 
+/**
+ * @author alex
+ * used for parsing ..
+ */
 public class Parser {
 	
+	/**
+	 * maps the partei acronym to the partei id
+	 */
 	private HashMap<String, Integer> parteiMap;
-	
-	class WahlData {
-		
-		public WahlData() {
-			parteiId = -1;
-			kandidatId = -1;
-			erststimme2005 = -1;
-			erststimme2009 = -1;
-			zweitstimme2005 = -1;
-			zweitstimme2009 = -1;
-		}
 
-		int parteiId;
-		int kandidatId;
-		public int erststimme2005;
-		public int erststimme2009;
-		public int zweitstimme2005;
-		public int zweitstimme2009;
-	}
-	
-	class WahlKreis {
-		public WahlKreis(int wahlkreisId, HashMap<Integer, WahlData> parteien) {
-			this.wahlkreisId = wahlkreisId;
-			this.parteien = parteien;
-		}
-		int wahlkreisId;
-		HashMap<Integer, WahlData> parteien;
-	}
-	
-	/** stimmenMap[wahlKreisId].get(parteiId)[ERSTIMME_LAST_2005]
+	/** 
+	 * stores the votes for each partei in each wahlkreis
+	 * wahlkeise.get(wahlKreisId-1).get(parteiId)
+	 * 
 	 * sample access:
 	 * number of zweitstimmen votes for SPD in the 27 wahlkreis in the year 2009
 	 * wahlkeise.get(26).wahlkreisId + " " + wahlkeise.get(26).parteien.get(parteiMap.get("SPD")).zweitstimme2009);
@@ -128,7 +110,7 @@ public class Parser {
 	 * @param outputFile file to write to
 	 * @throws IOException 
 	 */
-	public void readStimmen(String inputFilePath, String outputFilePath) throws IOException {
+	public void loadStimmen(String inputFilePath) throws IOException {
 		// read file
 		CSVReader reader = new CSVReader(new FileReader(inputFilePath), ';');
 		List<String[]> data = reader.readAll();
@@ -147,10 +129,10 @@ public class Parser {
 		// loop over each line of the actual data
 		for (String[] line : data) {
 			// read one wahlkreis
-			WahlKreis currentWahlkreis = new WahlKreis(Integer.decode(line[0]), new HashMap<Integer, WahlData>());
+			WahlKreis currentWahlkreis = new WahlKreis(Integer.decode(line[0]), new HashMap<Integer, Partei>());
 			for (int i = 1; i < line.length; i+=4) {
 				// read the votes for this party
-				WahlData wahlData = new WahlData();
+				Partei wahlData = new Partei();
 				wahlData.parteiId = parteien.get(i/4); 
 				wahlData.erststimme2005 = line[i+0].length()==0?0:Integer.decode(line[i+0]);
 				wahlData.erststimme2009 = line[i+1].length()==0?0:Integer.decode(line[i+1]);
@@ -162,11 +144,6 @@ public class Parser {
 			}
 			wahlkeise.add(currentWahlkreis);
 		}
-
-		// write file
-		CSVWriter writer = new CSVWriter(new FileWriter(outputFilePath), '|', CSVWriter.NO_QUOTE_CHARACTER);
-		writer.writeAll(data);
-		writer.close();		
 	}
 
 	/**
@@ -187,14 +164,14 @@ public class Parser {
 			// fix candidates without a list
 			if (iter[4].length() == 0)
 				iter[4] = "0";
-
+			
 			// fix candidates without a party and map party name to party id
 			if (iter[5].length() == 0)
 				iter[5] = "0"; else
 				if(parteiMap.containsKey(iter[5]))
 					iter[5] = parteiMap.get(iter[5]).toString(); else
 					throw new IOException("found unknown partei '" + iter[5] + "'in candidate " + iter[7]);
-
+			
 			// fix candidates without a wahlkreis
 			if (iter[6].length() == 0)
 				iter[6] = "0";
@@ -213,19 +190,12 @@ public class Parser {
 		writer.close();		
 	}
 
-	public void generateVotes() {	
-
-		class Vote {
-			int parteiId;
-			int kandidatId;
-			int wahlkreisId;
-		}
-		ArrayList<Vote> votes = new ArrayList<Vote>();
-
-		// jede partei hat in einem wahlkreis nur einen kandidaten (sql tested)
-		// generate the votes for each wahlkreis
-		for (WahlKreis wahlKreis : wahlkeise) {
-			
-		}
+	/**
+	 * @param outputFilePath
+	 * @throws IOException
+	 */
+	public void generateVotes2009(String outputFilePath) throws IOException {
+		// just forward the work =)
+		VoteGenerator.generate(outputFilePath, wahlkeise);
 	}
 }
