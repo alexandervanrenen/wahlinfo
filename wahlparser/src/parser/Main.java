@@ -63,6 +63,13 @@ public class Main {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
+		// generate the votes
+		try {
+			parser.generateVoteAggregates2005("Parteien2005.tbl", "Kandidaten2005.tbl");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
 		System.out.println("done =)");
 	}

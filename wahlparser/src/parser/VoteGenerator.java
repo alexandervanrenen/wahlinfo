@@ -69,6 +69,7 @@ public class VoteGenerator {
 					currentZweitPartei.zweitstimme2009--;
 				}
 			}
+			break;
 		}
 
 		// write data
