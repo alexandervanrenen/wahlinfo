@@ -17,6 +17,16 @@ import au.com.bytecode.opencsv.CSVWriter;
 public class Parser {
 	
 	/**
+	 * maps bundesland name to bundesland id
+	 */
+	private HashMap<String, String> bundeslandMap;
+	
+	/**
+	 * maps landesliste id to bundesland id
+	 */
+	private HashMap<String, String> landeslisteMap;
+	
+	/**
 	 * maps the partei acronym to the partei id
 	 */
 	private HashMap<String, Partei> parteiMap;
@@ -40,6 +50,8 @@ public class Parser {
 	 * set up the parser
 	 */
 	public Parser() {
+		bundeslandMap = new HashMap<String, String>();
+		landeslisteMap = new HashMap<String, String>();
 		parteiMap = new HashMap<String, Partei>();
 		wahlkeise = new ArrayList<WahlKreis>();
 		lonleyCandidates = new ArrayList<Partei>();
@@ -59,9 +71,51 @@ public class Parser {
 		List<String[]> data = reader.readAll();
 		reader.close();
 		data.remove(0); // drop schema line
+		
+		// remember bundesland name -> id mapping
+		for (int i = 0; i < data.size(); i++) {
+			bundeslandMap.put(data.get(i)[1], data.get(i)[0]);
+		}
 
 		// write file		
 		CSVWriter writer = new CSVWriter(new FileWriter(outputFilePath), '|', CSVWriter.NO_QUOTE_CHARACTER);
+		writer.writeAll(data);
+		writer.close();
+	}
+	
+	public void readLandeslisten(String landeslistenPath,
+			String listenplaetzePath, String outputFilePath) throws IOException {
+		// read landeslisten
+		CSVReader reader = new CSVReader(new FileReader(landeslistenPath), ';');
+		List<String[]> data = reader.readAll();
+		reader.close();
+		data.remove(0); // drop schema line
+		
+		// remember landesliste id -> bundesland id mapping
+		String bundeslandId;
+		for (int i = 0; i < data.size(); i++) {
+			// get bundesland id
+			bundeslandId = bundeslandMap.get(data.get(i)[1]);
+			if (bundeslandId == null)
+				throw new IOException("Failed to get ID of " + data.get(i)[1]);
+			
+			landeslisteMap.put(data.get(i)[0], bundeslandId);
+		}
+		
+		// read listenplaetze
+		reader = new CSVReader(new FileReader(listenplaetzePath), ';');
+		data = reader.readAll();
+		reader.close();
+		data.remove(0); // drop schema line
+		
+		// replace landesliste id with bundesland id
+		for (int i = 0; i < data.size(); i++) {
+			data.get(i)[0] = landeslisteMap.get(data.get(i)[0]);
+		}
+
+		// write file
+		CSVWriter writer = new CSVWriter(new FileWriter(outputFilePath), '|',
+				CSVWriter.NO_QUOTE_CHARACTER);
 		writer.writeAll(data);
 		writer.close();
 	}

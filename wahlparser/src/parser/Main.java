@@ -24,6 +24,14 @@ public class Main {
 			System.out.println("fail loading bundeslaender");
 			e.printStackTrace();
 		}
+		
+		// load landeslisten
+		try {
+			parser.readLandeslisten("Landeslisten.csv", "Listenplaetze.csv", "Landeslisten.tbl");
+		} catch (IOException e) {
+			System.out.println("fail loading landeslisten");
+			e.printStackTrace();
+		}
 
 		// load wahlkreise
 		try {
@@ -56,7 +64,7 @@ public class Main {
 			System.out.println("fail loading kandidaten");
 			e.printStackTrace();
 		}
-
+		
 		// generate the votes
 		try {
 			parser.generateVotes2009("Stimmen.tbl");
