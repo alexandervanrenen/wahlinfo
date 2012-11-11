@@ -35,7 +35,15 @@ public class Main {
 			System.out.println("fail loading partein");
 			e.printStackTrace();
 		}
-		
+
+		// load stimmen (has to be done before loading the kandidatas)
+		try {
+			parser.readStimmen("Stimmen.csv", "Stimmen.tbl");
+		} catch (IOException e) {
+			System.out.println("fail loading stimmen");
+			e.printStackTrace();
+		}
+
 		// load kandidaten
 		try {
 			parser.readKandidaten("Kandidaten.csv", "Kandidaten.tbl");
@@ -43,6 +51,8 @@ public class Main {
 			System.out.println("fail loading kandidaten");
 			e.printStackTrace();
 		}
+		
+		parser.generateVotes();
 		
 		System.out.println("done =)");
 	}
