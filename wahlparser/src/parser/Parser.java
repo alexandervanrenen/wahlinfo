@@ -282,7 +282,7 @@ public class Parser {
 		// add parties and candidates with wahlkreise
 		for (WahlKreis wahlKreis : wahlkeise) {
 			for (Partei partei : wahlKreis.parteien.values()) {
-				parteiMap.get(partei.shortName).zweitstimme2005+=partei.zweitstimme2005;
+				parteiWriter.writeNext(new String [] {Integer.toString(partei.parteiId), partei.longName, partei.shortName, "white", Integer.toString(partei.zweitstimme2005), Integer.toString(wahlKreis.wahlkreisId)});
 				if(partei.kandidatId != -1)
 					kandidatWriter.writeNext(new String [] {Integer.toString(partei.kandidatId), partei.kandidatVorname, partei.kandidatNachname, partei.kandidatGeburtsjahr, Integer.toString(partei.parteiId), Integer.toString(wahlKreis.wahlkreisId), Integer.toString(partei.erststimme2005)});
 			}
@@ -291,10 +291,6 @@ public class Parser {
 		// add candidates without wahlkreise
 		for (Partei candidate : lonleyCandidates)
 			kandidatWriter.writeNext(new String [] {Integer.toString(candidate.kandidatId), candidate.kandidatVorname, candidate.kandidatNachname, candidate.kandidatGeburtsjahr, Integer.toString(candidate.parteiId), "0", "0"});
-		
-		// write parteien
-		for (Partei partei : parteiMap.values())
-			parteiWriter.writeNext(new String [] {Integer.toString(partei.parteiId), partei.longName, partei.shortName, "white", Integer.toString(partei.zweitstimme2005)});
 		
 		parteiWriter.close();
 		kandidatWriter.close();
