@@ -194,10 +194,10 @@ public class Parser {
 				// read the votes for this party
 				Partei partei = new Partei(parteiMap.get(partyLine[i]).parteiId, parteiMap.get(partyLine[i]).longName, parteiMap.get(partyLine[i]).shortName);
 				partei.parteiId = parteienListe.get(i/4); 
-				partei.erststimme2005 = line[i+0].length()==0?0:Integer.decode(line[i+0]);
-				partei.erststimme2009 = line[i+1].length()==0?0:Integer.decode(line[i+1]);
-				partei.zweitstimme2005 = line[i+2].length()==0?0:Integer.decode(line[i+2]);
-				partei.zweitstimme2009 = line[i+3].length()==0?0:Integer.decode(line[i+3]);
+				partei.erststimme2009 = line[i+0].length()==0?0:Integer.decode(line[i+0]);
+				partei.erststimme2005 = line[i+1].length()==0?0:Integer.decode(line[i+1]);
+				partei.zweitstimme2009 = line[i+2].length()==0?0:Integer.decode(line[i+2]);
+				partei.zweitstimme2005 = line[i+3].length()==0?0:Integer.decode(line[i+3]);
 
 				// add this parties result to the current wahlkreis
 				currentWahlkreis.parteien.put(partei.parteiId, partei);

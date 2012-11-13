@@ -20,8 +20,8 @@ public class VoteGenerator {
 
 		// generate the votes for each wahlkreis
 		for (WahlKreis wahlKreis : wahlkeise) {
-			if (wahlKreis.wahlkreisId != 3)
-				continue;
+//			if (wahlKreis.wahlkreisId != 3)
+//				continue;
 
 			int currentPercentage = (int) (wahlKreis.wahlkreisId
 					/ (float) wahlkeise.size() * 100);
