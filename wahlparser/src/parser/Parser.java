@@ -278,6 +278,7 @@ public class Parser {
 		// create each partei in each wahlkreis
 		CSVWriter parteiWriter = new CSVWriter(new FileWriter(outputFilePathPartei), '|', CSVWriter.NO_QUOTE_CHARACTER);
 		CSVWriter kandidatWriter = new CSVWriter(new FileWriter(outputFilePathKandidat), '|', CSVWriter.NO_QUOTE_CHARACTER);
+		parteiWriter.writeNext(new String [] {"0", "Keine", "KEINE", "white", "0", "0"});
 		
 		// add parties and candidates with wahlkreise
 		for (WahlKreis wahlKreis : wahlkeise) {
