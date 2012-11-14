@@ -132,6 +132,10 @@ public class Parser {
 		List<String[]> data = reader.readAll();
 		reader.close();
 		data.remove(0); // drop schema line
+		
+		// create wahlkreise
+		for (String[] iter : data)
+			wahlkeise.add(new WahlKreis(Integer.decode(iter[0]), new HashMap<Integer,Partei>()));
 
 		// write file
 		CSVWriter writer = new CSVWriter(new FileWriter(outputFilePath), '|', CSVWriter.NO_QUOTE_CHARACTER);
@@ -155,7 +159,13 @@ public class Parser {
 
 		// store identifier of the parties
 		for (int i = 0; i < data.size(); i++) {
-			Partei partei = new Partei(Integer.decode(data.get(i)[0]), data.get(i)[1], data.get(i)[2]);
+			// create the partei in each wahlkreis
+			int parteiId = Integer.decode(data.get(i)[0]);
+			for (WahlKreis wahlKreis : wahlkeise)
+				wahlKreis.parteien.put(parteiId, new Partei(parteiId, data.get(i)[1], data.get(i)[2]));
+			
+			// create one for mapping
+			Partei partei = new Partei(parteiId, data.get(i)[1], data.get(i)[2]);
 			parteiMap.put(data.get(i)[2], partei);
 			writer.writeNext(new String[] {Integer.toString(partei.parteiId), partei.longName, partei.shortName, "white"});
 		}
@@ -189,20 +199,17 @@ public class Parser {
 		// loop over each line of the actual data
 		for (String[] line : data) {
 			// read one wahlkreis
-			WahlKreis currentWahlkreis = new WahlKreis(Integer.decode(line[0]), new HashMap<Integer, Partei>());
+			WahlKreis currentWahlkreis = wahlkeise.get(Integer.decode(line[0]));
 			for (int i = 1; i < line.length; i+=4) {
 				// read the votes for this party
-				Partei partei = new Partei(parteiMap.get(partyLine[i]).parteiId, parteiMap.get(partyLine[i]).longName, parteiMap.get(partyLine[i]).shortName);
+				// add this parties result to the current wahlkreis
+				Partei partei = currentWahlkreis.parteien.get(parteiMap.get(partyLine[i]).parteiId);
 				partei.parteiId = parteienListe.get(i/4); 
 				partei.erststimme2009 = line[i+0].length()==0?0:Integer.decode(line[i+0]);
 				partei.erststimme2005 = line[i+1].length()==0?0:Integer.decode(line[i+1]);
 				partei.zweitstimme2009 = line[i+2].length()==0?0:Integer.decode(line[i+2]);
 				partei.zweitstimme2005 = line[i+3].length()==0?0:Integer.decode(line[i+3]);
-
-				// add this parties result to the current wahlkreis
-				currentWahlkreis.parteien.put(partei.parteiId, partei);
 			}
-			wahlkeise.add(currentWahlkreis);
 		}
 	}
 
@@ -242,7 +249,8 @@ public class Parser {
 			int parteiId = Integer.decode(iter[5]);
 			Partei partei = null;
 			if(wahlkreis != 0 && parteiId != 0) {
-				partei = wahlkeise.get(wahlkreis-1).parteien.get(parteiId);
+				WahlKreis w = wahlkeise.get(wahlkreis);
+				partei = w.parteien.get(parteiId);
 			} else {
 				partei = new Partei(parteiId, "none", "none");
 				lonleyCandidates.add(partei);
@@ -278,7 +286,6 @@ public class Parser {
 		// create each partei in each wahlkreis
 		CSVWriter parteiWriter = new CSVWriter(new FileWriter(outputFilePathPartei), '|', CSVWriter.NO_QUOTE_CHARACTER);
 		CSVWriter kandidatWriter = new CSVWriter(new FileWriter(outputFilePathKandidat), '|', CSVWriter.NO_QUOTE_CHARACTER);
-		wahlkeise.add(new WahlKreis(0, wahlkeise.get(1).parteien)); // add fake wahlkreis
 		
 		// add parties and candidates with wahlkreise
 		for (WahlKreis wahlKreis : wahlkeise) {
@@ -288,7 +295,6 @@ public class Parser {
 					kandidatWriter.writeNext(new String [] {Integer.toString(partei.kandidatId), partei.kandidatVorname, partei.kandidatNachname, partei.kandidatGeburtsjahr, Integer.toString(partei.parteiId), Integer.toString(wahlKreis.wahlkreisId), Integer.toString(partei.erststimme2005)});
 			}
 		}
-		wahlkeise.remove(wahlkeise.size()-1); // drop fake wahlkreis
 		
 		// add candidates without wahlkreise
 		for (Partei candidate : lonleyCandidates)
