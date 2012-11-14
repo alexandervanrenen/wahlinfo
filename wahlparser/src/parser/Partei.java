@@ -9,11 +9,12 @@ public class Partei {
 	/**
 	 * Create a partei with no information
 	 */
-	public Partei(int parteiId, String longName, String shortName) {
+	public Partei(int parteiId, String longName, String shortName, int wahlKreisId) {
 		this.parteiId = parteiId;
 		kandidatId = -1;
 		this.longName = longName;
 		this.shortName = shortName;
+		this.wahlKreisId = wahlKreisId;
 		erststimme2005 = 0;
 		erststimme2009 = 0;
 		zweitstimme2005 = 0;
@@ -23,6 +24,7 @@ public class Partei {
 	int parteiId;
 	String longName;
 	String shortName;
+	public int wahlKreisId;
 	public int erststimme2005;
 	public int erststimme2009;
 	public int zweitstimme2005;

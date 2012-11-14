@@ -5,14 +5,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map.Entry;
+import java.util.Random;
 
 import au.com.bytecode.opencsv.CSVWriter;
 
 public class VoteGenerator {
 
 	public static void generate(String outputFilePath,
-			ArrayList<WahlKreis> wahlkeise) throws IOException {
-
+			ArrayList<WahlKreis> wahlkeise, ArrayList<Partei> lonleyCandidates) throws IOException {
 		// create output and hope that is works stream based ..
 		int lastPercentage = -1;
 		CSVWriter writer = new CSVWriter(new FileWriter(outputFilePath), '|',
@@ -20,6 +20,10 @@ public class VoteGenerator {
 
 		// generate the votes for each wahlkreis
 		for (WahlKreis wahlKreis : wahlkeise) {
+
+			int invalidVoteCount1 = 0;
+			int invalidVoteCount2 = 0;
+			
 			// print nice progress percentage 
 			int currentPercentage = (int) (wahlKreis.wahlkreisId
 					/ (float) wahlkeise.size() * 100);
@@ -46,9 +50,22 @@ public class VoteGenerator {
 
 				while (currentErstPartei.erststimme2009 > 0
 						&& currentZweitPartei.zweitstimme2009 > 0) {
+					
+					// set a candidat
+					int kandidatId = currentErstPartei.kandidatId; 
+					if(kandidatId==-1 && currentErstPartei.parteiId==0)
+						kandidatId=0;
+					if(kandidatId==-1 && currentErstPartei.parteiId!=0)
+						for (Partei partei : lonleyCandidates)
+							if(partei.wahlKreisId == wahlKreis.wahlkreisId) {
+								kandidatId = partei.kandidatId;
+								break;
+							}
+					if(kandidatId==-1)
+						throw new IOException("should not happen");
+					
 					writer.writeNext(new String[] {
-							Integer.toString(currentErstPartei.kandidatId == -1 ? 0
-									: currentErstPartei.kandidatId),
+							Integer.toString(kandidatId),
 							Integer.toString(currentZweitPartei.parteiId),
 							Integer.toString(wahlKreis.wahlkreisId) });
 					currentErstPartei.erststimme2009--;
@@ -63,11 +80,25 @@ public class VoteGenerator {
 					currentErstPartei = erstIter.next().getValue();
 
 				while (currentErstPartei.erststimme2009 > 0) {
+
+					// set a candidat
+					int kandidatId = currentErstPartei.kandidatId; 
+					if(kandidatId==-1 && currentErstPartei.parteiId==0)
+						kandidatId=0;
+					if(kandidatId==-1 && currentErstPartei.parteiId!=0)
+						for (Partei partei : lonleyCandidates)
+							if(partei.wahlKreisId == wahlKreis.wahlkreisId) {
+								kandidatId = partei.kandidatId;
+								break;
+							}
+					if(kandidatId==-1)
+						throw new IOException("should not happen");
+					
 					writer.writeNext(new String[] {
-							Integer.toString(currentErstPartei.kandidatId == -1 ? 0
-									: currentErstPartei.kandidatId), "0",
+							Integer.toString(kandidatId), "0",
 							Integer.toString(wahlKreis.wahlkreisId) });
 					currentErstPartei.erststimme2009--;
+					invalidVoteCount2++;
 				}
 			}
 
@@ -82,9 +113,13 @@ public class VoteGenerator {
 							Integer.toString(currentZweitPartei.parteiId),
 							Integer.toString(wahlKreis.wahlkreisId) });
 					currentZweitPartei.zweitstimme2009--;
+					invalidVoteCount1++;
 				}
 			}
-
+			if(invalidVoteCount1 != 0)
+				System.out.println("invalid votes: " + wahlKreis.wahlkreisId + "  " + invalidVoteCount1);
+			if(invalidVoteCount2 != 0) 
+			System.out.println("invalid votes: " + wahlKreis.wahlkreisId + "  " + invalidVoteCount2);
 		}
 
 		// write data

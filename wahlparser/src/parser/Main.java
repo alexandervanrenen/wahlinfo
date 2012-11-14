@@ -11,8 +11,9 @@ public class Main {
 	/**
 	 * no args ..
 	 * @param args
+	 * @throws IOException 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		// print welcome
 		System.out.println("started ..");
 		Parser parser = new Parser();
@@ -58,12 +59,12 @@ public class Main {
 		}
 
 		// load kandidaten
-		try {
+//		try {
 			parser.readKandidaten("Kandidaten.csv", "Kandidaten.tbl");
-		} catch (IOException e) {
-			System.out.println("fail loading kandidaten");
-			e.printStackTrace();
-		}
+//		} catch (IOException e) {
+//			System.out.println("fail loading kandidaten");
+//			e.printStackTrace();
+//		}
 		
 		// generate the votes
 		try {

@@ -162,10 +162,10 @@ public class Parser {
 			// create the partei in each wahlkreis
 			int parteiId = Integer.decode(data.get(i)[0]);
 			for (WahlKreis wahlKreis : wahlkeise)
-				wahlKreis.parteien.put(parteiId, new Partei(parteiId, data.get(i)[1], data.get(i)[2]));
+				wahlKreis.parteien.put(parteiId, new Partei(parteiId, data.get(i)[1], data.get(i)[2], wahlKreis.wahlkreisId));
 			
 			// create one for mapping
-			Partei partei = new Partei(parteiId, data.get(i)[1], data.get(i)[2]);
+			Partei partei = new Partei(parteiId, data.get(i)[1], data.get(i)[2], -1);
 			parteiMap.put(data.get(i)[2], partei);
 			writer.writeNext(new String[] {Integer.toString(partei.parteiId), partei.longName, partei.shortName, "white"});
 		}
@@ -249,10 +249,11 @@ public class Parser {
 			int parteiId = Integer.decode(iter[5]);
 			Partei partei = null;
 			if(wahlkreis != 0 && parteiId != 0) {
-				WahlKreis w = wahlkeise.get(wahlkreis);
-				partei = w.parteien.get(parteiId);
+				partei = wahlkeise.get(wahlkreis).parteien.get(parteiId);
+				if(partei.kandidatId != -1)
+					throw new IOException("assigning a second candidat to a partei");
 			} else {
-				partei = new Partei(parteiId, "none", "none");
+				partei = new Partei(parteiId, "none", "none", wahlkreis);
 				lonleyCandidates.add(partei);
 			}
 			partei.kandidatId = Integer.decode(iter[0]);
@@ -275,7 +276,7 @@ public class Parser {
 	 */
 	public void generateVotes2009(String outputFilePath) throws IOException {
 		// just forward the work =)
-		VoteGenerator.generate(outputFilePath, wahlkeise);
+		VoteGenerator.generate(outputFilePath, wahlkeise, lonleyCandidates);
 	}
 
 	/**
