@@ -20,28 +20,24 @@ public class VoteGenerator {
 
 		// generate the votes for each wahlkreis
 		for (WahlKreis wahlKreis : wahlkeise) {
-//			if (wahlKreis.wahlkreisId != 3)
-//				continue;
-
+			// print nice progress percentage 
 			int currentPercentage = (int) (wahlKreis.wahlkreisId
 					/ (float) wahlkeise.size() * 100);
 			if (lastPercentage != currentPercentage)
 				System.out.println(currentPercentage + "%");
 			lastPercentage = currentPercentage;
-			// System.out.println("processing wahlkreis: " +
-			// wahlKreis.wahlkreisId + "   " +
-			// wahlKreis.parteien.get(parteiMap.get("SPD")).parteiId + "  " +
-			// wahlKreis.parteien.get(4).zweitstimme2009);
 
+			// init iterator for both (first and second votes)
 			Iterator<Entry<Integer, Partei>> erstIter = wahlKreis.parteien
 					.entrySet().iterator();
 			Iterator<Entry<Integer, Partei>> zweitIter = wahlKreis.parteien
 					.entrySet().iterator();
-
 			Partei currentErstPartei = erstIter.next().getValue();
 			Partei currentZweitPartei = zweitIter.next().getValue();
 
-			while (erstIter.hasNext() && zweitIter.hasNext()) {
+			// create votes with first and second votes
+			while ((erstIter.hasNext() && zweitIter.hasNext())
+					|| (currentErstPartei.erststimme2009 > 0 && currentZweitPartei.zweitstimme2009 > 0)) {
 
 				if (currentErstPartei.erststimme2009 <= 0)
 					currentErstPartei = erstIter.next().getValue();
@@ -50,18 +46,18 @@ public class VoteGenerator {
 
 				while (currentErstPartei.erststimme2009 > 0
 						&& currentZweitPartei.zweitstimme2009 > 0) {
-
 					writer.writeNext(new String[] {
-								Integer.toString(currentErstPartei.kandidatId == -1 ? 0
-										: currentErstPartei.kandidatId),
-								Integer.toString(currentZweitPartei.parteiId),
-								Integer.toString(wahlKreis.wahlkreisId) });
+							Integer.toString(currentErstPartei.kandidatId == -1 ? 0
+									: currentErstPartei.kandidatId),
+							Integer.toString(currentZweitPartei.parteiId),
+							Integer.toString(wahlKreis.wahlkreisId) });
 					currentErstPartei.erststimme2009--;
 					currentZweitPartei.zweitstimme2009--;
 				}
 			}
 
-			while (erstIter.hasNext()) {
+			// create votes with only first votes
+			while (erstIter.hasNext() || currentErstPartei.erststimme2009 > 0) {
 
 				if (currentErstPartei.erststimme2009 <= 0)
 					currentErstPartei = erstIter.next().getValue();
@@ -75,8 +71,9 @@ public class VoteGenerator {
 				}
 			}
 
-			while (zweitIter.hasNext()) {
-
+			// create votes with only second votes
+			while (zweitIter.hasNext()
+					|| currentZweitPartei.zweitstimme2009 > 0) {
 				if (currentZweitPartei.zweitstimme2009 <= 0)
 					currentZweitPartei = zweitIter.next().getValue();
 
@@ -87,6 +84,7 @@ public class VoteGenerator {
 					currentZweitPartei.zweitstimme2009--;
 				}
 			}
+
 		}
 
 		// write data
