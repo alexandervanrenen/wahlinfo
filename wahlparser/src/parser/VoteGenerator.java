@@ -40,8 +40,8 @@ public class VoteGenerator {
 			Partei currentZweitPartei = zweitIter.next().getValue();
 
 			// create votes with first and second votes
-			while ((erstIter.hasNext() && zweitIter.hasNext())
-					|| (currentErstPartei.erststimme2009 > 0 && currentZweitPartei.zweitstimme2009 > 0)) {
+			while ((erstIter.hasNext() || currentErstPartei.erststimme2009 > 0)
+					&& (zweitIter.hasNext() || currentZweitPartei.zweitstimme2009 > 0)) {
 
 				if (currentErstPartei.erststimme2009 <= 0)
 					currentErstPartei = erstIter.next().getValue();
@@ -73,53 +73,19 @@ public class VoteGenerator {
 				}
 			}
 
-			// create votes with only first votes
+			// check
 			while (erstIter.hasNext() || currentErstPartei.erststimme2009 > 0) {
-
 				if (currentErstPartei.erststimme2009 <= 0)
-					currentErstPartei = erstIter.next().getValue();
-
-				while (currentErstPartei.erststimme2009 > 0) {
-
-					// set a candidat
-					int kandidatId = currentErstPartei.kandidatId; 
-					if(kandidatId==-1 && currentErstPartei.parteiId==0)
-						kandidatId=0;
-					if(kandidatId==-1 && currentErstPartei.parteiId!=0)
-						for (Partei partei : lonleyCandidates)
-							if(partei.wahlKreisId == wahlKreis.wahlkreisId) {
-								kandidatId = partei.kandidatId;
-								break;
-							}
-					if(kandidatId==-1)
-						throw new IOException("should not happen");
-					
-					writer.writeNext(new String[] {
-							Integer.toString(kandidatId), "0",
-							Integer.toString(wahlKreis.wahlkreisId) });
-					currentErstPartei.erststimme2009--;
-					invalidVoteCount2++;
-				}
+					currentErstPartei = erstIter.next().getValue(); else
+					throw new IOException("noooo it does not match");
 			}
-
-			// create votes with only second votes
-			while (zweitIter.hasNext()
-					|| currentZweitPartei.zweitstimme2009 > 0) {
+			while (zweitIter.hasNext() || currentZweitPartei.zweitstimme2009 > 0) {
 				if (currentZweitPartei.zweitstimme2009 <= 0)
-					currentZweitPartei = zweitIter.next().getValue();
-
-				while (currentZweitPartei.zweitstimme2009 > 0) {
-					writer.writeNext(new String[] { "0",
-							Integer.toString(currentZweitPartei.parteiId),
-							Integer.toString(wahlKreis.wahlkreisId) });
-					currentZweitPartei.zweitstimme2009--;
-					invalidVoteCount1++;
-				}
+					currentZweitPartei = zweitIter.next().getValue(); else
+					throw new IOException("noooo it does not match");
 			}
-			if(invalidVoteCount1 != 0)
-				System.out.println("invalid votes: " + wahlKreis.wahlkreisId + "  " + invalidVoteCount1);
-			if(invalidVoteCount2 != 0) 
-			System.out.println("invalid votes: " + wahlKreis.wahlkreisId + "  " + invalidVoteCount2);
+			if(erstIter.hasNext() || currentErstPartei.erststimme2009 > 0 || zweitIter.hasNext() || currentZweitPartei.zweitstimme2009 > 0)
+				throw new IOException("noooo it does not match");
 		}
 
 		// write data
