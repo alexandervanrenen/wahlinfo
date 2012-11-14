@@ -278,7 +278,7 @@ public class Parser {
 		// create each partei in each wahlkreis
 		CSVWriter parteiWriter = new CSVWriter(new FileWriter(outputFilePathPartei), '|', CSVWriter.NO_QUOTE_CHARACTER);
 		CSVWriter kandidatWriter = new CSVWriter(new FileWriter(outputFilePathKandidat), '|', CSVWriter.NO_QUOTE_CHARACTER);
-		parteiWriter.writeNext(new String [] {"0", "Keine", "KEINE", "white", "0", "0"});
+		wahlkeise.add(new WahlKreis(0, wahlkeise.get(1).parteien)); // add fake wahlkreis
 		
 		// add parties and candidates with wahlkreise
 		for (WahlKreis wahlKreis : wahlkeise) {
@@ -288,6 +288,7 @@ public class Parser {
 					kandidatWriter.writeNext(new String [] {Integer.toString(partei.kandidatId), partei.kandidatVorname, partei.kandidatNachname, partei.kandidatGeburtsjahr, Integer.toString(partei.parteiId), Integer.toString(wahlKreis.wahlkreisId), Integer.toString(partei.erststimme2005)});
 			}
 		}
+		wahlkeise.remove(wahlkeise.size()-1); // drop fake wahlkreis
 		
 		// add candidates without wahlkreise
 		for (Partei candidate : lonleyCandidates)
