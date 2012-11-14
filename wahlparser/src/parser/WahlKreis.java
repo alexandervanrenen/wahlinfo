@@ -17,9 +17,5 @@ public class WahlKreis {
 		this.parteien = parteien;
 	}
 	int wahlkreisId;
-	int wahlberechtigte;
-	int wahlberechtigte2005;
-	int waehler;
-	int waehler2005;
 	HashMap<Integer, Partei> parteien;
 }
