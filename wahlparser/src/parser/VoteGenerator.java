@@ -5,14 +5,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map.Entry;
-import java.util.Random;
 
 import au.com.bytecode.opencsv.CSVWriter;
 
 public class VoteGenerator {
 
 	public static void generate(String outputFilePath,
-			ArrayList<WahlKreis> wahlkeise, ArrayList<Partei> lonleyCandidates) throws IOException {
+			ArrayList<WahlKreis> wahlkeise, ArrayList<Partei> lonleyCandidates)
+			throws IOException {
 		// create output and hope that is works stream based ..
 		int lastPercentage = -1;
 		CSVWriter writer = new CSVWriter(new FileWriter(outputFilePath), '|',
@@ -20,11 +20,7 @@ public class VoteGenerator {
 
 		// generate the votes for each wahlkreis
 		for (WahlKreis wahlKreis : wahlkeise) {
-
-			int invalidVoteCount1 = 0;
-			int invalidVoteCount2 = 0;
-			
-			// print nice progress percentage 
+			// print nice progress percentage
 			int currentPercentage = (int) (wahlKreis.wahlkreisId
 					/ (float) wahlkeise.size() * 100);
 			if (lastPercentage != currentPercentage)
@@ -50,20 +46,22 @@ public class VoteGenerator {
 
 				while (currentErstPartei.erststimme2009 > 0
 						&& currentZweitPartei.zweitstimme2009 > 0) {
-					
+
 					// set a candidat
-					int kandidatId = currentErstPartei.kandidatId; 
-					if(kandidatId==-1 && currentErstPartei.parteiId==0)
-						kandidatId=0;
-					if(kandidatId==-1 && currentErstPartei.parteiId!=0)
+					int kandidatId = currentErstPartei.kandidatId;
+					if (kandidatId == -1 && currentErstPartei.parteiId == 0)
+						kandidatId = 0;
+					if (kandidatId == -1 && currentErstPartei.parteiId != 0)
 						for (Partei partei : lonleyCandidates)
-							if(partei.wahlKreisId == wahlKreis.wahlkreisId) {
+							if (partei.wahlKreisId == wahlKreis.wahlkreisId) {
 								kandidatId = partei.kandidatId;
 								break;
 							}
-					if(kandidatId==-1)
+					if (kandidatId == -1) {
+						writer.close();
 						throw new IOException("should not happen");
-					
+					}
+
 					writer.writeNext(new String[] {
 							Integer.toString(kandidatId),
 							Integer.toString(currentZweitPartei.parteiId),
@@ -76,16 +74,27 @@ public class VoteGenerator {
 			// check
 			while (erstIter.hasNext() || currentErstPartei.erststimme2009 > 0) {
 				if (currentErstPartei.erststimme2009 <= 0)
-					currentErstPartei = erstIter.next().getValue(); else
+					currentErstPartei = erstIter.next().getValue();
+				else {
+					writer.close();
 					throw new IOException("noooo it does not match");
+				}
 			}
-			while (zweitIter.hasNext() || currentZweitPartei.zweitstimme2009 > 0) {
+			while (zweitIter.hasNext()
+					|| currentZweitPartei.zweitstimme2009 > 0) {
 				if (currentZweitPartei.zweitstimme2009 <= 0)
-					currentZweitPartei = zweitIter.next().getValue(); else
+					currentZweitPartei = zweitIter.next().getValue();
+				else {
+					writer.close();
 					throw new IOException("noooo it does not match");
+				}
 			}
-			if(erstIter.hasNext() || currentErstPartei.erststimme2009 > 0 || zweitIter.hasNext() || currentZweitPartei.zweitstimme2009 > 0)
+			if (erstIter.hasNext() || currentErstPartei.erststimme2009 > 0
+					|| zweitIter.hasNext()
+					|| currentZweitPartei.zweitstimme2009 > 0) {
+				writer.close();
 				throw new IOException("noooo it does not match");
+			}
 		}
 
 		// write data
