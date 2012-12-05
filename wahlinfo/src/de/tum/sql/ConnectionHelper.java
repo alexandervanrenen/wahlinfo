@@ -1,4 +1,4 @@
-package de.tum.wahlinfo;
+package de.tum.sql;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

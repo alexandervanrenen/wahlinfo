@@ -1,6 +1,5 @@
 package de.tum.wahlinfo;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.GET;
@@ -17,13 +16,6 @@ public class SitzverteilungResource {
 	@Produces({ MediaType.APPLICATION_JSON })
 	public List<Sitzverteilung> getSitzverteilung() {
 		System.out.println("SitzverteilungResource::getSitzverteilung");
-		// return dao.findAll();
-		Sitzverteilung sitzverteilung = new Sitzverteilung();
-		sitzverteilung.setName("CDU");
-		sitzverteilung.setSitze(239);
-		sitzverteilung.setFarbe("000000");
-		List<Sitzverteilung> sitzverteilungsListe = new ArrayList<Sitzverteilung>();
-		sitzverteilungsListe.add(sitzverteilung);
-		return sitzverteilungsListe;
+		return dao.get();
 	}
 }

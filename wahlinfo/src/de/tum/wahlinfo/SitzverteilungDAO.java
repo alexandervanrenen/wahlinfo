@@ -7,12 +7,16 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.tum.sql.ConnectionHelper;
+import de.tum.sql.SqlStatements;
+import de.tum.sql.SqlStatements.Query;
+
 public class SitzverteilungDAO {
 
 	public List<Sitzverteilung> get() {
 		List<Sitzverteilung> list = new ArrayList<Sitzverteilung>();
 		Connection c = null;
-		String sql = "SELECT * FROM bundesland"; // TODO: insert real query
+		String sql = SqlStatements.getQuery(Query.Sitzverteilung);
 		try {
 			c = ConnectionHelper.getConnection();
 			Statement s = c.createStatement();
