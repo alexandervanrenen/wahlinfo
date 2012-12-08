@@ -1,5 +1,6 @@
 package de.tum.wahlinfo;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,20 +17,21 @@ public class SitzverteilungDAO {
 	public List<Sitzverteilung> get() {
 		List<Sitzverteilung> list = new ArrayList<Sitzverteilung>();
 		Connection c = null;
-		String sql = SqlStatements.getQuery(Query.Sitzverteilung);
 		try {
+			String sql = SqlStatements.getQuery(Query.Sitzverteilung);
 			c = ConnectionHelper.getConnection();
 			Statement s = c.createStatement();
 			ResultSet rs = s.executeQuery(sql);
 			while (rs.next()) {
 				Sitzverteilung sitzverteilung = new Sitzverteilung();
-				sitzverteilung.setName(rs.getString("partei_name"));
+				sitzverteilung.setName(rs.getString("name"));
 				sitzverteilung.setSitze(rs.getInt("sitze"));
-				sitzverteilung.setFarbe(rs.getString("partei_farbe"));
+				sitzverteilung.setFarbe(rs.getString("farbe"));
 				list.add(sitzverteilung);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
+		} catch (IOException e) {
 			throw new RuntimeException(e);
 		} finally {
 			ConnectionHelper.close(c);

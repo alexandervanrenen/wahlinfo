@@ -1,5 +1,6 @@
 package de.tum.wahlinfo;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.tum.sql.ConnectionHelper;
+import de.tum.sql.SqlStatements;
+import de.tum.sql.SqlStatements.Query;
 
 
 public class BundeslandDAO {
@@ -16,8 +19,8 @@ public class BundeslandDAO {
 	public List<Bundesland> findAll() {
 		List<Bundesland> list = new ArrayList<Bundesland>();
 		Connection c = null;
-		String sql = "SELECT * FROM bundesland";
 		try {
+			String sql = SqlStatements.getQuery(Query.Bundeslaender);
 			c = ConnectionHelper.getConnection();
 			Statement s = c.createStatement();
 			ResultSet rs = s.executeQuery(sql);
@@ -25,7 +28,8 @@ public class BundeslandDAO {
 				list.add(processRow(rs));
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
+		} catch (IOException e) {
 			throw new RuntimeException(e);
 		} finally {
 			ConnectionHelper.close(c);

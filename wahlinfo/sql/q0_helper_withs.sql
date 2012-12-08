@@ -10,6 +10,9 @@ with StimmenCountKandidatSimple as (
          group by s.kandidat_id
 
 )
+
+, impl as ( select count(*) as anz from stimme)
+
 , StimmenCountKandidat as (
          select k.id as kandidat_id, k.partei_id, k.wahlkreis_id, d.stimmenAnzahl
          from StimmenCountKandidatSimple d, Kandidat k
@@ -209,5 +212,72 @@ select * from ParteienBeguenstigt b right outer join PropVerteilungSitzeBundesta
         from PropVerteilungSitzeBundesland p left outer join BeguenstigteBundeslandParteien b on p.partei_id=b.partei_id and p.bundesland_id=b.bundesland_id
 )
 
-select partei_id, sum(sitze) from SitzeProBundeslandProPartei group by partei_id;
 
+-----------------------------------------------
+-- Schritt 4 - Bestimme die Listenkandidaten --
+-----------------------------------------------
+-- Die Tabelle SitzeProBundeslandProPartei enthaelt wieviele Listenkandidaten jede Partei in jedem Bundsland auswaehlen darf.
+-- Mit dieser Information koennen nun die entsprechenden Listenkandidaten bestimmt werden.
+
+-- Rechnet die anzahl an sitzen pro Bundesland pro Partei aus, die an Kandidaten vergeben werden koennen
+-- left outer join da es parteien gibt die nicht in jedem bundesland einen kandidaten haben
+-- liefert zu JEDEM bundesland fuer JEDE partei die anzahl der direkt mandate
+, FreieSitzeProBundeslandProPartei as (
+        select p.partei_id, p.bundesland_id, (case when (p.sitze - a.anzahl) is null then p.sitze when p.sitze - a.anzahl < 0 then 0 else p.sitze - a.anzahl end) as freieSitze
+        from SitzeProBundeslandProPartei p left outer join AnzDirektmandateBundeslandPartei a on p.partei_id = a.partei_id and p.bundesland_id = a.bundesland_id
+)
+
+-- check point =)
+-- anzahl der sitze die auf listenkandidaten verteilt werden
+-- select sum(freieSitze) from FreieSitzeProBundeslandProPartei; -- == 327
+
+-- Landeslisten mit den Kandidaten bereinigen, die bereits ein Direktmandat haben
+-- Dannach enthaelt LandeslistenBereinigt genau die Kandidaten die man verteilen darf
+, LandeslistenBereinigt as (
+        select *
+        from landesliste l
+        where l.kandidat_id not in
+                (select d.kandidat_id from Direktmandate d)
+)
+
+-- Fuege eine row id hinzu, da wieder die besten n gezaehlt werden muessen und bereinige ungueltige Eintraege
+, LandeslistenBereinigtRowId as (
+        select l.bundesland_id, k.id as kandidat_id, k.partei_id, ROW_NUMBER () OVER (ORDER BY l.bundesland_id, k.partei_id, k.listenRang DESC) AS rowNum
+        from LandeslistenBereinigt l, kandidat k
+        where l.kandidat_id = k.id
+        and k.partei_id <> 0 -- no candidates without a party
+        and k.listenrang <> 0 -- dont know what that means but its invalid ..
+)
+
+-- Wandle Globale row ids in lokale row ids um
+, LandeslistenBereinigtRowIdLokal as (
+        select l1.bundesland_id, l1.partei_id, l1.kandidat_id, l1.rowNum - min(l2.rowNum) + 1 as rowNum
+        from LandeslistenBereinigtRowId l1, LandeslistenBereinigtRowId l2
+        where l1.partei_id = l2.partei_id and l1.bundesland_id = l2.bundesland_id
+        group by l1.bundesland_id, l1.partei_id, l1.kandidat_id, l1.rowNum
+)
+
+-- Waehle in jedem Bundesland fuer jede partei die ersten n kandidaten aus
+-- Wobei n die anzahl an verfuegbaren sitzen in dem bundesland fuer die partei (die bereits erhaltenen direktmandate sind in FreieSitzeProBundeslandProPartei abgezogen worden)
+, Listenmandate as (
+        select l.partei_id, l.bundesland_id, l.kandidat_id
+        from LandeslistenBereinigtRowIdLokal l
+        where 1 <= l.rowNum and l.rowNum <= (select f.freieSitze from FreieSitzeProBundeslandProPartei f where f.partei_id=l.partei_id and f.bundesland_id=l.bundesland_id)
+)
+
+-- check point =)
+-- select count(*) from Listenmandate;-- == 321 weil 6 leute verlohren werden (siehe UNTEN)
+
+-- enthaelt nun alle kandidaten die in den bundstag durch eine liste einziehen duerfen. vereinigt man das mit den direktmandaten dann hat man alle menschen im bundestag.
+-- select * from Listenmandate;
+
+/* UNTEN: es scheint bundeslaender zu geben inden eine partei mehr verfuegbare sitze hat als sie kandidaten stellt
+      partei 13, bundesland 14 mit 4 verlohrenen sitzen
+      partei 4,  bundesland 2  mit 2 verlohrenen sitzen
+
+anfrage dafuer:
+select f.partei_id, f.bundesland_id, f.freieSitze, count(*) as verfuegbareKandidaten
+from FreieSitzeProBundeslandProPartei f left outer join Listenmandate l on f.partei_id=l.partei_id and f.bundesland_id=l.bundesland_id
+group by f.partei_id, f.bundesland_id, f.freieSitze
+having count(*) < freieSitze;
+*/

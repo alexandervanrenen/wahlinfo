@@ -1,6 +1,5 @@
 package de.tum.wahlinfo;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.GET;
@@ -19,13 +18,7 @@ public class BundeslandResource {
 	@Produces({ MediaType.APPLICATION_JSON })
 	public List<Bundesland> findAll() {
 		System.out.println("findAll");
-//		return dao.findAll();
-		Bundesland bundesland = new Bundesland();
-		bundesland.setId(1);
-		bundesland.setName("Bayern");
-		List<Bundesland> bundeslaender = new ArrayList<Bundesland>();
-		bundeslaender.add(bundesland);
-		return bundeslaender;
+		return dao.findAll();
 	}
 	
 	@GET @Path("search/{query}")

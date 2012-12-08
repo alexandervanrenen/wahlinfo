@@ -12,13 +12,13 @@ public class ConnectionHelper {
 
 	private ConnectionHelper() {
 		try {
-			ResourceBundle bundle = ResourceBundle.getBundle("wahlinfo");
+			ResourceBundle bundle = ResourceBundle.getBundle("de.tum.sql.wahlinfo");
 			Class.forName(bundle.getString("jdbc.driver"));
 			url = bundle.getString("jdbc.url");
 			user = bundle.getString("jdbc.user");
 			password = bundle.getString("jdbc.password");
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -27,6 +27,13 @@ public class ConnectionHelper {
 			instance = new ConnectionHelper();
 		}
 		try {
+			try {
+				Class.forName("nl.cwi.monetdb.jdbc.MonetDriver");
+			} catch (ClassNotFoundException e) {
+				System.out.println("cna not find fucking driver");
+				e.printStackTrace();
+			}
+			
 			return DriverManager.getConnection(instance.url, instance.user,
 					instance.password);
 		} catch (SQLException e) {
