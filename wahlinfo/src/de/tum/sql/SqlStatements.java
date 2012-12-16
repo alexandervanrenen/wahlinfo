@@ -7,10 +7,10 @@ import java.io.IOException;
 
 public class SqlStatements {
 
-	private static String sqlDir = "wahlinfo/wahlinfo/sql/";
+	private static String sqlDir = "wahlinfo/sql/";
 
 	public enum Query {
-		Bundeslaender, Sitzverteilung, BundestagMitglieder
+		Bundeslaender, Sitzverteilung, BundestagMitglieder, WahlkreisUebersicht1, WahlkreisUebersicht2, WahlkreisUebersicht3
 	};
 
 	public static String getQuery(Query type) throws IOException {
@@ -24,6 +24,15 @@ public class SqlStatements {
 		case BundestagMitglieder:
 			return readFileAsString(sqlDir + "q0_helper_withs.sql") + " "
 					+ readFileAsString(sqlDir + "q2_bundestag_mitglieder.sql");
+		case WahlkreisUebersicht1:
+			return readFileAsString(sqlDir + "q0_helper_withs.sql") + " "
+					+ readFileAsString(sqlDir + "q3_wahlkreis_uebersicht_1.sql");
+		case WahlkreisUebersicht2:
+			return readFileAsString(sqlDir + "q0_helper_withs.sql") + " "
+					+ readFileAsString(sqlDir + "q3_wahlkreis_uebersicht_2.sql");
+		case WahlkreisUebersicht3:
+			return readFileAsString(sqlDir + "q0_helper_withs.sql") + " "
+					+ readFileAsString(sqlDir + "q3_wahlkreis_uebersicht_3.sql");
 		default:
 			throw new FileNotFoundException();
 		}
