@@ -15,7 +15,7 @@ public class SitzverteilungResource {
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
 	public List<Sitzverteilung> getSitzverteilung() {
-		System.out.println("SitzverteilungResource::getSitzverteilung");
+		System.out.println("SitzverteilungResource::getSitzverteilung()");
 		return dao.get();
 	}
 }
