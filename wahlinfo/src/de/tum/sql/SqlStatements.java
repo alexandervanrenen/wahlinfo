@@ -10,7 +10,7 @@ public class SqlStatements {
 	private static String sqlDir = "wahlinfo/sql/";
 
 	public enum Query {
-		Bundeslaender, Sitzverteilung, BundestagMitglieder, WahlkreisUebersicht1, WahlkreisUebersicht2, WahlkreisUebersicht3
+		Bundeslaender, Sitzverteilung, BundestagMitglieder, WahlkreisUebersicht1, WahlkreisUebersicht2, WahlkreisUebersicht3, WahlkreisSieger
 	};
 
 	public static String getQuery(Query type) throws IOException {
@@ -33,6 +33,9 @@ public class SqlStatements {
 		case WahlkreisUebersicht3:
 			return readFileAsString(sqlDir + "q0_helper_withs.sql") + " "
 					+ readFileAsString(sqlDir + "q3_wahlkreis_uebersicht_3.sql");
+		case WahlkreisSieger:
+			return readFileAsString(sqlDir + "q0_helper_withs.sql") + " "
+					+ readFileAsString(sqlDir + "q4_wahlkreis_sieger.sql");
 		default:
 			throw new FileNotFoundException();
 		}
