@@ -47,7 +47,7 @@ public class Performance extends Thread {
 			data.put(uri, new Pair(1, neededTime));
 		else
 			p.addTime(neededTime);
-		
+
 		// Increase global counters
 		countInLastPeriod++;
 	}
@@ -72,6 +72,7 @@ public class Performance extends Thread {
 				countInLastPeriod = 0;
 				for (Entry<String, Pair> iter : data.entrySet())
 					System.out.println(iter.getKey() + " " + (iter.getValue().getTime() / 1000.0f) / iter.getValue().getCount());
+				data.clear();
 			}
 		}
 	}
