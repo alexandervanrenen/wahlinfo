@@ -3,9 +3,20 @@
 /* Controllers */
 
 function BundestagCtrl($scope, Sitzverteilung, Bundestagmitglieder, Ueberhangmandate) {
-	$scope.sitzverteilung = Sitzverteilung.query();
-	$scope.bundestagmitglieder = Bundestagmitglieder.query();
-	$scope.ueberhangmandate = Ueberhangmandate.query();
+	Sitzverteilung.get({},
+		    function (data) { // success callback
+        		$scope.sitzverteilung = data.sitzverteilung;
+    	}, {});
+	
+	Bundestagmitglieder.get({},
+		    function (data) { // success callback
+        		$scope.bundestagmitglieder = data.bundestagMitglied;
+    	}, {});
+	
+	Ueberhangmandate.get({},
+		    function (data) { // success callback
+        		$scope.ueberhangmandate = data.ueberhangmandate;
+    	}, {});
 }
 
 

@@ -10,18 +10,21 @@ var app = angular.module('wahlinfo', ['wahlinfoServices']).
   }]);
 
 //app.directive('chart', function() {
-//    return function($scope, $elm, $attr) {
+//    return function($scope, $elm, $attr, Sitzverteilung) { // TODO inject Sitzverteilung
+//    	
 //        // Create the data table.
 //        var data = new google.visualization.DataTable();
 //        data.addColumn('string', 'Partei');
 //        data.addColumn('number', 'Anzahl der Sitze');
-//        data.addRows([
-//          ['Mushrooms', 3],
-//          ['Onions', 1],
-//          ['Olives', 1],
-//          ['Zucchini', 1],
-//          ['Pepperoni', 2]
-//        ]);
+////        data.addRows([
+////          ['Mushrooms', 3],
+////          ['Onions', 1],
+////          ['Olives', 1],
+////          ['Zucchini', 1],
+////          ['Pepperoni', 2]
+////        ]);
+//        
+//        
 //
 //        // Set chart options
 //        var options = {'title':'Sitzverteilung im Bundestag',
