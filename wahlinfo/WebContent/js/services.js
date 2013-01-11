@@ -14,4 +14,7 @@ angular.module('wahlinfoServices', ['ngResource']).
   factory('Ueberhangmandate', function($resource){
 	  return $resource('json/ueberhangmandate.json', {}, {});
 //	  return $resource('http://localhost\\:8080/wahlinfo/rest/ueberhangmandate', {}, {});
+  }).
+  factory('Wahlkreisuebersicht', function($resource){
+	  return $resource('http://localhost\\:8080/wahlinfo/rest/wahlkreisuebersicht/:wahlkreisid', {}, {});
   });

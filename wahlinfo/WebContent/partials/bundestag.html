@@ -12,6 +12,20 @@
 
 <div chart></div>
 
+<h2>Ueberhangmandate</h2>
+<table>
+  <tr>
+    <th>Bundesland</th>
+    <th>Partei</th>
+    <th>Anzahl der Ueberhangmandate</th>
+  </tr>
+  <tr ng-repeat="mandat in ueberhangmandate | filter:'!0'">
+    <td>{{mandat.bundesland}}</td>
+    <td>{{mandat.partei}}</td>
+    <td>{{mandat.ueberhangmandate}}</td>
+  </tr>
+</table>
+
 <h2>Mitglieder des Bundestages</h2>
 <table>
   <tr>
@@ -25,19 +39,5 @@
     <td>{{kandidat.name}}</td>
     <td>{{kandidat.partei}}</td>
     <td>{{kandidat.wahlkreis}}</td>
-  </tr>
-</table>
-
-<h2>Ueberhangmandate</h2>
-<table>
-  <tr>
-    <th>Bundesland</th>
-    <th>Partei</th>
-    <th>Anzahl der Ueberhangmandate</th>
-  </tr>
-  <tr ng-repeat="mandat in ueberhangmandate | filter:'!0'">
-    <td>{{mandat.bundesland}}</td>
-    <td>{{mandat.partei}}</td>
-    <td>{{mandat.ueberhangmandate}}</td>
   </tr>
 </table>

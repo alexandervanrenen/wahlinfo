@@ -1,1 +1,19 @@
-<h2>Wahlergebnisse</h2>
+<h2>Wahlkreisuebersicht</h2>
+<p>Wahlkreis-ID hier eingeben: <input ng-model="wahlkreisid" />
+<button ng:click="getWahlkreisResults()">Ergebnisse abrufen</button></p>
+<table>
+  <tr>
+    <th>Partei</th>
+    <th>StimmenAnteil</th>
+    <th>StimmenAnteilVorjahr</th>
+    <th>StimmenAnzahl</th>
+    <th>StimmenAnzahlVorjahr</th>
+  </tr>
+  <tr ng-repeat="ergebnis in parteiergebnisse">
+    <td>{{ergebnis.partei}}</td>
+    <td>{{ergebnis.stimmenAnteil}}</td>
+    <td>{{ergebnis.stimmenAnteilVorjahr}}</td>
+    <td>{{ergebnis.stimmenAnzahl}}</td>
+    <td>{{ergebnis.stimmenAnzahlVorjahr}}</td>
+  </tr>
+</table>

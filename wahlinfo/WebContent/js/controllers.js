@@ -4,23 +4,28 @@
 
 function BundestagCtrl($scope, Sitzverteilung, Bundestagmitglieder, Ueberhangmandate) {
 	Sitzverteilung.get({},
-		    function (data) { // success callback
+		    function (data) {
         		$scope.sitzverteilung = data.sitzverteilung;
     	}, {});
 	
 	Bundestagmitglieder.get({},
-		    function (data) { // success callback
+		    function (data) {
         		$scope.bundestagmitglieder = data.bundestagMitglied;
     	}, {});
 	
 	Ueberhangmandate.get({},
-		    function (data) { // success callback
+		    function (data) {
         		$scope.ueberhangmandate = data.ueberhangmandate;
     	}, {});
 }
 
-
-function WahlergebnisseCtrl() {}
-
+function WahlergebnisseCtrl($scope, Wahlkreisuebersicht) {
+	$scope.getWahlkreisResults = function () {
+		Wahlkreisuebersicht.get({wahlkreisid:$scope.wahlkreisid},
+			    function (data) {
+	        		$scope.parteiergebnisse = data.parteiergebnisse;
+	    	}, {});
+    };
+}
 
 function VorjahresvergleichCtrl() {}
