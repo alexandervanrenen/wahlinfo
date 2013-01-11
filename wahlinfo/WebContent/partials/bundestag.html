@@ -35,7 +35,7 @@
     <th>Partei</th>
     <th>Anzahl der Ueberhangmandate</th>
   </tr>
-  <tr ng-repeat="mandat in ueberhangmandate">
+  <tr ng-repeat="mandat in ueberhangmandate | filter:'!0'">
     <td>{{mandat.bundesland}}</td>
     <td>{{mandat.partei}}</td>
     <td>{{mandat.ueberhangmandate}}</td>
