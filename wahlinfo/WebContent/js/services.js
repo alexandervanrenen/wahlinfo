@@ -16,5 +16,5 @@ angular.module('wahlinfoServices', ['ngResource']).
 //	  return $resource('http://localhost\\:8080/wahlinfo/rest/ueberhangmandate', {}, {});
   }).
   factory('Wahlkreisuebersicht', function($resource){
-	  return $resource('http://localhost\\:8080/wahlinfo/rest/wahlkreisuebersicht/:wahlkreisid', {}, {});
+	  return $resource('http://localhost\\:8080/wahlinfo/rest/germany/all/:wahlkreisid', {}, {});
   });
