@@ -27,6 +27,7 @@ public class SitzverteilungDAO {
 				sitzverteilung.setName(rs.getString("name"));
 				sitzverteilung.setSitze(rs.getInt("sitze"));
 				sitzverteilung.setFarbe(rs.getString("farbe"));
+				sitzverteilung.setKurzbezeichnung(rs.getString("kurzbezeichnung"));
 				list.add(sitzverteilung);
 			}
 		} catch (SQLException e) {
