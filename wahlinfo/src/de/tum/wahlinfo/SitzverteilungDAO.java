@@ -15,6 +15,7 @@ import de.tum.sql.SqlStatements.Query;
 public class SitzverteilungDAO {
 
 	public List<Sitzverteilung> get() {
+		// Get data
 		List<Sitzverteilung> list = new ArrayList<Sitzverteilung>();
 		Connection c = null;
 		try {
@@ -36,6 +37,25 @@ public class SitzverteilungDAO {
 			throw new RuntimeException(e);
 		} finally {
 			ConnectionHelper.close(c);
+		}
+		
+		// Unite CDU and CSU .. stupid politics screwing up my code :(
+		Sitzverteilung firstOfThem = null;
+		for (Sitzverteilung iter : list) {
+			if(iter.getKurzbezeichnung().contentEquals("CDU") || iter.getKurzbezeichnung().contentEquals("CSU")) {
+				if(firstOfThem == null) {
+					// Found the first: Remember the first of the two parties
+					firstOfThem = iter;
+					firstOfThem.setKurzbezeichnung("CDU/CSU");
+					firstOfThem.setName("Die Union");
+					continue;
+				} else {
+					// Found the second: Add value to the first and remove 
+					firstOfThem.setSitze(firstOfThem.getSitze() + iter.getSitze());
+					list.remove(iter);
+					break;
+				}
+			}
 		}
 		return list;
 	}
