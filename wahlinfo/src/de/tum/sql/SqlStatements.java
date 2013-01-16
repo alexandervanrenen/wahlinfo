@@ -1,16 +1,15 @@
 package de.tum.sql;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
 public class SqlStatements {
 
-	private static String sqlDir = "wahlinfo/sql/";
+	private static String sqlDir = "../wahlinfo/sql/";
 
 	public enum Query {
-		Bundeslaender, Sitzverteilung, BundestagMitglieder, WahlkreisUebersicht1, WahlkreisUebersicht2, WahlkreisUebersicht3, WahlkreisSieger, Ueberhangmandate
+		Bundeslaender, Sitzverteilung, BundestagMitglieder, WahlkreisUebersicht1, WahlkreisUebersicht2, WahlkreisUebersicht3, WahlkreisSieger, Ueberhangmandate, Stimmabgabe_Check, Stimmabgabe_Insert 
 	};
 
 	public static String getQuery(Query type) throws IOException {
@@ -39,8 +38,13 @@ public class SqlStatements {
 		case Ueberhangmandate:
 			return readFileAsString(sqlDir + "q0_helper_withs.sql") + " "
 					+ readFileAsString(sqlDir + "q5_ueberhangmandate.sql");
+		case Stimmabgabe_Check:
+			return readFileAsString(sqlDir + "q0_helper_withs.sql") + " "
+			+ readFileAsString(sqlDir + "qx1_stimmabgabe_check.sql");
+		case Stimmabgabe_Insert:
+			return readFileAsString(sqlDir + "qx2_stimmabgabe_insert.sql");
 		default:
-			throw new FileNotFoundException();
+			throw new RuntimeException("not impl");
 		}
 	}
 
