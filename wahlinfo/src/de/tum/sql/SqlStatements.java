@@ -9,7 +9,7 @@ public class SqlStatements {
 	private static String sqlDir = "../wahlinfo/sql/";
 
 	public enum Query {
-		FindAllBundeslaender, Sitzverteilung, BundestagMitglieder, WahlkreisUebersicht1, WahlkreisUebersicht2, WahlkreisUebersicht3, WahlkreisSieger, Ueberhangmandate, Stimmabgabe_Check, Stimmabgabe_Insert, CalculateDeutschland, FindAllWahlkreise, FindAllWahlkreiseOfBundesland, FindWahlkreisById, FindWahlkreisByName, FindBundeslandByName, FindBundeslandById
+		FindAllBundeslaender, Sitzverteilung, BundestagMitglieder, WahlkreisUebersicht1, WahlkreisUebersicht2, WahlkreisUebersicht3, WahlkreisSieger, Ueberhangmandate, Stimmabgabe_Check, Stimmabgabe_Insert, CalculateDeutschland, FindAllWahlkreise, FindAllWahlkreiseOfBundesland, FindWahlkreisById, FindWahlkreisByName, FindBundeslandByName, FindBundeslandById, StimmzettelParteien, StimmzettelKandidaten
 	};
 
 	public static String getQuery(Query type) throws IOException {
@@ -47,7 +47,11 @@ public class SqlStatements {
 		case Stimmabgabe_Check:
 			return readFileAsString(sqlDir + "q0_helper_withs.sql") + " " + readFileAsString(sqlDir + "qx1_stimmabgabe_check.sql");
 		case Stimmabgabe_Insert:
-			return readFileAsString(sqlDir + "qx2_stimmabgabe_insert.sql");
+			return readFileAsString(sqlDir + "qx1_stimmabgabe_insert.sql");
+		case StimmzettelParteien:
+			return readFileAsString(sqlDir + "q0_helper_withs.sql") + " " + readFileAsString(sqlDir + "qx2_stimmzettel_parteien.sql");
+		case StimmzettelKandidaten:
+			return readFileAsString(sqlDir + "q0_helper_withs.sql") + " " + readFileAsString(sqlDir + "qx2_stimmzettel_kandidaten.sql");
 		default:
 			throw new RuntimeException("not impl");
 		}

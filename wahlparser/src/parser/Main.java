@@ -11,9 +11,9 @@ public class Main {
 	/**
 	 * no args ..
 	 * @param args
-	 * @throws IOException 
+	 * @throws Exception 
 	 */
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws Exception {
 		// print welcome
 		System.out.println("started ..");
 		Parser parser = new Parser();
@@ -25,7 +25,8 @@ public class Main {
 			System.out.println("fail loading bundeslaender");
 			e.printStackTrace();
 		}
-		
+		if(true)
+			throw new Exception();		
 		// load landeslisten
 		try {
 			parser.readLandeslisten("Landeslisten.csv", "Listenplaetze.csv", "Landeslisten.tbl");

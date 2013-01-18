@@ -69,7 +69,7 @@ public class Parser {
 	public void readBundesLaender(String inputFilePath, String outputFilePath)
 			throws IOException {
 		// read file
-		CSVReader reader = new CSVReader(new FileReader(inputFilePath), ';');
+		CSVReader reader = new CSVReader(new FileReader(inputFilePath), '\t');
 		List<String[]> data = reader.readAll();
 		reader.close();
 		data.remove(0); // drop schema line
@@ -77,6 +77,7 @@ public class Parser {
 		// remember bundesland name -> id mapping
 		for (int i = 0; i < data.size(); i++) {
 			bundeslandMap.put(data.get(i)[1], data.get(i)[0]);
+			System.out.println(data.get(i)[1]);
 		}
 
 		// write file
