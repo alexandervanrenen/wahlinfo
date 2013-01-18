@@ -3,17 +3,17 @@ package parser;
 import java.io.IOException;
 
 /**
- * @author alex
- * stating point of the program
+ * @author alex stating point of the program
  */
 public class Main {
 
 	/**
 	 * no args ..
+	 * 
 	 * @param args
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) {
 		// print welcome
 		System.out.println("started ..");
 		Parser parser = new Parser();
@@ -24,15 +24,16 @@ public class Main {
 		} catch (IOException e) {
 			System.out.println("fail loading bundeslaender");
 			e.printStackTrace();
+			return;
 		}
-		if(true)
-			throw new Exception();		
+
 		// load landeslisten
 		try {
 			parser.readLandeslisten("Landeslisten.csv", "Listenplaetze.csv", "Landeslisten.tbl");
 		} catch (IOException e) {
 			System.out.println("fail loading landeslisten");
 			e.printStackTrace();
+			return;
 		}
 
 		// load wahlkreise
@@ -41,14 +42,16 @@ public class Main {
 		} catch (IOException e) {
 			System.out.println("fail loading wahlkreise");
 			e.printStackTrace();
+			return;
 		}
-		
+
 		// load parteien
 		try {
 			parser.readParteien("Parteien.csv", "Parteien.tbl");
 		} catch (IOException e) {
 			System.out.println("fail loading partein");
 			e.printStackTrace();
+			return;
 		}
 
 		// load stimmen (has to be done before loading the kandidatas)
@@ -57,30 +60,36 @@ public class Main {
 		} catch (IOException e) {
 			System.out.println("fail loading stimmen");
 			e.printStackTrace();
+			return;
 		}
 
 		// load kandidaten
-//		try {
+		try {
 			parser.readKandidaten("Kandidaten.csv", "Kandidaten.tbl");
-//		} catch (IOException e) {
-//			System.out.println("fail loading kandidaten");
-//			e.printStackTrace();
-//		}
-		
+		} catch (IOException e) {
+			System.out.println("fail loading kandidaten");
+			e.printStackTrace();
+			return;
+		}
+
 		// generate the votes
 		try {
 			parser.generateVotes2009("Stimmen.tbl");
 		} catch (IOException e) {
+			System.out.println("fail generating votes 2009");
 			e.printStackTrace();
+			return;
 		}
 
 		// generate the votes
 		try {
 			parser.generateVoteAggregates2005("Parteien2005.tbl", "Kandidaten2005.tbl");
 		} catch (IOException e) {
+			System.out.println("fail generating votes 2005");
 			e.printStackTrace();
+			return;
 		}
-		
+
 		System.out.println("done =)");
 	}
 

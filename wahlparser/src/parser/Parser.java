@@ -1,8 +1,9 @@
 package parser;
 
+import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -69,26 +70,22 @@ public class Parser {
 	public void readBundesLaender(String inputFilePath, String outputFilePath)
 			throws IOException {
 		// read file
-		CSVReader reader = new CSVReader(new FileReader(inputFilePath), '\t');
+		CSVReader reader = new CSVReader(new FileReader(inputFilePath), ';');
 		List<String[]> data = reader.readAll();
 		reader.close();
 		data.remove(0); // drop schema line
 
 		// remember bundesland name -> id mapping
-		for (int i = 0; i < data.size(); i++) {
+		for (int i = 0; i < data.size(); i++)
 			bundeslandMap.put(data.get(i)[1], data.get(i)[0]);
-			System.out.println(data.get(i)[1]);
-		}
 
 		// write file
-		CSVWriter writer = new CSVWriter(new FileWriter(outputFilePath), '|',
-				CSVWriter.NO_QUOTE_CHARACTER);
+		CSVWriter writer = new CSVWriter(new OutputStreamWriter(new FileOutputStream(outputFilePath), "utf-8"), '|', CSVWriter.NO_QUOTE_CHARACTER);
 		writer.writeAll(data);
 		writer.close();
 	}
 
-	public void readLandeslisten(String landeslistenPath,
-			String listenplaetzePath, String outputFilePath) throws IOException {
+	public void readLandeslisten(String landeslistenPath, String listenplaetzePath, String outputFilePath) throws IOException {
 		// read landeslisten
 		CSVReader reader = new CSVReader(new FileReader(landeslistenPath), ';');
 		List<String[]> data = reader.readAll();
@@ -118,8 +115,7 @@ public class Parser {
 		}
 
 		// write file
-		CSVWriter writer = new CSVWriter(new FileWriter(outputFilePath), '|',
-				CSVWriter.NO_QUOTE_CHARACTER);
+		CSVWriter writer = new CSVWriter(new OutputStreamWriter(new FileOutputStream(outputFilePath), "utf-8"), '|', CSVWriter.NO_QUOTE_CHARACTER);
 		writer.writeAll(data);
 		writer.close();
 	}
@@ -133,8 +129,7 @@ public class Parser {
 	 *            file to write to
 	 * @throws IOException
 	 */
-	public void readWahlkreise(String inputFilePath, String outputFilePath)
-			throws IOException {
+	public void readWahlkreise(String inputFilePath, String outputFilePath) throws IOException {
 		// read file
 		CSVReader reader = new CSVReader(new FileReader(inputFilePath), ';');
 		List<String[]> data = reader.readAll();
@@ -143,12 +138,10 @@ public class Parser {
 
 		// create wahlkreise
 		for (String[] iter : data)
-			wahlkeise.add(new WahlKreis(Integer.decode(iter[0]),
-					new HashMap<Integer, Partei>()));
+			wahlkeise.add(new WahlKreis(Integer.decode(iter[0]), new HashMap<Integer, Partei>()));
 
 		// write file
-		CSVWriter writer = new CSVWriter(new FileWriter(outputFilePath), '|',
-				CSVWriter.NO_QUOTE_CHARACTER);
+		CSVWriter writer = new CSVWriter(new OutputStreamWriter(new FileOutputStream(outputFilePath), "utf-8"), '|', CSVWriter.NO_QUOTE_CHARACTER);
 		writer.writeAll(data);
 		writer.close();
 	}
@@ -162,31 +155,25 @@ public class Parser {
 	 *            file to write to
 	 * @throws IOException
 	 */
-	public void readParteien(String inputFilePath, String outputFilePath)
-			throws IOException {
+	public void readParteien(String inputFilePath, String outputFilePath) throws IOException {
 		// read file
 		CSVReader reader = new CSVReader(new FileReader(inputFilePath), ';');
 		List<String[]> data = reader.readAll();
 		reader.close();
 		data.remove(0); // drop schema line
-		CSVWriter writer = new CSVWriter(new FileWriter(outputFilePath), '|',
-				CSVWriter.NO_QUOTE_CHARACTER);
+		CSVWriter writer = new CSVWriter(new OutputStreamWriter(new FileOutputStream(outputFilePath), "utf-8"), '|', CSVWriter.NO_QUOTE_CHARACTER);
 
 		// store identifier of the parties
 		for (int i = 0; i < data.size(); i++) {
 			// create the partei in each wahlkreis
 			int parteiId = Integer.decode(data.get(i)[0]);
 			for (WahlKreis wahlKreis : wahlkeise)
-				wahlKreis.parteien.put(parteiId,
-						new Partei(parteiId, data.get(i)[1], data.get(i)[2],
-								wahlKreis.wahlkreisId));
+				wahlKreis.parteien.put(parteiId, new Partei(parteiId, data.get(i)[1], data.get(i)[2], wahlKreis.wahlkreisId));
 
 			// create one for mapping
-			Partei partei = new Partei(parteiId, data.get(i)[1],
-					data.get(i)[2], -1);
+			Partei partei = new Partei(parteiId, data.get(i)[1], data.get(i)[2], -1);
 			parteiMap.put(data.get(i)[2], partei);
-			writer.writeNext(new String[] { Integer.toString(partei.parteiId),
-					partei.longName, partei.shortName, "white" });
+			writer.writeNext(new String[] { Integer.toString(partei.parteiId), partei.longName, partei.shortName, "white" });
 		}
 
 		// write file
@@ -226,17 +213,12 @@ public class Parser {
 			for (int i = 1; i < line.length; i += 4) {
 				// read the votes for this party
 				// add this parties result to the current wahlkreis
-				Partei partei = currentWahlkreis.parteien.get(parteiMap
-						.get(partyLine[i]).parteiId);
+				Partei partei = currentWahlkreis.parteien.get(parteiMap.get(partyLine[i]).parteiId);
 				partei.parteiId = parteienListe.get(i / 4);
-				partei.erststimme2009 = line[i + 0].length() == 0 ? 0 : Integer
-						.decode(line[i + 0]);
-				partei.erststimme2005 = line[i + 1].length() == 0 ? 0 : Integer
-						.decode(line[i + 1]);
-				partei.zweitstimme2009 = line[i + 2].length() == 0 ? 0
-						: Integer.decode(line[i + 2]);
-				partei.zweitstimme2005 = line[i + 3].length() == 0 ? 0
-						: Integer.decode(line[i + 3]);
+				partei.erststimme2009 = line[i + 0].length() == 0 ? 0 : Integer.decode(line[i + 0]);
+				partei.erststimme2005 = line[i + 1].length() == 0 ? 0 : Integer.decode(line[i + 1]);
+				partei.zweitstimme2009 = line[i + 2].length() == 0 ? 0 : Integer.decode(line[i + 2]);
+				partei.zweitstimme2005 = line[i + 3].length() == 0 ? 0 : Integer.decode(line[i + 3]);
 			}
 		}
 	}
@@ -250,15 +232,13 @@ public class Parser {
 	 *            file to write to
 	 * @throws IOException
 	 */
-	public void readKandidaten(String inputFilePath, String outputFilePath)
-			throws IOException {
+	public void readKandidaten(String inputFilePath, String outputFilePath) throws IOException {
 		// read file
 		CSVReader reader = new CSVReader(new FileReader(inputFilePath), ';');
 		List<String[]> data = reader.readAll();
 		reader.close();
 		data.remove(0); // drop schema line
-		CSVWriter writer = new CSVWriter(new FileWriter(outputFilePath), '|',
-				CSVWriter.NO_QUOTE_CHARACTER);
+		CSVWriter writer = new CSVWriter(new OutputStreamWriter(new FileOutputStream(outputFilePath), "utf-8"), '|', CSVWriter.NO_QUOTE_CHARACTER);
 
 		// clean up data
 		for (String[] iter : data) {
@@ -273,8 +253,7 @@ public class Parser {
 				iter[5] = Integer.toString(parteiMap.get(iter[5]).parteiId);
 			else {
 				writer.close();
-				throw new IOException("found unknown partei '" + iter[5]
-						+ "'in candidate " + iter[7]);
+				throw new IOException("found unknown partei '" + iter[5] + "'in candidate " + iter[7]);
 			}
 
 			// fix candidates without a wahlkreis
@@ -289,8 +268,7 @@ public class Parser {
 				partei = wahlkeise.get(wahlkreis).parteien.get(parteiId);
 				if (partei.kandidatId != -1) {
 					writer.close();
-					throw new IOException(
-							"assigning a second candidat to a partei");
+					throw new IOException("assigning a second candidat to a partei");
 				}
 			} else {
 				partei = new Partei(parteiId, "none", "none", wahlkreis);
@@ -303,12 +281,7 @@ public class Parser {
 			partei.kandidatListenrang = iter[4];
 
 			// write data
-			writer.writeNext(new String[] {
-					Integer.toString(partei.kandidatId),
-					partei.kandidatVorname, partei.kandidatNachname,
-					partei.kandidatGeburtsjahr, partei.kandidatListenrang,
-					Integer.toString(partei.parteiId),
-					Integer.toString(wahlkreis) });
+			writer.writeNext(new String[] { Integer.toString(partei.kandidatId), partei.kandidatVorname, partei.kandidatNachname, partei.kandidatGeburtsjahr, partei.kandidatListenrang, Integer.toString(partei.parteiId), Integer.toString(wahlkreis) });
 		}
 
 		// write file
@@ -328,40 +301,23 @@ public class Parser {
 	 * @param outputFilePath
 	 * @throws IOException
 	 */
-	public void generateVoteAggregates2005(String outputFilePathPartei,
-			String outputFilePathKandidat) throws IOException {
+	public void generateVoteAggregates2005(String outputFilePathPartei, String outputFilePathKandidat) throws IOException {
 		// create each partei in each wahlkreis
-		CSVWriter parteiWriter = new CSVWriter(new FileWriter(
-				outputFilePathPartei), '|', CSVWriter.NO_QUOTE_CHARACTER);
-		CSVWriter kandidatWriter = new CSVWriter(new FileWriter(
-				outputFilePathKandidat), '|', CSVWriter.NO_QUOTE_CHARACTER);
+		CSVWriter parteiWriter = new CSVWriter(new OutputStreamWriter(new FileOutputStream(outputFilePathPartei), "utf-8"), '|', CSVWriter.NO_QUOTE_CHARACTER);
+		CSVWriter kandidatWriter = new CSVWriter(new OutputStreamWriter(new FileOutputStream(outputFilePathKandidat), "utf-8"), '|', CSVWriter.NO_QUOTE_CHARACTER);
 
 		// add parties and candidates with wahlkreise
 		for (WahlKreis wahlKreis : wahlkeise) {
 			for (Partei partei : wahlKreis.parteien.values()) {
-				parteiWriter.writeNext(new String[] {
-						Integer.toString(partei.parteiId), partei.longName,
-						partei.shortName, "white",
-						Integer.toString(partei.zweitstimme2005),
-						Integer.toString(wahlKreis.wahlkreisId) });
+				parteiWriter.writeNext(new String[] { Integer.toString(partei.parteiId), partei.longName, partei.shortName, "white", Integer.toString(partei.zweitstimme2005), Integer.toString(wahlKreis.wahlkreisId) });
 				if (partei.kandidatId != -1)
-					kandidatWriter.writeNext(new String[] {
-							Integer.toString(partei.kandidatId),
-							partei.kandidatVorname, partei.kandidatNachname,
-							partei.kandidatGeburtsjahr,
-							Integer.toString(partei.parteiId),
-							Integer.toString(wahlKreis.wahlkreisId),
-							Integer.toString(partei.erststimme2005) });
+					kandidatWriter.writeNext(new String[] { Integer.toString(partei.kandidatId), partei.kandidatVorname, partei.kandidatNachname, partei.kandidatGeburtsjahr, Integer.toString(partei.parteiId), Integer.toString(wahlKreis.wahlkreisId), Integer.toString(partei.erststimme2005) });
 			}
 		}
 
 		// add candidates without wahlkreise
 		for (Partei candidate : lonleyCandidates)
-			kandidatWriter.writeNext(new String[] {
-					Integer.toString(candidate.kandidatId),
-					candidate.kandidatVorname, candidate.kandidatNachname,
-					candidate.kandidatGeburtsjahr,
-					Integer.toString(candidate.parteiId), "0", "0" });
+			kandidatWriter.writeNext(new String[] { Integer.toString(candidate.kandidatId), candidate.kandidatVorname, candidate.kandidatNachname, candidate.kandidatGeburtsjahr, Integer.toString(candidate.parteiId), "0", "0" });
 
 		parteiWriter.close();
 		kandidatWriter.close();
