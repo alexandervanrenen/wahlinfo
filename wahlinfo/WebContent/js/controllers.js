@@ -19,13 +19,36 @@ function BundestagCtrl($scope, Sitzverteilung, Bundestagmitglieder, Ueberhangman
     	}, {});
 }
 
-function WahlergebnisseCtrl($scope, Wahlkreisuebersicht) {
+function WahlergebnisseCtrl($scope, Wahlkreisuebersicht, Wahlkreissieger) {
 	$scope.getWahlkreisResults = function () {
-		Wahlkreisuebersicht.get({wahlkreisid:$scope.wahlkreisid},
+		Wahlkreisuebersicht.get({ wahlkreisid: $scope.wahlkreisid },
 			    function (data) {
-	        		$scope.parteiergebnisse = data.parteiergebnisse;
+	        		$scope.wahlkreisuebersicht = data;
+	    	}, {});
+    };
+    
+    Wahlkreissieger.get({},
+		    function (data) {
+        		$scope.wahlkreissieger = data.wahlkreisSieger;
+    	}, {});
+}
+
+function WahlmodulCtrl($scope, Stimmzettel, Stimmabgabe) {
+	$scope.getStimmzettel = function () {
+		Stimmzettel.get({ wahlkreisid: $scope.wahlkreisid },
+			    function (data) {
+	        		$scope.stimmzettel = data;
+	    	}, {});
+    };
+    
+    $scope.submitStimme = function () {
+    	Stimmabgabe.get({ wahlkreisid: $scope.wahlkreisid, kandidatid: $scope.kandidatid, parteiid: $scope.parteiid },
+			    function (data) {
+    				if (data.erfolg == 'true') {
+    					alert('Die Stimmabgabe war erfolgreich!');
+    				} else {
+    					alert(data.fehler);
+    				}
 	    	}, {});
     };
 }
-
-function VorjahresvergleichCtrl() {}

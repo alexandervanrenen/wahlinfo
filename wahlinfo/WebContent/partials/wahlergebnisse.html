@@ -1,7 +1,36 @@
 <h2>Wahlkreisuebersicht</h2>
-<p>Wahlkreis-ID hier eingeben: <input ng-model="wahlkreisid" />
-<button ng:click="getWahlkreisResults()">Ergebnisse abrufen</button></p>
-<table>
+
+<form class="form-search">
+  <input type="text" class="input-small" placeholder="Wahlkreis-ID" ng-model="wahlkreisid">
+  <button type="submit" class="btn" ng:click="getWahlkreisResults()">Ergebnisse abrufen</button>
+</form>
+
+<h3>Wahlbeteiligung</h3>
+<table class="table table-bordered">
+  <tr>
+    <th>Wahlbeteiligung</th>
+    <th>Wahlbeteiligung Vorjahr</th>
+  </tr>
+  <tr>
+    <td>{{wahlkreisuebersicht.wahlBeteiligung}}</td>
+    <td>{{wahlkreisuebersicht.wahlBeteiligungVorjahr}}</td>
+  </tr>
+</table>
+
+<h3>Gewaehlter Direktkandidat</h3>
+<table class="table table-bordered">
+  <tr>
+    <th>Vorname</th>
+    <th>Name</th>
+  </tr>
+  <tr>
+    <td>{{wahlkreisuebersicht.kandidatenVorname}}</td>
+    <td>{{wahlkreisuebersicht.kandidatenName}}</td>
+  </tr>
+</table>
+
+<h3>Parteiergebnisse</h3>
+<table class="table table-bordered">
   <tr>
     <th>Partei</th>
     <th>StimmenAnteil</th>
@@ -9,11 +38,25 @@
     <th>StimmenAnzahl</th>
     <th>StimmenAnzahlVorjahr</th>
   </tr>
-  <tr ng-repeat="ergebnis in parteiergebnisse">
+  <tr ng-repeat="ergebnis in wahlkreisuebersicht.parteiergebnisse">
     <td>{{ergebnis.partei}}</td>
     <td>{{ergebnis.stimmenAnteil}}</td>
     <td>{{ergebnis.stimmenAnteilVorjahr}}</td>
     <td>{{ergebnis.stimmenAnzahl}}</td>
     <td>{{ergebnis.stimmenAnzahlVorjahr}}</td>
+  </tr>
+</table>
+
+<h2>Wahlkreissieger</h2>
+<table class="table table-bordered">
+  <tr>
+    <th>Wahlkreis</th>
+    <th>Siegerpartei nach Erststimme</th>
+    <th>Siegerpartei nach Zweitstimme</th>
+  </tr>
+  <tr ng-repeat="wahlkreis in wahlkreissieger">
+    <td>{{wahlkreis.wahlkreisname}}</td>
+    <td>{{wahlkreis.siegerparteierststimme}}</td>
+    <td>{{wahlkreis.siegerparteizweitstimme}}</td>
   </tr>
 </table>

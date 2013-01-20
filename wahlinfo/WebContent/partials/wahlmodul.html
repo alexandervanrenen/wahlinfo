@@ -1,0 +1,46 @@
+<h2>Wahlmodul</h2>
+
+<form class="form-search">
+  <input type="text" class="input-small" placeholder="Wahlkreis-ID" ng-model="wahlkreisid">
+  <button type="submit" class="btn" ng:click="getStimmzettel()">Stimmzettel abrufen</button>
+</form>
+
+<h3>Stimmzettel</h3>
+
+<h4>Kandidaten</h4>
+<table class="table table-bordered">
+  <tr>
+    <th>Vorname</th>
+    <th>Name</th>
+    <th>Partei</th>
+  </tr>
+  <tr ng-repeat="kandidat in stimmzettel.kandidatenList">
+    <td>{{kandidat.name}}</td>
+    <td>{{kandidat.vorname}}</td>
+    <td>{{kandidat.kurzbezeichnung}}</td>
+  </tr>
+</table>
+
+<h4>Parteien</h4>
+<table class="table table-bordered">
+  <tr>
+    <th>Partei</th>
+    <th>Bezeichnung</th>
+  </tr>
+  <tr ng-repeat="partei in stimmzettel.parteienList">
+    <td>{{partei.kurzbezeichnung}}</td>
+    <td>{{partei.name}}</td>
+  </tr>
+</table>
+
+<h3>Stimmabgabe</h3>
+<form>
+  <fieldset>
+    <input type="text" class="input-small" placeholder="Kandidat-ID" ng-model="kandidatid">
+    <input type="text" class="input-small" placeholder="Partei-ID" ng-model="parteiid">
+    <label class="checkbox">
+      <input type="checkbox"> Ich bin damit einverstanden, dass meine Daten zu Zwecken der Wahlbeobachtung gespeichert werden.
+    </label>
+    <button type="submit" class="btn" ng:click="submitStimme()">Stimme abgeben</button>
+  </fieldset>
+</form>

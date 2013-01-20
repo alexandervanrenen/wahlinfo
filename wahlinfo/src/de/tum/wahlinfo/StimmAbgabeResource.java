@@ -12,7 +12,7 @@ public class StimmAbgabeResource {
 	StimmAbgabeDAO dao = new StimmAbgabeDAO();
 
 	@GET
-	@Path("{wahlkreisid},{kandidatid},{parteiid}")
+	@Path("{wahlkreisid}/{kandidatid}/{parteiid}")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public StimmAbgabe addVote(@PathParam("wahlkreisid") String wahlkreisid, @PathParam("kandidatid") String kandidatid, @PathParam("parteiid") String parteiid) {
 		System.out.println("StimmAbgabeResource::addVote(): wahlkreisid: " + wahlkreisid + "kandidatid: " + kandidatid + "parteiid: " + parteiid);

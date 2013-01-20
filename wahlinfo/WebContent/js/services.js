@@ -16,5 +16,14 @@ angular.module('wahlinfoServices', ['ngResource']).
 //	  return $resource('http://localhost\\:8080/wahlinfo/rest/ueberhangmandate', {}, {});
   }).
   factory('Wahlkreisuebersicht', function($resource){
-	  return $resource('http://localhost\\:8080/wahlinfo/rest/germany/all/:wahlkreisid', {}, {});
+	  return $resource('http://localhost\\:8080/wahlinfo/rest/wahlkreisuebersicht/:wahlkreisid', {}, {});
+  }).
+  factory('Wahlkreissieger', function($resource){
+	  return $resource('http://localhost\\:8080/wahlinfo/rest/wahlkreissieger', {}, {});
+  }).
+  factory('Stimmzettel', function($resource){
+	  return $resource('http://localhost\\:8080/wahlinfo/rest/stimmzettel/:wahlkreisid', {}, {});
+  }).
+  factory('Stimmabgabe', function($resource){
+	  return $resource('http://localhost\\:8080/wahlinfo/rest/stimmabgabe/:wahlkreisid/:kandidatid/:parteiid', {}, {});
   });
