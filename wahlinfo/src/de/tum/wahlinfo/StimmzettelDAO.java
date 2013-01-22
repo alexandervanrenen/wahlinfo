@@ -31,6 +31,7 @@ public class StimmzettelDAO {
 			List<Partei> list = new ArrayList<Partei>();
 			while (rs.next()) {
 				Partei partei = new Partei();
+				partei.setId(rs.getInt("partei_id"));
 				partei.setName(rs.getString("name"));
 				partei.setKurzbezeichnung(rs.getString("kurzbezeichnung"));
 				partei.setFarbe(rs.getString("farbe"));
@@ -55,6 +56,7 @@ public class StimmzettelDAO {
 			List<Kandidat> list = new ArrayList<Kandidat>();
 			while (rs.next()) {
 				Kandidat kandidat = new Kandidat();
+				kandidat.setId(rs.getInt("kandidat_id"));
 				kandidat.setName(rs.getString("name"));
 				kandidat.setVorname(rs.getString("vorname"));
 				kandidat.setPartei(rs.getString("partei"));

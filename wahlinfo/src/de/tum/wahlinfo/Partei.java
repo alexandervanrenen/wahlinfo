@@ -2,10 +2,19 @@ package de.tum.wahlinfo;
 
 public class Partei {
 
+	private int id;
 	private String name;
 	private String kurzbezeichnung;
 	private String farbe;
 	private int anzahl;
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 
 	public int getAnzahl() {
 		return anzahl;

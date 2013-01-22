@@ -2,10 +2,19 @@ package de.tum.wahlinfo;
 
 public class Kandidat {
 
+	private int id;
 	private String name;
 	private String vorname;
 	private String kurzbezeichnung;
 	private String partei;
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 	
 	public String getName() {
 		return name;
