@@ -37,19 +37,19 @@ public class SitzverteilungDAO {
 		} finally {
 			ConnectionHelper.close(c);
 		}
-		
+
 		// Unite CDU and CSU .. stupid politics screwing up my code :(
 		Sitzverteilung firstOfThem = null;
 		for (Sitzverteilung iter : list) {
-			if(iter.getPartei().getKurzbezeichnung().contentEquals("CDU") || iter.getPartei().getKurzbezeichnung().contentEquals("CSU")) {
-				if(firstOfThem == null) {
+			if (iter.getPartei().getKurzbezeichnung().contentEquals("CDU") || iter.getPartei().getKurzbezeichnung().contentEquals("CSU")) {
+				if (firstOfThem == null) {
 					// Found the first: Remember the first of the two parties
 					firstOfThem = iter;
 					firstOfThem.getPartei().setKurzbezeichnung("CDU/CSU");
 					firstOfThem.getPartei().setName("Die Union");
 					continue;
 				} else {
-					// Found the second: Add value to the first and remove 
+					// Found the second: Add value to the first and remove
 					firstOfThem.setSitze(firstOfThem.getSitze() + iter.getSitze());
 					list.remove(iter);
 					break;

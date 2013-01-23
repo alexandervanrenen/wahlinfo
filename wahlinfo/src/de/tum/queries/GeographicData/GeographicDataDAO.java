@@ -13,7 +13,7 @@ import de.tum.sql.ConnectionHelper;
 import de.tum.sql.SqlStatements;
 import de.tum.sql.SqlStatements.Query;
 
-public class StaticDataDAO {
+public class GeographicDataDAO {
 
 	public Deutschland getDeutschland() {
 		Deutschland deutschland = new Deutschland();

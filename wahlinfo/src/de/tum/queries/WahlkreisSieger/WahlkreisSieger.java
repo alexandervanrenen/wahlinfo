@@ -36,4 +36,3 @@ public class WahlkreisSieger {
 		this.siegerParteiZweitstimme = siegerparteizweitstimme;
 	}
 }
-

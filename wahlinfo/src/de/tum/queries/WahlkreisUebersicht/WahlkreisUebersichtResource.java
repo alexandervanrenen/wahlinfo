@@ -8,10 +8,11 @@ import javax.ws.rs.core.MediaType;
 
 @Path("/wahlkreisuebersicht")
 public class WahlkreisUebersichtResource {
-	
+
 	WahlkreisUebersichtDAO dao = new WahlkreisUebersichtDAO();
-	
-	@GET @Path("{id}")
+
+	@GET
+	@Path("{id}")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public WahlkreisUebersicht findById(@PathParam("id") String id) {
 		System.out.println("WahlkreisUebersichtResource::findById(): " + id);

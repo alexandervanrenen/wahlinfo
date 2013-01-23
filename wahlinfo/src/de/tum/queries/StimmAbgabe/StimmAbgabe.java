@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class StimmAbgabe {
 
 	private boolean erfolg;
-	
+
 	public boolean isErfolg() {
 		return erfolg;
 	}

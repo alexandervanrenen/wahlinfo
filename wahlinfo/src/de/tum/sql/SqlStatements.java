@@ -9,26 +9,37 @@ public class SqlStatements {
 	private static String sqlDir = "../wahlinfo/sql/";
 
 	public enum Query {
-		FindAllBundeslaender, Sitzverteilung, BundestagMitglieder, WahlkreisUebersicht1, WahlkreisUebersicht2, WahlkreisUebersicht3, WahlkreisSieger, Ueberhangmandate, Stimmabgabe_Check, Stimmabgabe_Insert, CalculateDeutschland, FindAllWahlkreise, FindAllWahlkreiseOfBundesland, FindWahlkreisById, FindWahlkreisByName, FindBundeslandByName, FindBundeslandById, StimmzettelParteien, KnappsteSieger}
+		FindAllBundeslaender, Sitzverteilung, BundestagMitglieder, WahlkreisUebersicht1, WahlkreisUebersicht2, WahlkreisUebersicht3, WahlkreisSieger, Ueberhangmandate, Stimmabgabe_Check, Stimmabgabe_Insert, CalculateDeutschland, FindAllWahlkreise, FindAllWahlkreiseOfBundesland, FindWahlkreisById, FindWahlkreisByName, FindBundeslandByName, FindBundeslandById, StimmzettelParteien, KnappsteSieger, FindAllKandidaten, FindKandidatById, FindKandidatByName
+	}
 
 	public static String getQuery(Query type) throws IOException {
 		switch (type) {
-		case FindAllBundeslaender:
-			return readFileAsString(sqlDir + "q0_helper_withs.sql") + " " + readFileAsString(sqlDir + "static_data_find_bundeslaender_all.sql");
-		case FindBundeslandById:
-			return readFileAsString(sqlDir + "q0_helper_withs.sql") + " " + readFileAsString(sqlDir + "static_data_find_bundesland_by_id.sql");
-		case FindBundeslandByName:
-			return readFileAsString(sqlDir + "q0_helper_withs.sql") + " " + readFileAsString(sqlDir + "static_data_find_bundesland_by_name.sql");
 		case CalculateDeutschland:
-			return readFileAsString(sqlDir + "q0_helper_withs.sql") + " " + readFileAsString(sqlDir + "static_data_calculate_deutschland.sql");
+			return readFileAsString(sqlDir + "static_data_calculate_deutschland.sql");
+			// Bundesländer
+		case FindAllBundeslaender:
+			return readFileAsString(sqlDir + "static_data_find_bundeslaender_all.sql");
+		case FindBundeslandById:
+			return readFileAsString(sqlDir + "static_data_find_bundesland_by_id.sql");
+		case FindBundeslandByName:
+			return readFileAsString(sqlDir + "static_data_find_bundesland_by_name.sql");
+			// Wahlkreise
 		case FindAllWahlkreise:
-			return readFileAsString(sqlDir + "q0_helper_withs.sql") + " " + readFileAsString(sqlDir + "static_data_find_wahlkreise_all.sql");
+			return readFileAsString(sqlDir + "static_data_find_wahlkreise_all.sql");
 		case FindAllWahlkreiseOfBundesland:
-			return readFileAsString(sqlDir + "q0_helper_withs.sql") + " " + readFileAsString(sqlDir + "static_data_find_wahlkreise_all_of_bundesland.sql");
+			return readFileAsString(sqlDir + "static_data_find_wahlkreise_all_of_bundesland.sql");
 		case FindWahlkreisById:
-			return readFileAsString(sqlDir + "q0_helper_withs.sql") + " " + readFileAsString(sqlDir + "static_data_find_wahlkreis_by_id.sql");
+			return readFileAsString(sqlDir + "static_data_find_wahlkreis_by_id.sql");
 		case FindWahlkreisByName:
-			return readFileAsString(sqlDir + "q0_helper_withs.sql") + " " + readFileAsString(sqlDir + "static_data_find_wahlkreis_by_name.sql");
+			return readFileAsString(sqlDir + "static_data_find_wahlkreis_by_name.sql");
+			// Kandidaten
+		case FindAllKandidaten:
+			return readFileAsString(sqlDir + "static_data_find_kandidat_all.sql");
+		case FindKandidatById:
+			return readFileAsString(sqlDir + "static_data_find_kandidat_by_id.sql");
+		case FindKandidatByName:
+			return readFileAsString(sqlDir + "static_data_find_kandidat_by_name.sql");
+			// Blatt 7
 		case Sitzverteilung:
 			return readFileAsString(sqlDir + "q0_helper_withs.sql") + " " + readFileAsString(sqlDir + "q1_sitzverteilung.sql");
 		case BundestagMitglieder:
@@ -43,14 +54,15 @@ public class SqlStatements {
 			return readFileAsString(sqlDir + "q0_helper_withs.sql") + " " + readFileAsString(sqlDir + "q4_wahlkreis_sieger.sql");
 		case Ueberhangmandate:
 			return readFileAsString(sqlDir + "q0_helper_withs.sql") + " " + readFileAsString(sqlDir + "q5_ueberhangmandate.sql");
+		case KnappsteSieger:
+			return readFileAsString(sqlDir + "q0_helper_withs.sql") + " " + readFileAsString(sqlDir + "q6_knappste_sieger.sql");
+			// Blatt 9 oder so .. ;)
 		case Stimmabgabe_Check:
 			return readFileAsString(sqlDir + "q0_helper_withs.sql") + " " + readFileAsString(sqlDir + "qx1_stimmabgabe_check.sql");
 		case Stimmabgabe_Insert:
 			return readFileAsString(sqlDir + "qx1_stimmabgabe_insert.sql");
 		case StimmzettelParteien:
 			return readFileAsString(sqlDir + "qx2_stimmzettel_parteien.sql");
-		case KnappsteSieger:
-			return readFileAsString(sqlDir + "q0_helper_withs.sql") + " " + readFileAsString(sqlDir + "q6_knappste_sieger.sql");
 		default:
 			throw new RuntimeException("not impl");
 		}

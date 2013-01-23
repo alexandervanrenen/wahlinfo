@@ -33,9 +33,8 @@ public class ConnectionHelper {
 				System.out.println("cna not find fucking driver");
 				e.printStackTrace();
 			}
-			
-			return DriverManager.getConnection(instance.url, instance.user,
-					instance.password);
+
+			return DriverManager.getConnection(instance.url, instance.user, instance.password);
 		} catch (SQLException e) {
 			throw e;
 		}

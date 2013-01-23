@@ -35,7 +35,7 @@ public class KnappsteSiegerDAO {
 				entry.setStimmenVorsprung(rs.getInt("stimmenvorsprung"));
 				entry.setPlatzierung(rs.getInt("platzierung"));
 				boolean isWinner = rs.getBoolean("istGewinner");
-				if(isWinner)
+				if (isWinner)
 					result.getGewinner().add(entry);
 				else
 					result.getVerlierer().add(entry);
@@ -47,7 +47,7 @@ public class KnappsteSiegerDAO {
 		} finally {
 			ConnectionHelper.close(c);
 		}
-		
+
 		return result;
 	}
 }

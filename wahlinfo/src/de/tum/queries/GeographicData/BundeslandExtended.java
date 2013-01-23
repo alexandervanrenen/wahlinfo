@@ -6,7 +6,7 @@ import de.tum.domain.Bundesland;
 
 @XmlRootElement(name = "bundesland")
 public class BundeslandExtended extends Bundesland {
-	
+
 	private int wahlberechtigte;
 	private int wahlberechtigte2005;
 	private int waehler;
@@ -42,5 +42,5 @@ public class BundeslandExtended extends Bundesland {
 
 	public void setWaehler2005(int waehler2005) {
 		this.waehler2005 = waehler2005;
-	}	
+	}
 }

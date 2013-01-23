@@ -4,7 +4,7 @@ import de.tum.domain.Kandidat;
 import de.tum.domain.Partei;
 
 public class StimmzettelEntry {
-	
+
 	private Partei partei;
 	private Kandidat kandidat;
 

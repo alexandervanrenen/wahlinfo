@@ -8,12 +8,10 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-
-
 @Path("/germany")
-public class StaticDataResource {
+public class GeographicDataResource {
 
-	StaticDataDAO dao = new StaticDataDAO();
+	GeographicDataDAO dao = new GeographicDataDAO();
 
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })

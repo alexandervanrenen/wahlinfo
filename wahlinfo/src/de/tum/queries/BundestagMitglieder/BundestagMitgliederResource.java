@@ -9,9 +9,9 @@ import javax.ws.rs.core.MediaType;
 
 @Path("/bundestagmitglieder")
 public class BundestagMitgliederResource {
-	
+
 	BundestagMitgliederDAO dao = new BundestagMitgliederDAO();
-	
+
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
 	public List<BundestagMitglied> findAll() {

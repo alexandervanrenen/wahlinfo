@@ -31,9 +31,9 @@ public class StimmAbgabeDAO {
 		try {
 			c = ConnectionHelper.getConnection();
 			String sql = SqlStatements.getQuery(Query.Stimmabgabe_Check);
-            PreparedStatement ps = c.prepareStatement(sql);
-            ps.setInt(1, wahlkreisid);
-            ps.setInt(2, kandidatid);
+			PreparedStatement ps = c.prepareStatement(sql);
+			ps.setInt(1, wahlkreisid);
+			ps.setInt(2, kandidatid);
 			ResultSet rs = ps.executeQuery();
 			if (!rs.next()) {
 				result.setErfolg(false);
@@ -47,10 +47,10 @@ public class StimmAbgabeDAO {
 		// Insert the new vote
 		try {
 			String sql = SqlStatements.getQuery(Query.Stimmabgabe_Insert);
-            PreparedStatement ps = c.prepareStatement(sql);
-            ps.setInt(1, kandidatid);
-            ps.setInt(2, parteiid);
-            ps.setInt(3, wahlkreisid);
+			PreparedStatement ps = c.prepareStatement(sql);
+			ps.setInt(1, kandidatid);
+			ps.setInt(2, parteiid);
+			ps.setInt(3, wahlkreisid);
 			ps.executeUpdate();
 		} catch (SQLException | IOException e) {
 			throw new RuntimeException(e);

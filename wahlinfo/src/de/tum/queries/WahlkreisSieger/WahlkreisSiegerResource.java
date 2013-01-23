@@ -9,7 +9,7 @@ import javax.ws.rs.core.MediaType;
 
 @Path("/wahlkreissieger")
 public class WahlkreisSiegerResource {
-	
+
 	WahlkreissiegerDAO dao = new WahlkreissiegerDAO();
 
 	@GET
