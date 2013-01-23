@@ -8,6 +8,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.tum.domain.Kandidat;
+import de.tum.domain.Partei;
+import de.tum.domain.Wahlkreis;
 import de.tum.sql.ConnectionHelper;
 import de.tum.sql.SqlStatements;
 import de.tum.sql.SqlStatements.Query;
@@ -23,7 +26,11 @@ public class BundestagMitgliederDAO {
 			Statement s = c.createStatement();
 			ResultSet rs = s.executeQuery(sql);
 			while (rs.next()) {
-				list.add(processRow(rs));
+				BundestagMitglied bundestagMitglied = new BundestagMitglied();
+				bundestagMitglied.setPartei(new Partei().readFromResultSet(rs));
+				bundestagMitglied.setKandidat(new Kandidat().readFromResultSet(rs));
+				bundestagMitglied.setWahlkreis(new Wahlkreis().readFromResultSet(rs));
+				list.add(bundestagMitglied);
 			}
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
@@ -33,14 +40,5 @@ public class BundestagMitgliederDAO {
 			ConnectionHelper.close(c);
 		}
 		return list;
-	}
-
-	protected BundestagMitglied processRow(ResultSet rs) throws SQLException {
-		BundestagMitglied bundesland = new BundestagMitglied();
-		bundesland.setVorname(rs.getString("vorname"));
-		bundesland.setName(rs.getString("name"));
-		bundesland.setPartei(rs.getString("partei"));
-		bundesland.setWahlkreis(rs.getString("wahlkreis"));
-		return bundesland;
 	}
 }

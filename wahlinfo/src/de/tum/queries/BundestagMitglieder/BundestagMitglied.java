@@ -2,36 +2,38 @@ package de.tum.queries.BundestagMitglieder;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import de.tum.domain.Kandidat;
+import de.tum.domain.Partei;
+import de.tum.domain.Wahlkreis;
+
 @XmlRootElement
 public class BundestagMitglied {
-	
-	private String vorname;
-	private String name;
-	private String partei;
-	private String wahlkreis;
 
-	public String getVorname() {
-		return vorname;
-	}
-	public void setVorname(String vorname) {
-		this.vorname = vorname;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public String getPartei() {
+	private Partei partei;
+	private Kandidat kandidat;
+	private Wahlkreis wahlkreis;
+
+	public Partei getPartei() {
 		return partei;
 	}
-	public void setPartei(String partei) {
+
+	public void setPartei(Partei partei) {
 		this.partei = partei;
 	}
-	public String getWahlkreis() {
+
+	public Kandidat getKandidat() {
+		return kandidat;
+	}
+
+	public void setKandidat(Kandidat kandidat) {
+		this.kandidat = kandidat;
+	}
+
+	public Wahlkreis getWahlkreis() {
 		return wahlkreis;
 	}
-	public void setWahlkreis(String wahlkreis) {
+
+	public void setWahlkreis(Wahlkreis wahlkreis) {
 		this.wahlkreis = wahlkreis;
 	}
 }
