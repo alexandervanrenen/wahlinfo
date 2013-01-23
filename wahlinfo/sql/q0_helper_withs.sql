@@ -42,7 +42,7 @@ with StimmenCountKandidatSimple as (
 
 -- Berechne die gewinner in jedem wahlkreis
 , Direktmandate as ( -- RFI fuck monetdb ..
-         select d.kandidat_id, d.partei_id, d.wahlkreis_id
+         select d.kandidat_id, d.partei_id, d.wahlkreis_id, d.stimmenAnzahl
          from StimmenCountKandidat d
          where not exists ( select * from StimmenCountKandidat d2
                            where d2.stimmenAnzahl > d.stimmenAnzahl
