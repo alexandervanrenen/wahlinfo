@@ -9,7 +9,7 @@ public class SqlStatements {
 	private static String sqlDir = "../wahlinfo/sql/";
 
 	public enum Query {
-		FindAllBundeslaender, Sitzverteilung, BundestagMitglieder, WahlkreisUebersicht1, WahlkreisUebersicht2, WahlkreisUebersicht3, WahlkreisSieger, Ueberhangmandate, Stimmabgabe_Check, Stimmabgabe_Insert, CalculateDeutschland, FindAllWahlkreise, FindAllWahlkreiseOfBundesland, FindWahlkreisById, FindWahlkreisByName, FindBundeslandByName, FindBundeslandById, StimmzettelParteien, KnappsteSieger, FindAllKandidaten, FindKandidatById, FindKandidatByName
+		FindAllBundeslaender, Sitzverteilung, BundestagMitglieder, WahlkreisUebersicht1, WahlkreisUebersicht2, WahlkreisUebersicht3, WahlkreisSieger, Ueberhangmandate, Stimmabgabe_Check, Stimmabgabe_Insert, CalculateDeutschland, FindAllWahlkreise, FindAllWahlkreiseOfBundesland, FindWahlkreisById, FindWahlkreisByName, FindBundeslandByName, FindBundeslandById, StimmzettelParteien, KnappsteSieger, FindAllKandidaten, FindKandidatById, FindKandidatByName, FindAllParteien, FindParteiById, FindParteiByName
 	}
 
 	public static String getQuery(Query type) throws IOException {
@@ -39,6 +39,13 @@ public class SqlStatements {
 			return readFileAsString(sqlDir + "static_data_find_kandidat_by_id.sql");
 		case FindKandidatByName:
 			return readFileAsString(sqlDir + "static_data_find_kandidat_by_name.sql");
+			// Parteien
+		case FindAllParteien:
+			return readFileAsString(sqlDir + "static_data_find_partei_all.sql");
+		case FindParteiById:
+			return readFileAsString(sqlDir + "static_data_find_partei_by_id.sql");
+		case FindParteiByName:
+			return readFileAsString(sqlDir + "static_data_find_partei_by_name.sql");
 			// Blatt 7
 		case Sitzverteilung:
 			return readFileAsString(sqlDir + "q0_helper_withs.sql") + " " + readFileAsString(sqlDir + "q1_sitzverteilung.sql");
