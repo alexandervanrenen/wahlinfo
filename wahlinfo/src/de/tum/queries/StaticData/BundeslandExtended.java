@@ -2,11 +2,11 @@ package de.tum.queries.StaticData;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import de.tum.domain.Bundesland;
+
 @XmlRootElement
-public class Bundesland {
+public class BundeslandExtended extends Bundesland {
 	
-	private int id;
-	private String name;
 	private int wahlberechtigte;
 	private int wahlberechtigte2005;
 	private int waehler;
@@ -42,22 +42,5 @@ public class Bundesland {
 
 	public void setWaehler2005(int waehler2005) {
 		this.waehler2005 = waehler2005;
-	}
-	
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-	
-	public String getName() {
-		return name;
-	}
-	
-	public void setName(String name) {
-		this.name = name;
-	}
-	
+	}	
 }

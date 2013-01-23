@@ -5,7 +5,9 @@
    on p.partei_id = a.partei_id and p.bundesland_id = a.bundesland_id
 )
 
-select p.name as partei, b.name as bundesland, u.ueberhangMandate as ueberhangmandate
+select	p.id as partei_id, p.name as partei_name, p.farbe as partei_farbe, p.kurzbezeichnung as partei_kurzbezeichnung,
+		b.id as bundesland_id, b.name as bundesland_name,
+		u.ueberhangMandate as ueberhangmandate
 from ueberhangMandate u, Partei p, Bundesland b
 where u.partei_id = p.id
   and u.bundesland_id = b.id;

@@ -9,6 +9,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 
+
 @Path("/germany")
 public class StaticDataResource {
 
@@ -24,7 +25,7 @@ public class StaticDataResource {
 	@GET
 	@Path("all")
 	@Produces({ MediaType.APPLICATION_JSON })
-	public List<Bundesland> findAllBundeslaender() {
+	public List<BundeslandExtended> findAllBundeslaender() {
 		System.out.println("StaticDataResource::findAllBundeslaender()");
 		return dao.findAllBundeslaender();
 	}
@@ -32,7 +33,7 @@ public class StaticDataResource {
 	@GET
 	@Path("{id}")
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Bundesland findBundeslandById(@PathParam("id") String id) {
+	public BundeslandExtended findBundeslandById(@PathParam("id") String id) {
 		System.out.println("StaticDataResource::findBundeslandById: " + id);
 		return dao.findBundeslandById(Integer.parseInt(id));
 	}
@@ -40,7 +41,7 @@ public class StaticDataResource {
 	@GET
 	@Path("search/{bundeslandName}")
 	@Produces({ MediaType.APPLICATION_JSON })
-	public List<Bundesland> findBundeslandByName(@PathParam("bundeslandName") String bundeslandName) {
+	public List<BundeslandExtended> findBundeslandByName(@PathParam("bundeslandName") String bundeslandName) {
 		System.out.println("StaticDataResource::findBundeslandByName: " + bundeslandName);
 		return dao.findBundeslandByName(bundeslandName);
 	}

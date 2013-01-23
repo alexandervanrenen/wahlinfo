@@ -37,8 +37,8 @@ public class StaticDataDAO {
 		return deutschland;
 	}
 
-	public List<Bundesland> findAllBundeslaender() {
-		List<Bundesland> list = new ArrayList<Bundesland>();
+	public List<BundeslandExtended> findAllBundeslaender() {
+		List<BundeslandExtended> list = new ArrayList<BundeslandExtended>();
 		Connection c = null;
 		try {
 			String sql = SqlStatements.getQuery(Query.FindAllBundeslaender);
@@ -56,8 +56,8 @@ public class StaticDataDAO {
 		return list;
 	}
 
-	public Bundesland findBundeslandById(int id) {
-		Bundesland bundesland = null;
+	public BundeslandExtended findBundeslandById(int id) {
+		BundeslandExtended bundesland = null;
 		Connection c = null;
 		try {
 			c = ConnectionHelper.getConnection();
@@ -76,8 +76,8 @@ public class StaticDataDAO {
 		return bundesland;
 	}
 
-	public List<Bundesland> findBundeslandByName(String name) {
-		List<Bundesland> list = new ArrayList<Bundesland>();
+	public List<BundeslandExtended> findBundeslandByName(String name) {
+		List<BundeslandExtended> list = new ArrayList<BundeslandExtended>();
 		Connection c = null;
 		try {
 			String sql = SqlStatements.getQuery(Query.FindBundeslandByName);
@@ -173,8 +173,8 @@ public class StaticDataDAO {
 		return list;
 	}
 
-	private Bundesland readBundesLand(ResultSet rs) throws SQLException {
-		Bundesland bundesland = new Bundesland();
+	private BundeslandExtended readBundesLand(ResultSet rs) throws SQLException {
+		BundeslandExtended bundesland = new BundeslandExtended();
 		bundesland.setId(rs.getInt("id"));
 		bundesland.setName(rs.getString("name"));
 		bundesland.setWahlberechtigte(rs.getInt("wahlberechtigte"));
