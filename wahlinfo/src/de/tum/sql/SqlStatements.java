@@ -14,7 +14,7 @@ public class SqlStatements {
 	public static String getQuery(Query type) throws IOException {
 		switch (type) {
 		case FindAllBundeslaender:
-			return readFileAsString(sqlDir + "q0_helper_withs.sql") + " " + readFileAsString(sqlDir + "static_data_find_all_bundeslaender.sql");
+			return readFileAsString(sqlDir + "q0_helper_withs.sql") + " " + readFileAsString(sqlDir + "static_data_find_bundeslaender_all.sql");
 		case FindBundeslandById:
 			return readFileAsString(sqlDir + "q0_helper_withs.sql") + " " + readFileAsString(sqlDir + "static_data_find_bundesland_by_id.sql");
 		case FindBundeslandByName:
@@ -22,9 +22,9 @@ public class SqlStatements {
 		case CalculateDeutschland:
 			return readFileAsString(sqlDir + "q0_helper_withs.sql") + " " + readFileAsString(sqlDir + "static_data_calculate_deutschland.sql");
 		case FindAllWahlkreise:
-			return readFileAsString(sqlDir + "q0_helper_withs.sql") + " " + readFileAsString(sqlDir + "static_data_find_all_wahlkreise.sql");
+			return readFileAsString(sqlDir + "q0_helper_withs.sql") + " " + readFileAsString(sqlDir + "static_data_find_wahlkreise_all.sql");
 		case FindAllWahlkreiseOfBundesland:
-			return readFileAsString(sqlDir + "q0_helper_withs.sql") + " " + readFileAsString(sqlDir + "static_data_find_all_wahlkreise_of_bundesland.sql");
+			return readFileAsString(sqlDir + "q0_helper_withs.sql") + " " + readFileAsString(sqlDir + "static_data_find_wahlkreise_all_of_bundesland.sql");
 		case FindWahlkreisById:
 			return readFileAsString(sqlDir + "q0_helper_withs.sql") + " " + readFileAsString(sqlDir + "static_data_find_wahlkreis_by_id.sql");
 		case FindWahlkreisByName:

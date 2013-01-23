@@ -1,26 +1,9 @@
-package de.tum.queries.StaticData;
+package de.tum.queries.GeographicData;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import de.tum.domain.Wahlkreis;
-
 @XmlRootElement
-public class WahlkreisExtended extends Wahlkreis {
-
-	private int bundeslandid;
-	private int wahlberechtigte;
-	private int wahlberechtigte2005;
-	private int waehler;
-	private int waehler2005;
-	private String bundesland_name;
-
-	public int getBundeslandid() {
-		return bundeslandid;
-	}
-
-	public void setBundeslandId(int bundeslandid) {
-		this.bundeslandid = bundeslandid;
-	}
+public class Deutschland {
 
 	public int getWahlberechtigte() {
 		return wahlberechtigte;
@@ -54,11 +37,11 @@ public class WahlkreisExtended extends Wahlkreis {
 		this.waehler2005 = waehler2005;
 	}
 
-	public String getBundeslandName() {
-		return bundesland_name;
-	}
+	private int wahlberechtigte;
 
-	public void setBundeslandName(String bundesland_name) {
-		this.bundesland_name = bundesland_name;
-	}
+	private int wahlberechtigte2005;
+
+	private int waehler;
+
+	private int waehler2005;
 }

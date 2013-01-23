@@ -1,4 +1,4 @@
-package de.tum.queries.StaticData;
+package de.tum.queries.GeographicData;
 
 import java.util.List;
 

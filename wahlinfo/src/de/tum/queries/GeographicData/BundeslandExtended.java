@@ -1,10 +1,10 @@
-package de.tum.queries.StaticData;
+package de.tum.queries.GeographicData;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 import de.tum.domain.Bundesland;
 
-@XmlRootElement
+@XmlRootElement(name = "bundesland")
 public class BundeslandExtended extends Bundesland {
 	
 	private int wahlberechtigte;
