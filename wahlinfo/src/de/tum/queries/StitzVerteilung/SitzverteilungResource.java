@@ -1,4 +1,4 @@
-package de.tum.queries.StimmVerteilung;
+package de.tum.queries.StitzVerteilung;
 
 import java.util.List;
 

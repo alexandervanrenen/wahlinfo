@@ -1,4 +1,4 @@
-package de.tum.queries.StimmVerteilung;
+package de.tum.queries.StitzVerteilung;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.tum.domain.Partei;
 import de.tum.sql.ConnectionHelper;
 import de.tum.sql.SqlStatements;
 import de.tum.sql.SqlStatements.Query;
@@ -25,10 +26,8 @@ public class SitzverteilungDAO {
 			ResultSet rs = s.executeQuery(sql);
 			while (rs.next()) {
 				Sitzverteilung sitzverteilung = new Sitzverteilung();
-				sitzverteilung.setName(rs.getString("name"));
+				sitzverteilung.setPartei(new Partei().readFromResultSet(rs));
 				sitzverteilung.setSitze(rs.getInt("sitze"));
-				sitzverteilung.setFarbe(rs.getString("farbe"));
-				sitzverteilung.setKurzbezeichnung(rs.getString("kurzbezeichnung"));
 				list.add(sitzverteilung);
 			}
 		} catch (SQLException e) {
@@ -42,12 +41,12 @@ public class SitzverteilungDAO {
 		// Unite CDU and CSU .. stupid politics screwing up my code :(
 		Sitzverteilung firstOfThem = null;
 		for (Sitzverteilung iter : list) {
-			if(iter.getKurzbezeichnung().contentEquals("CDU") || iter.getKurzbezeichnung().contentEquals("CSU")) {
+			if(iter.getPartei().getKurzbezeichnung().contentEquals("CDU") || iter.getPartei().getKurzbezeichnung().contentEquals("CSU")) {
 				if(firstOfThem == null) {
 					// Found the first: Remember the first of the two parties
 					firstOfThem = iter;
-					firstOfThem.setKurzbezeichnung("CDU/CSU");
-					firstOfThem.setName("Die Union");
+					firstOfThem.getPartei().setKurzbezeichnung("CDU/CSU");
+					firstOfThem.getPartei().setName("Die Union");
 					continue;
 				} else {
 					// Found the second: Add value to the first and remove 
