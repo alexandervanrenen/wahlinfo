@@ -6,6 +6,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import de.tum.domain.Kandidat;
+import de.tum.domain.Partei;
+import de.tum.domain.Wahlkreis;
 import de.tum.sql.ConnectionHelper;
 import de.tum.sql.SqlStatements;
 
@@ -17,17 +20,18 @@ public class WahlkreisUebersichtDAO {
         try {
         	c = ConnectionHelper.getConnection();
         	
-        	// first fill in the winner
+        	// first fill in the winner kandidat
         	{
 	    		String sql = SqlStatements.getQuery(SqlStatements.Query.WahlkreisUebersicht1);
 	            PreparedStatement ps = c.prepareStatement(sql);
 	            ps.setInt(1, id);
 	            ResultSet rs = ps.executeQuery();
 	            if (rs.next()) {
-	        		wahlkreisUebersicht.setKandidatenId(rs.getInt("kandidatenId"));
-	        		wahlkreisUebersicht.setKandidatenName(rs.getString("kandidatenName"));
-	        		wahlkreisUebersicht.setKandidatenVorname(rs.getString("kandidatenVorname"));
+	            	wahlkreisUebersicht.setGewinnerKandidat(new Kandidat().readFromResultSet(rs));
+	            	wahlkreisUebersicht.setGewinnerPartei(new Partei().readFromResultSet(rs));
 	            }
+	            else
+	            	throw new RuntimeException("wahlkreis ohne gewinner");
         	}
 
             // second fill in the election participation ration
@@ -41,7 +45,7 @@ public class WahlkreisUebersichtDAO {
 	        		wahlkreisUebersicht.setWahlBeteiligungVorjahr(rs.getFloat("wahlbeteiligungVorjahr"));
 	            }
         	}
-        	
+
         	// third fill in the results of each party in this wahlkreis
         	{
 	    		String sql = SqlStatements.getQuery(SqlStatements.Query.WahlkreisUebersicht3);
@@ -51,13 +55,25 @@ public class WahlkreisUebersichtDAO {
 	            ResultSet rs = ps.executeQuery();
 	            while (rs.next()) {
 	            	ParteiErgebnis parteiErgebnis = new ParteiErgebnis();
-	            	parteiErgebnis.setPartei(rs.getString("partei"));
+	            	parteiErgebnis.setPartei(new Partei().readFromResultSet(rs));
 	            	parteiErgebnis.setStimmenAnteil(rs.getFloat("anteilStimmen"));
 	            	parteiErgebnis.setStimmenAnteilVorjahr(rs.getFloat("anteilStimmenVorjahr"));
 	            	parteiErgebnis.setStimmenAnzahl(rs.getInt("anzahlStimmen"));
 	            	parteiErgebnis.setStimmenAnzahlVorjahr(rs.getInt("anzahlStimmenVorjahr"));
 	            	wahlkreisUebersicht.addParteiergebnis(parteiErgebnis);
 	            }
+        	}
+        	
+        	// fourth fill in wahlkreis details
+        	{
+        		String sql = SqlStatements.getQuery(SqlStatements.Query.FindWahlkreisById);
+	            PreparedStatement ps = c.prepareStatement(sql);
+	            ps.setInt(1, id);
+	            ResultSet rs = ps.executeQuery();
+	            if (rs.next())
+	            	wahlkreisUebersicht.setWahlkreis(new Wahlkreis().readFromResultSet(rs));
+	            else
+	            	throw new RuntimeException("unknown wahlkreis");
         	}
 		} catch (SQLException e) {
 			throw new RuntimeException(e);

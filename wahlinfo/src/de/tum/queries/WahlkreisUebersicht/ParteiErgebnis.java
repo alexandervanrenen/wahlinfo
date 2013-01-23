@@ -2,19 +2,21 @@ package de.tum.queries.WahlkreisUebersicht;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import de.tum.domain.Partei;
+
 @XmlRootElement
 public class ParteiErgebnis {
-	private String partei;
+	private Partei partei;
 	private float stimmenAnteil;
 	private float stimmenAnteilVorjahr;
 	private int stimmenAnzahl;
 	private int stimmenAnzahlVorjahr;
 
-	public String getPartei() {
+	public Partei getPartei() {
 		return partei;
 	}
 
-	public void setPartei(String partei) {
+	public void setPartei(Partei partei) {
 		this.partei = partei;
 	}
 

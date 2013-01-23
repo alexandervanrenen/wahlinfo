@@ -11,7 +11,6 @@ public class Kandidat {
 	private int id;
 	private String name;
 	private String vorname;
-	private int parteiId;
 
 	public int getId() {
 		return id;
@@ -37,19 +36,10 @@ public class Kandidat {
 		this.vorname = vorname;
 	}
 
-	public int getParteiId() {
-		return parteiId;
-	}
-
-	public void setParteiId(int parteiId) {
-		this.parteiId = parteiId;
-	}
-
 	public Kandidat readFromResultSet(ResultSet rs) throws SQLException {
 		id = rs.getInt("kandidat_id");
 		name = rs.getString("kandidat_name");
 		vorname = rs.getString("kandidat_vorname");
-		parteiId = rs.getInt("partei_id");
 		return this;
 	}
 }

@@ -5,14 +5,17 @@ import java.util.ArrayList;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import de.tum.domain.Kandidat;
+import de.tum.domain.Partei;
+import de.tum.domain.Wahlkreis;
 
 @XmlRootElement
 public class WahlkreisUebersicht {
 	private float wahlBeteiligung;
 	private float wahlBeteiligungVorjahr;
-	private int kandidatenId; // winner
-	private String kandidatenName;
-	private String kandidatenVorname;
+	private Kandidat gewinnerKandidat;
+	private Partei gewinnerPartei;
+	private Wahlkreis wahlkreis;
 
 	@XmlElement(name = "parteiergebnisse")
 	private ArrayList<ParteiErgebnis> parteiergebnisse = new ArrayList<ParteiErgebnis>();
@@ -33,28 +36,28 @@ public class WahlkreisUebersicht {
 		this.wahlBeteiligungVorjahr = wahlBeteiligungVorjahr;
 	}
 
-	public int getKandidatenId() {
-		return kandidatenId;
+	public Kandidat getGewinnerKandidat() {
+		return gewinnerKandidat;
 	}
 
-	public void setKandidatenId(int kandidatenId) {
-		this.kandidatenId = kandidatenId;
+	public void setGewinnerKandidat(Kandidat kandidat) {
+		this.gewinnerKandidat = kandidat;
 	}
 
-	public String getKandidatenName() {
-		return kandidatenName;
+	public Wahlkreis getWahlkreis() {
+		return wahlkreis;
 	}
 
-	public void setKandidatenName(String kandidatenName) {
-		this.kandidatenName = kandidatenName;
+	public void setWahlkreis(Wahlkreis wahlkreis) {
+		this.wahlkreis = wahlkreis;
 	}
 
-	public String getKandidatenVorname() {
-		return kandidatenVorname;
+	public Partei getGewinnerPartei() {
+		return gewinnerPartei;
 	}
 
-	public void setKandidatenVorname(String kandidatenVorname) {
-		this.kandidatenVorname = kandidatenVorname;
+	public void setGewinnerPartei(Partei gewinnerPartei) {
+		this.gewinnerPartei = gewinnerPartei;
 	}
 
 	public ArrayList<ParteiErgebnis> getParteiergebnisse() {
