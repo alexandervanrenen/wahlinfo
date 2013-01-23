@@ -8,6 +8,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.tum.domain.Partei;
+import de.tum.domain.Wahlkreis;
 import de.tum.sql.ConnectionHelper;
 import de.tum.sql.SqlStatements;
 import de.tum.sql.SqlStatements.Query;
@@ -24,9 +26,22 @@ public class WahlkreissiegerDAO {
 			ResultSet rs = s.executeQuery(sql);
 			while (rs.next()) {
 				WahlkreisSieger wahlkreisSieger = new WahlkreisSieger();
-				wahlkreisSieger.setWahlkreisname(rs.getString("wahlkreisname"));
-				wahlkreisSieger.setSiegerparteierststimme(rs.getString("siegerparteierststimme"));
-				wahlkreisSieger.setSiegerparteizweitstimme(rs.getString("siegerparteizweitstimme"));
+
+				Partei erststimme = new Partei();
+				erststimme.setId(rs.getInt("partei_id1"));
+				erststimme.setName(rs.getString("partei_name1"));
+				erststimme.setKurzbezeichnung(rs.getString("partei_kurzbezeichnung1"));
+				erststimme.setFarbe(rs.getString("partei_farbe1"));
+				wahlkreisSieger.setSiegerParteiErststimme(erststimme);
+
+				Partei zweitstimme = new Partei();
+				zweitstimme.setId(rs.getInt("partei_id1"));
+				zweitstimme.setName(rs.getString("partei_name1"));
+				zweitstimme.setKurzbezeichnung(rs.getString("partei_kurzbezeichnung1"));
+				zweitstimme.setFarbe(rs.getString("partei_farbe1"));
+				wahlkreisSieger.setSiegerParteiZweitstimme(zweitstimme);
+
+				wahlkreisSieger.setWahlkreis(new Wahlkreis().readFromResultSet(rs));
 				list.add(wahlkreisSieger);
 			}
 		} catch (SQLException e) {

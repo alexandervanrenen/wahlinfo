@@ -19,7 +19,9 @@
      and z.anzahl = m.maxAnzahl
 )
 
-select p1.name as siegerparteierststimme, p2.name as siegerparteizweitstimme, w.name as wahlkreisname
+select 	p1.id as partei_id1, p1.name as partei_name1, p1.kurzbezeichnung as partei_kurzbezeichnung1, p1.farbe as partei_farbe1,
+		p2.id as partei_id2, p2.name as partei_name2, p2.kurzbezeichnung as partei_kurzbezeichnung2, p2.farbe as partei_farbe2,
+		w.id as wahlkreis_id, w.name as wahlkreis_name
 from Wahlkreis w, Direktmandate d, Partei p1, gewinnerInJedemWahlkreis g, Partei p2
 where w.id = d.wahlkreis_id
   and w.id = g.wahlkreis_id

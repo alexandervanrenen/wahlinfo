@@ -2,34 +2,38 @@ package de.tum.queries.WahlkreisSieger;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import de.tum.domain.Partei;
+import de.tum.domain.Wahlkreis;
+
 @XmlRootElement
 public class WahlkreisSieger {
 
-	private String wahlkreisname;
-	private String siegerparteierststimme;
-	private String siegerparteizweitstimme;
+	private Wahlkreis wahlkreis;
+	private Partei siegerParteiErststimme;
+	private Partei siegerParteiZweitstimme;
 
-	public String getWahlkreisname() {
-		return wahlkreisname;
+	public Wahlkreis getWahlkreis() {
+		return wahlkreis;
 	}
 
-	public void setWahlkreisname(String wahlkreisname) {
-		this.wahlkreisname = wahlkreisname;
+	public void setWahlkreis(Wahlkreis wahlkreis) {
+		this.wahlkreis = wahlkreis;
 	}
 
-	public String getSiegerparteierststimme() {
-		return siegerparteierststimme;
+	public Partei getSiegerParteiErststimme() {
+		return siegerParteiErststimme;
 	}
 
-	public void setSiegerparteierststimme(String siegerparteierststimme) {
-		this.siegerparteierststimme = siegerparteierststimme;
+	public void setSiegerParteiErststimme(Partei siegerparteierststimme) {
+		this.siegerParteiErststimme = siegerparteierststimme;
 	}
 
-	public String getSiegerparteizweitstimme() {
-		return siegerparteizweitstimme;
+	public Partei getSiegerParteiZweitstimme() {
+		return siegerParteiZweitstimme;
 	}
 
-	public void setSiegerparteizweitstimme(String siegerparteizweitstimme) {
-		this.siegerparteizweitstimme = siegerparteizweitstimme;
+	public void setSiegerParteiZweitstimme(Partei siegerparteizweitstimme) {
+		this.siegerParteiZweitstimme = siegerparteizweitstimme;
 	}
 }
+
