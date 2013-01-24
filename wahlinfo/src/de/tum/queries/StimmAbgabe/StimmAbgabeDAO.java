@@ -15,42 +15,68 @@ public class StimmAbgabeDAO {
 	public StimmAbgabe addVote(String wahlkreisidStr, String kandidatidStr, String parteiidStr) {
 		// Parse input
 		StimmAbgabe result = new StimmAbgabe();
-		int wahlkreisid, kandidatid, parteiid;
+		int wahlkreisId, kandidatId, parteiId;
 		try {
-			wahlkreisid = Integer.parseInt(wahlkreisidStr);
-			kandidatid = Integer.parseInt(kandidatidStr);
-			parteiid = Integer.parseInt(parteiidStr);
+			wahlkreisId = Integer.parseInt(wahlkreisidStr);
+			kandidatId = Integer.parseInt(kandidatidStr);
+			parteiId = Integer.parseInt(parteiidStr);
 		} catch (NumberFormatException e) {
 			result.setErfolg(false);
 			result.setFehler("unable to parse input parameters");
 			return result;
 		}
 
-		// Check if the candidate is represented in the given wahlkreis
+		// Establish database connection
 		Connection c = null;
 		try {
 			c = ConnectionHelper.getConnection();
-			String sql = SqlStatements.getQuery(Query.Stimmabgabe_Check);
-			PreparedStatement ps = c.prepareStatement(sql);
-			ps.setInt(1, wahlkreisid);
-			ps.setInt(2, kandidatid);
-			ResultSet rs = ps.executeQuery();
-			if (!rs.next()) {
-				result.setErfolg(false);
-				result.setFehler("candidate is not represented in this wahlkreis");
-				return result;
+		} catch (SQLException e) {
+			new RuntimeException(e);
+		}
+
+		// Check if the candidate is represented in the given wahlkreis
+		if(kandidatId != 0) {
+			try {
+				String sql = SqlStatements.getQuery(Query.Stimmabgabe_Check_Candidate);
+				PreparedStatement ps = c.prepareStatement(sql);
+				ps.setInt(1, wahlkreisId);
+				ps.setInt(2, kandidatId);
+				ResultSet rs = ps.executeQuery();
+				if (!rs.next()) {
+					result.setErfolg(false);
+					result.setFehler("candidate is not represented in this wahlkreis");
+					return result;
+				}
+			} catch (SQLException | IOException e) {
+				throw new RuntimeException(e);
 			}
-		} catch (SQLException | IOException e) {
-			throw new RuntimeException(e);
+		}
+
+		// Check if party is represented in this wahlkreis
+		if (parteiId != 0) {
+			try {
+				String sql = SqlStatements.getQuery(Query.Stimmabgabe_Check_Party);
+				PreparedStatement ps = c.prepareStatement(sql);
+				ps.setInt(1, wahlkreisId);
+				ps.setInt(2, parteiId);
+				ResultSet rs = ps.executeQuery();
+				if (!rs.next()) {
+					result.setErfolg(false);
+					result.setFehler("party is not represented in this bundesland");
+					return result;
+				}
+			} catch (SQLException | IOException e) {
+				throw new RuntimeException(e);
+			}
 		}
 
 		// Insert the new vote
 		try {
 			String sql = SqlStatements.getQuery(Query.Stimmabgabe_Insert);
 			PreparedStatement ps = c.prepareStatement(sql);
-			ps.setInt(1, kandidatid);
-			ps.setInt(2, parteiid);
-			ps.setInt(3, wahlkreisid);
+			ps.setInt(1, kandidatId);
+			ps.setInt(2, parteiId);
+			ps.setInt(3, wahlkreisId);
 			ps.executeUpdate();
 		} catch (SQLException | IOException e) {
 			throw new RuntimeException(e);

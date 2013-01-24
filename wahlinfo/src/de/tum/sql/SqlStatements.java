@@ -9,7 +9,7 @@ public class SqlStatements {
 	private static String sqlDir = "../wahlinfo/sql/";
 
 	public enum Query {
-		FindAllBundeslaender, Sitzverteilung, BundestagMitglieder, WahlkreisUebersicht1, WahlkreisUebersicht2, WahlkreisUebersicht3, WahlkreisSieger, Ueberhangmandate, Stimmabgabe_Check, Stimmabgabe_Insert, CalculateDeutschland, FindAllWahlkreise, FindAllWahlkreiseOfBundesland, FindWahlkreisById, FindWahlkreisByName, FindBundeslandByName, FindBundeslandById, StimmzettelParteien, KnappsteSieger, FindAllKandidaten, FindKandidatById, FindKandidatByName, FindAllParteien, FindParteiById, FindParteiByName
+		FindAllBundeslaender, Sitzverteilung, BundestagMitglieder, WahlkreisUebersicht1, WahlkreisUebersicht2, WahlkreisUebersicht3, WahlkreisSieger, Ueberhangmandate, Stimmabgabe_Check_Candidate, Stimmabgabe_Insert, CalculateDeutschland, FindAllWahlkreise, FindAllWahlkreiseOfBundesland, FindWahlkreisById, FindWahlkreisByName, FindBundeslandByName, FindBundeslandById, StimmzettelParteien, KnappsteSieger, FindAllKandidaten, FindKandidatById, FindKandidatByName, FindAllParteien, FindParteiById, FindParteiByName, Stimmabgabe_Check_Party
 	}
 
 	public static String getQuery(Query type) throws IOException {
@@ -64,8 +64,10 @@ public class SqlStatements {
 		case KnappsteSieger:
 			return readFileAsString(sqlDir + "q0_helper_withs.sql") + " " + readFileAsString(sqlDir + "q6_knappste_sieger.sql");
 			// Blatt 9 oder so .. ;)
-		case Stimmabgabe_Check:
-			return readFileAsString(sqlDir + "q0_helper_withs.sql") + " " + readFileAsString(sqlDir + "qx1_stimmabgabe_check.sql");
+		case Stimmabgabe_Check_Candidate:
+			return readFileAsString(sqlDir + "qx1_stimmabgabe_check_candidate.sql");
+		case Stimmabgabe_Check_Party:
+			return readFileAsString(sqlDir + "qx1_stimmabgabe_check_party.sql");
 		case Stimmabgabe_Insert:
 			return readFileAsString(sqlDir + "qx1_stimmabgabe_insert.sql");
 		case StimmzettelParteien:
