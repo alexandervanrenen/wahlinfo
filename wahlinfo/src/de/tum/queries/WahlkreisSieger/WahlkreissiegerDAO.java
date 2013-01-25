@@ -41,7 +41,7 @@ public class WahlkreissiegerDAO {
 				zweitstimme.setFarbe(rs.getString("partei_farbe1"));
 				wahlkreisSieger.setSiegerParteiZweitstimme(zweitstimme);
 
-				wahlkreisSieger.setWahlkreis(new Wahlkreis().readFromResultSet(rs));
+				wahlkreisSieger.setWahlkreis(Wahlkreis.readFromResultSet(rs));
 				list.add(wahlkreisSieger);
 			}
 		} catch (SQLException e) {

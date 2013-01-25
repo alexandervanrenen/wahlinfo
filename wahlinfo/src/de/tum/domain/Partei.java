@@ -45,11 +45,14 @@ public class Partei {
 		this.farbe = farbe;
 	}
 
-	public Partei readFromResultSet(ResultSet rs) throws SQLException {
-		id = rs.getInt("partei_id");
-		name = rs.getString("partei_name");
-		kurzbezeichnung = rs.getString("partei_kurzbezeichnung");
-		farbe = rs.getString("partei_farbe");
-		return this;
+	public static Partei readFromResultSet(ResultSet rs) throws SQLException {
+		Partei p = new Partei();
+		p.id = rs.getInt("partei_id");
+		p.name = rs.getString("partei_name");
+		p.kurzbezeichnung = rs.getString("partei_kurzbezeichnung");
+		p.farbe = rs.getString("partei_farbe");
+		if(p.id == 0)
+			return null;
+		return p;
 	}
 }

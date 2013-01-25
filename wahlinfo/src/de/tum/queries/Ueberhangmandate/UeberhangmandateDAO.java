@@ -28,7 +28,7 @@ public class UeberhangmandateDAO {
 				Ueberhangmandate ueberhangmandate = new Ueberhangmandate();
 				ueberhangmandate.setUeberhangmandate(rs.getInt("ueberhangmandate"));
 				ueberhangmandate.setBundesland(new Bundesland().readFromResultSet(rs));
-				ueberhangmandate.setPartei(new Partei().readFromResultSet(rs));
+				ueberhangmandate.setPartei(Partei.readFromResultSet(rs));
 				list.add(ueberhangmandate);
 			}
 		} catch (SQLException e) {

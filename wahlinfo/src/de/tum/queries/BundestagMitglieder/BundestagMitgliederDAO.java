@@ -27,9 +27,9 @@ public class BundestagMitgliederDAO {
 			ResultSet rs = s.executeQuery(sql);
 			while (rs.next()) {
 				BundestagMitglied bundestagMitglied = new BundestagMitglied();
-				bundestagMitglied.setPartei(new Partei().readFromResultSet(rs));
-				bundestagMitglied.setKandidat(new Kandidat().readFromResultSet(rs));
-				bundestagMitglied.setWahlkreis(new Wahlkreis().readFromResultSet(rs));
+				bundestagMitglied.setPartei(Partei.readFromResultSet(rs));
+				bundestagMitglied.setKandidat(Kandidat.readFromResultSet(rs));
+				bundestagMitglied.setWahlkreis(Wahlkreis.readFromResultSet(rs));
 				list.add(bundestagMitglied);
 			}
 		} catch (SQLException e) {

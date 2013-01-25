@@ -76,9 +76,11 @@ public class KandidatDataDAO {
 
 	private KandidatExtended readKandidat(ResultSet rs) throws SQLException {
 		KandidatExtended kandidat = new KandidatExtended();
-		kandidat.readFromResultSet(rs);
-		kandidat.setPartei(new Partei().readFromResultSet(rs));
-		kandidat.setWahlkreis(new Wahlkreis().readFromResultSet(rs));
+		kandidat.setId(rs.getInt("kandidat_id"));
+		kandidat.setName(rs.getString("kandidat_name"));
+		kandidat.setVorname(rs.getString("kandidat_vorname"));
+		kandidat.setPartei(Partei.readFromResultSet(rs));
+		kandidat.setWahlkreis(Wahlkreis.readFromResultSet(rs));
 		kandidat.setGeburtsjahr(rs.getInt("kandidat_geburtsjahr"));
 		return kandidat;
 	}

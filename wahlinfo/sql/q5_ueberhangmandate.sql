@@ -10,4 +10,5 @@ select	p.id as partei_id, p.name as partei_name, p.farbe as partei_farbe, p.kurz
 		u.ueberhangMandate as ueberhangmandate
 from ueberhangMandate u, Partei p, Bundesland b
 where u.partei_id = p.id
-  and u.bundesland_id = b.id;
+  and u.bundesland_id = b.id
+  and u.ueberhangMandate <> 0;
