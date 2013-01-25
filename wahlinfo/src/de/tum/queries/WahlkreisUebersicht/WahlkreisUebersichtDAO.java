@@ -27,8 +27,8 @@ public class WahlkreisUebersichtDAO {
 				ps.setInt(1, id);
 				ResultSet rs = ps.executeQuery();
 				if (rs.next()) {
-					wahlkreisUebersicht.setGewinnerKandidat(new Kandidat().readFromResultSet(rs));
-					wahlkreisUebersicht.setGewinnerPartei(new Partei().readFromResultSet(rs));
+					wahlkreisUebersicht.setGewinnerKandidat(Kandidat.readFromResultSet(rs));
+					wahlkreisUebersicht.setGewinnerPartei(Partei.readFromResultSet(rs));
 				} else
 					throw new RuntimeException("wahlkreis ohne gewinner");
 			}
@@ -54,7 +54,7 @@ public class WahlkreisUebersichtDAO {
 				ResultSet rs = ps.executeQuery();
 				while (rs.next()) {
 					ParteiErgebnis parteiErgebnis = new ParteiErgebnis();
-					parteiErgebnis.setPartei(new Partei().readFromResultSet(rs));
+					parteiErgebnis.setPartei(Partei.readFromResultSet(rs));
 					parteiErgebnis.setStimmenAnteil(rs.getFloat("anteilStimmen"));
 					parteiErgebnis.setStimmenAnteilVorjahr(rs.getFloat("anteilStimmenVorjahr"));
 					parteiErgebnis.setStimmenAnzahl(rs.getInt("anzahlStimmen"));
@@ -70,7 +70,7 @@ public class WahlkreisUebersichtDAO {
 				ps.setInt(1, id);
 				ResultSet rs = ps.executeQuery();
 				if (rs.next())
-					wahlkreisUebersicht.setWahlkreis(new Wahlkreis().readFromResultSet(rs));
+					wahlkreisUebersicht.setWahlkreis(Wahlkreis.readFromResultSet(rs));
 				else
 					throw new RuntimeException("unknown wahlkreis");
 			}

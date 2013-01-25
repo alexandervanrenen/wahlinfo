@@ -26,11 +26,11 @@ public class KnappsteSiegerDAO {
 			ResultSet rs = s.executeQuery(sql);
 			while (rs.next()) {
 				KnappsteSiegerTeilnehmer entry = new KnappsteSiegerTeilnehmer();
-				Wahlkreis wahlkreis = new Wahlkreis().readFromResultSet(rs);
+				Wahlkreis wahlkreis = Wahlkreis.readFromResultSet(rs);
 				entry.setWahlkreis(wahlkreis);
-				Partei partei = new Partei().readFromResultSet(rs);
+				Partei partei = Partei.readFromResultSet(rs);
 				entry.setPartei(partei);
-				Kandidat kandidat = new Kandidat().readFromResultSet(rs);
+				Kandidat kandidat = Kandidat.readFromResultSet(rs);
 				entry.setKandidat(kandidat);
 				entry.setStimmenVorsprung(rs.getInt("stimmenvorsprung"));
 				entry.setPlatzierung(rs.getInt("platzierung"));

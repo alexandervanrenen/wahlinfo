@@ -36,10 +36,13 @@ public class Kandidat {
 		this.vorname = vorname;
 	}
 
-	public Kandidat readFromResultSet(ResultSet rs) throws SQLException {
-		id = rs.getInt("kandidat_id");
-		name = rs.getString("kandidat_name");
-		vorname = rs.getString("kandidat_vorname");
-		return this;
+	public static Kandidat readFromResultSet(ResultSet rs) throws SQLException {
+		Kandidat k = new Kandidat();
+		k.id = rs.getInt("kandidat_id");
+		k.name = rs.getString("kandidat_name");
+		k.vorname = rs.getString("kandidat_vorname");
+		if(k.id == 0)
+			return null;
+		return k;
 	}
 }

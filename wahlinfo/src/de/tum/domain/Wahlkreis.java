@@ -27,9 +27,12 @@ public class Wahlkreis {
 		this.name = name;
 	}
 
-	public Wahlkreis readFromResultSet(ResultSet rs) throws SQLException {
-		id = rs.getInt("wahlkreis_id");
-		name = rs.getString("wahlkreis_name");
-		return this;
+	public static Wahlkreis readFromResultSet(ResultSet rs) throws SQLException {
+		Wahlkreis w = new Wahlkreis();
+		w.id = rs.getInt("wahlkreis_id");
+		w.name = rs.getString("wahlkreis_name");
+		if(w.id == 0)
+			return null;
+		return w;
 	}
 }

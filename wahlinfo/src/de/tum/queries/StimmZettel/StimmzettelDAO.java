@@ -32,9 +32,9 @@ public class StimmzettelDAO {
 			// Parse result
 			while (rs.next()) {
 				StimmzettelEntry entry = new StimmzettelEntry();
-				Partei partei = new Partei().readFromResultSet(rs);
+				Partei partei = Partei.readFromResultSet(rs);
 				entry.setPartei(partei);
-				Kandidat kandidat = new Kandidat().readFromResultSet(rs);
+				Kandidat kandidat = Kandidat.readFromResultSet(rs);
 				entry.setKandidat(kandidat);
 				liste.add(entry);
 			}

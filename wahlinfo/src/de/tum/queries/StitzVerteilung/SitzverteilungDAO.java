@@ -26,7 +26,7 @@ public class SitzverteilungDAO {
 			ResultSet rs = s.executeQuery(sql);
 			while (rs.next()) {
 				Sitzverteilung sitzverteilung = new Sitzverteilung();
-				sitzverteilung.setPartei(new Partei().readFromResultSet(rs));
+				sitzverteilung.setPartei(Partei.readFromResultSet(rs));
 				sitzverteilung.setSitze(rs.getInt("sitze"));
 				list.add(sitzverteilung);
 			}

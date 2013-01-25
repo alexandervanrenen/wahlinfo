@@ -9,22 +9,26 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.tum.domain.Partei;
 import de.tum.sql.ConnectionHelper;
 import de.tum.sql.SqlStatements;
 import de.tum.sql.SqlStatements.Query;
 
 public class ParteiDataDAO {
 
-	public List<ParteiExtended> findAllParteien() {
-		List<ParteiExtended> list = new ArrayList<ParteiExtended>();
+	public List<Partei> findAllParteien() {
+		List<Partei> list = new ArrayList<Partei>();
 		Connection c = null;
 		try {
 			String sql = SqlStatements.getQuery(Query.FindAllParteien);
 			c = ConnectionHelper.getConnection();
 			Statement s = c.createStatement();
 			ResultSet rs = s.executeQuery(sql);
-			while (rs.next())
-				list.add(readPartei(rs));
+			while (rs.next()) {
+				Partei p = Partei.readFromResultSet(rs);
+				if( p != null)
+					list.add(p);
+			}
 		} catch (SQLException | IOException e) {
 			throw new RuntimeException(e);
 		} finally {
@@ -33,8 +37,8 @@ public class ParteiDataDAO {
 		return list;
 	}
 
-	public ParteiExtended findParteiById(int id) {
-		ParteiExtended Partei = null;
+	public Partei findParteiById(int id) {
+		Partei partei = null;
 		Connection c = null;
 		try {
 			c = ConnectionHelper.getConnection();
@@ -43,17 +47,17 @@ public class ParteiDataDAO {
 			ps.setInt(1, id);
 			ResultSet rs = ps.executeQuery();
 			if (rs.next())
-				Partei = readPartei(rs);
+				partei = Partei.readFromResultSet(rs);
 		} catch (SQLException | IOException e) {
 			throw new RuntimeException(e);
 		} finally {
 			ConnectionHelper.close(c);
 		}
-		return Partei;
+		return partei;
 	}
 
-	public List<ParteiExtended> findParteiByName(String name) {
-		List<ParteiExtended> list = new ArrayList<ParteiExtended>();
+	public List<Partei> findParteiByName(String name) {
+		List<Partei> list = new ArrayList<Partei>();
 		Connection c = null;
 		try {
 			String sql = SqlStatements.getQuery(Query.FindParteiByName);
@@ -62,19 +66,16 @@ public class ParteiDataDAO {
 			ps.setString(1, "%" + name + "%");
 			ps.setString(2, "%" + name + "%");
 			ResultSet rs = ps.executeQuery();
-			while (rs.next())
-				list.add(readPartei(rs));
+			while (rs.next()) {
+				Partei p = Partei.readFromResultSet(rs);
+				if (p != null)
+					list.add(p);
+			}
 		} catch (SQLException | IOException e) {
 			throw new RuntimeException(e);
 		} finally {
 			ConnectionHelper.close(c);
 		}
 		return list;
-	}
-
-	private ParteiExtended readPartei(ResultSet rs) throws SQLException {
-		ParteiExtended partei = new ParteiExtended();
-		partei.readFromResultSet(rs);
-		return partei;
 	}
 }
