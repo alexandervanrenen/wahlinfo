@@ -1,0 +1,33 @@
+<h2>Knappste Sieger</h2>
+<input type="text" class="input-medium" placeholder="Suche" ng-model="query">
+<h3>Sieger</h3>
+<table class="table table-bordered">
+  <tr>
+    <th>Partei</th>
+    <th>Erstkandidat</th>
+    <th>Wahlkreis</th>
+    <th>Stimmenabstand</th>
+  </tr>
+  <tr ng-repeat="item in knappstesieger.gewinner | filter:query">
+    <td>{{item.partei.kurzbezeichnung}}</td>
+    <td>{{item.kandidat.vorname}} {{item.kandidat.name}}</td>
+    <td>{{item.wahlkreis.name}}</td>
+    <td>{{item.stimmenVorsprung}}</td>
+  </tr>
+</table>
+
+<h3>Verlierer</h3>
+<table class="table table-bordered">
+  <tr>
+    <th>Partei</th>
+    <th>Erstkandidat</th>
+    <th>Wahlkreis</th>
+    <th>Stimmenabstand</th>
+  </tr>
+  <tr ng-repeat="item in knappstesieger.verlierer | filter:query">
+    <td>{{item.partei.kurzbezeichnung}}</td>
+    <td>{{item.kandidat.vorname}} {{item.kandidat.name}}</td>
+    <td>{{item.wahlkreis.name}}</td>
+    <td>{{item.stimmenVorsprung}}</td>
+  </tr>
+</table>

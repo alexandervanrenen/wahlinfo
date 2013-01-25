@@ -1,0 +1,14 @@
+<h2>Wahlkreissieger</h2>
+<input type="text" class="input-medium" placeholder="Suche" ng-model="query">
+<table class="table table-bordered">
+  <tr>
+    <th>Wahlkreis</th>
+    <th>Siegerpartei nach Erststimme</th>
+    <th>Siegerpartei nach Zweitstimme</th>
+  </tr>
+  <tr ng-repeat="item in wahlkreissieger | filter:query">
+    <td>{{item.wahlkreis.name}}</td>
+    <td>{{item.siegerParteiErststimme.kurzbezeichnung}}</td>
+    <td>{{item.siegerParteiZweitstimme.kurzbezeichnung}}</td>
+  </tr>
+</table>

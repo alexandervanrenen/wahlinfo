@@ -1,0 +1,13 @@
+﻿<h2>Überhangmandate</h2>
+<table class="table table-bordered">
+  <tr>
+    <th>Partei</th>
+    <th>Bundesland</th>
+    <th>Anzahl der Überhangmandate</th>
+  </tr>
+  <tr ng-repeat="item in ueberhangmandate | filter:'!0'">
+    <td>{{item.partei.kurzbezeichnung}}</td>
+    <td>{{item.bundesland.name}}</td>
+    <td>{{item.ueberhangmandate}}</td>
+  </tr>
+</table>

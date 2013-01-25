@@ -4,26 +4,26 @@
 
 angular.module('wahlinfoServices', ['ngResource']).
   factory('Sitzverteilung', function($resource){
-	  return $resource('json/sitzverteilung.json', {}, {});
-//	  return $resource('http://localhost\\:8080/wahlinfo/rest/sitzverteilung', {}, {});
+	  return $resource('api/sitzverteilung', {}, {});
   }).
   factory('Bundestagmitglieder', function($resource){
-	  return $resource('json/bundestagmitglieder.json', {}, {});
-//	  return $resource('http://localhost\\:8080/wahlinfo/rest/bundestagmitglieder', {}, {});
+	  return $resource('api/bundestagmitglieder', {}, {});
   }).
   factory('Ueberhangmandate', function($resource){
-	  return $resource('json/ueberhangmandate.json', {}, {});
-//	  return $resource('http://localhost\\:8080/wahlinfo/rest/ueberhangmandate', {}, {});
+	  return $resource('api/ueberhangmandate', {}, {});
   }).
   factory('Wahlkreisuebersicht', function($resource){
-	  return $resource('http://localhost\\:8080/wahlinfo/rest/wahlkreisuebersicht/:wahlkreisid', {}, {});
+	  return $resource('api/wahlkreisuebersicht/:wahlkreisid', {}, {});
   }).
   factory('Wahlkreissieger', function($resource){
-	  return $resource('http://localhost\\:8080/wahlinfo/rest/wahlkreissieger', {}, {});
+	  return $resource('api/wahlkreissieger', {}, {});
+  }).
+  factory('Knappstesieger', function($resource){
+	  return $resource('api/knappstesieger', {}, {});
   }).
   factory('Stimmzettel', function($resource){
-	  return $resource('http://localhost\\:8080/wahlinfo/rest/stimmzettel/:wahlkreisid', {}, {});
+	  return $resource('api/stimmzettel/:wahlkreisid', {}, {});
   }).
   factory('Stimmabgabe', function($resource){
-	  return $resource('http://localhost\\:8080/wahlinfo/rest/stimmabgabe/:wahlkreisid/:kandidatid/:parteiid', {}, {});
+	  return $resource('api/stimmabgabe/:wahlkreisid/:kandidatid/:parteiid', {}, {});
   });

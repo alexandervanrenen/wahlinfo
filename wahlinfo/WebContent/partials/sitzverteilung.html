@@ -1,0 +1,12 @@
+<div chart></div>
+
+<table class="table table-bordered">
+  <tr>
+    <th>Partei</th>
+    <th>Anzahl der Sitze</th>
+  </tr>
+  <tr ng-repeat="item in sitzverteilung">
+    <td>{{item.partei.kurzbezeichnung}}</td>
+    <td>{{item.sitze}}</td>
+  </tr>
+</table>
