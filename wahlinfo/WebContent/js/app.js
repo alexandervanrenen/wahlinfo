@@ -40,6 +40,7 @@ angular.module('SharedServices', [])
             return response;
 
         }, function (response) {
+        	$('#loading').hide();
             $('#main').fadeTo("slow", 1);
             return $q.reject(response);
         });
