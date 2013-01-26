@@ -2,4 +2,5 @@ select b.id, b.name, sum(w.wahlberechtigte) as wahlberechtigte, sum(w.wahlberech
 from bundesland b, wahlkreis w
 where b.id = w.bundesland_id
   and b.id = ?
+  and b.id <> 0
 group by b.id, b.name
