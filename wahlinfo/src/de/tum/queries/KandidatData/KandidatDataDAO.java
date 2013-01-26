@@ -9,8 +9,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.tum.domain.Partei;
-import de.tum.domain.Wahlkreis;
 import de.tum.sql.ConnectionHelper;
 import de.tum.sql.SqlStatements;
 import de.tum.sql.SqlStatements.Query;
@@ -76,11 +74,10 @@ public class KandidatDataDAO {
 
 	private KandidatExtended readKandidat(ResultSet rs) throws SQLException {
 		KandidatExtended kandidat = new KandidatExtended();
-		kandidat.setId(rs.getInt("kandidat_id"));
 		kandidat.setName(rs.getString("kandidat_name"));
 		kandidat.setVorname(rs.getString("kandidat_vorname"));
-		kandidat.setPartei(Partei.readFromResultSet(rs));
-		kandidat.setWahlkreis(Wahlkreis.readFromResultSet(rs));
+		kandidat.setPartei(rs.getString("partei_kurzbezeichnung"));
+		kandidat.setWahlkreis(rs.getString("wahlkreis_name"));
 		kandidat.setGeburtsjahr(rs.getInt("kandidat_geburtsjahr"));
 		return kandidat;
 	}

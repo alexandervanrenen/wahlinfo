@@ -2,16 +2,30 @@ package de.tum.queries.KandidatData;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import de.tum.domain.Kandidat;
-import de.tum.domain.Partei;
-import de.tum.domain.Wahlkreis;
-
 @XmlRootElement(name = "kandidat")
-public class KandidatExtended extends Kandidat {
+public class KandidatExtended {
 
+	private String name;
+	private String vorname;
 	private int geburtsjahr;
-	private Partei partei;
-	private Wahlkreis wahlkreis;
+	private String partei;
+	private String wahlkreis;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getVorname() {
+		return vorname;
+	}
+
+	public void setVorname(String vorname) {
+		this.vorname = vorname;
+	}
 
 	public int getGeburtsjahr() {
 		return geburtsjahr;
@@ -21,19 +35,19 @@ public class KandidatExtended extends Kandidat {
 		this.geburtsjahr = geburtsjahr;
 	}
 
-	public Partei getPartei() {
+	public String getPartei() {
 		return partei;
 	}
 
-	public void setPartei(Partei partei) {
+	public void setPartei(String partei) {
 		this.partei = partei;
 	}
 
-	public Wahlkreis getWahlkreis() {
+	public String getWahlkreis() {
 		return wahlkreis;
 	}
 
-	public void setWahlkreis(Wahlkreis wahlkreis) {
+	public void setWahlkreis(String wahlkreis) {
 		this.wahlkreis = wahlkreis;
 	}
 }
