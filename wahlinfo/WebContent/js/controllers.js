@@ -99,19 +99,12 @@ function WahlomatCtrl($scope, Stimmzettel, Stimmabgabe) {
     
     $scope.selected = {kandidat: "", partei: ""};
     $scope.submitStimme = function () {
-//    	alert('Kandidat-ID: ' + $scope.selected.kandidat 
-//    			+ '\n' + 'Partei-ID: ' + $scope.selected.partei);
-    	
-    	if ($scope.selected.partei == 8) {
-    		alert('CSU alert');
-    		// TODO do something weird
-    	}
-    	
     	Stimmabgabe.get({ wahlkreisid: $scope.wahlkreisid, 
     		kandidatid: $scope.selected.kandidat, parteiid: $scope.selected.partei },
 			    function (data) {
     				if (data.erfolg == 'true') {
-    					alert('Die Stimmabgabe war erfolgreich!');
+//    					alert('Die Stimmabgabe war erfolgreich!');
+    					alert('Ihre Stimme(n) wurde zur Überprüfung an den Wahlleiter (CSU) übermittelt.');
     				} else {
     					alert(data.fehler);
     				}
