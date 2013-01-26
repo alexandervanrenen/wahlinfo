@@ -1,14 +1,15 @@
 <!doctype html>
-<!-- <html lang="en" ng-app="wahlinfo"> -->
-<html lang="en">
+<html lang="en" ng-app="wahlinfo">
+<!-- <html lang="en"> -->
 <head>
   <meta charset="utf-8">
   <title>Wahlinformationssystem</title>
   <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
   <style>
     body {
-      padding-top: 140px; /* 140px to make the container go all the way to the bottom of the topbar */
+      padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
     }
+    #loading { position: absolute; left: 0px; top: 200px; display: none; background: lightblue; padding: 0.3em; font-weight: bold; }
   </style>
   <script type="text/javascript" src="http://www.google.com/jsapi?ext.js"></script>
   <script type='text/javascript'>
@@ -21,6 +22,7 @@
   </script>
 </head>
 <body>
+  <div id="loading">Lade Ergebnisse...</div>
   <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
       <div class="container">
@@ -32,30 +34,53 @@
         <a class="brand" href="#/wahlinfo">Wahlinformationssystem</a>
         <div class="nav-collapse collapse">
           <ul class="nav">
-            <li><a href="#/sitzverteilung">Sitzverteilung</a></li>
-            <li><a href="#/bundestagmitglieder">Mitglieder des Bundestages</a></li>
-            <li><a href="#/ueberhangmandate">Überhangmandate</a></li>
-            <li><a href="#/wahlkreisuebersicht">Wahlkreisübersicht</a></li>
-            <li><a href="#/wahlkreissieger">Wahlkreissieger</a></li>
-            <li><a href="#/knappstesieger">Knappste Sieger</a></li>
-            <li><a href="#/wahlomat">Wahl-O-Mat</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Statische Daten<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+              	<li class="nav-header">Deutschland</li>
+              	<li><a href="#deutschland">Deutschland</a></li>
+                <li><a href="#bundeslaender">Bundesländer</a></li>
+                <li><a href="#wahlkreise">Wahlkreise</a></li>
+                <li class="divider"></li>
+                <li class="nav-header">Parteien</li>
+                <li><a href="#parteien">Parteien</a></li>
+                <li><a href="#kandidaten">Kandidaten</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Wahlergebnisse<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+              	<li class="nav-header">Bundestag</li>
+                <li><a href="#/sitzverteilung">Sitzverteilung</a></li>
+	            <li><a href="#/bundestagsmitglieder">Mitglieder des Bundestages</a></li>
+	            <li><a href="#/ueberhangmandate">Überhangmandate</a></li>
+	            <li class="divider"></li>
+                <li class="nav-header">Wahlkreise</li>
+	            <li><a href="#/wahlkreisuebersicht">Wahlkreisübersicht</a></li>
+	            <li><a href="#/wahlkreissieger">Wahlkreissieger</a></li>
+	            <li><a href="#/knappstesieger">Knappste Sieger</a></li>
+              </ul>
+            </li>
+            <li><a href="#wahlomat">Wahl-O-Mat</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
     </div>
   </div>
   
-  <div class="container">
+  <div id="main" class="container">
       <div ng-view></div>
   </div> <!-- /container -->
   
   <script src="lib/angular/angular.js"></script>
   <script src="lib/angular/angular-resource.js"></script>
+  <script src="lib/jquery.min.js"></script>
+  <script src="lib/bootstrap/bootstrap-dropdown.js"></script>
+  <script src="lib/bootstrap/bootstrap.min.js"></script>
   <script src="js/app.js"></script>
   <script src="js/services.js"></script>
   <script src="js/controllers.js"></script>
   <script src="js/filters.js"></script>
   <script src="js/directives.js"></script>
-  <script src="js/bootstrap.min.js"></script>
 </body>
 </html>

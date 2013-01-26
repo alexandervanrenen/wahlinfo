@@ -5,38 +5,40 @@
   <button type="submit" class="btn" ng:click="getStimmzettel()">Stimmzettel abrufen</button>
 </form>
 
-<div class="row-fluid">
-   <div class="span12 pagination-centered"><img src="img/stimmzettel.png" /></div>
+<div id="stimmzettel">
+	<div class="row-fluid">
+	   <div class="span12 pagination-centered"><img src="img/stimmzettel.png" /></div>
+	</div>
+	
+	<p/>
+	
+	<table class="table table-bordered">
+	  <tr>
+	    <th></th>
+	    <th>Name des Kandidaten</th>
+	    <th>Partei des Kandidaten</th>
+	    <th></th>
+	    <th>Partei</th>
+	    <th>Bezeichnung</th>
+	  </tr>
+	  <tr ng-repeat="item in stimmzettel.liste">
+	  	<td><input type="radio" ng-model="selected.kandidat" value="{{item.kandidat.id}}"></td>
+	  	<td>{{item.kandidat.vorname}} {{item.kandidat.name}}</td>
+	  	<td>{{item.partei.kurzbezeichnung}}</td>
+	  	<td><input ng-show="item.partei" type="radio" ng-model="selected.partei" value="{{item.partei.id}}"></td>
+	  	<td>{{item.partei.kurzbezeichnung}}</td>
+	  	<td>{{item.partei.name}}</td>
+	  </tr>
+	  <tr>
+	  	<td><input type="radio" ng-model="selected.kandidat" value="0"></td>
+	  	<td>keinen Kandidaten</td>
+	  	<td></td>
+	  	<td><input type="radio" ng-model="selected.partei" value="0"></td>
+	  	<td>keine Partei</td>
+	  	<td></td>
+	  </tr>
+	</table>
+	
+	<button class="btn btn-large btn-block btn-primary" type="button" ng:click="submitStimme()">Stimme(n) abgeben</button>
+	<p/>
 </div>
-
-<p/>
-
-<table class="table table-bordered">
-  <tr>
-    <th></th>
-    <th>Name des Kandidaten</th>
-    <th>Partei des Kandidaten</th>
-    <th></th>
-    <th>Partei</th>
-    <th>Bezeichnung</th>
-  </tr>
-  <tr ng-repeat="item in stimmzettel.liste">
-  	<td><input type="radio" ng-model="selected.kandidat" value="{{item.kandidat.id}}"></td>
-  	<td>{{item.kandidat.vorname}} {{item.kandidat.name}}</td>
-  	<td>{{item.partei.kurzbezeichnung}}</td>
-  	<td><input ng-show="item.partei" type="radio" ng-model="selected.partei" value="{{item.partei.id}}"></td>
-  	<td>{{item.partei.kurzbezeichnung}}</td>
-  	<td>{{item.partei.name}}</td>
-  </tr>
-  <tr>
-  	<td><input type="radio" ng-model="selected.kandidat" value="0"></td>
-  	<td>keinen Kandidaten</td>
-  	<td></td>
-  	<td><input type="radio" ng-model="selected.partei" value="0"></td>
-  	<td>keine Partei</td>
-  	<td></td>
-  </tr>
-</table>
-
-<button class="btn btn-large btn-block btn-primary" type="button" ng:click="submitStimme()">Stimme(n) abgeben</button>
-<p/>

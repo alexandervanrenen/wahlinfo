@@ -5,50 +5,48 @@
   <button type="submit" class="btn" ng:click="getWahlkreisResults()">Ergebnisse abrufen</button>
 </form>
 
-<h3>Wahlkreis</h3>
-<table class="table table-bordered">
-  <tr>
-    <th>ID</th>
-    <th>Name</th>
-    <th>Wahlbeteiligung</th>
-    <th>Vorjahr</th>
-  </tr>
-  <tr>
-    <td>{{wahlkreisuebersicht.wahlkreis.id}}</td>
-    <td>{{wahlkreisuebersicht.wahlkreis.name}}</td>
-    <td>{{wahlkreisuebersicht.wahlBeteiligung}}</td>
-    <td>{{wahlkreisuebersicht.wahlBeteiligungVorjahr}}</td>
-  </tr>
-</table>
-
-<h3>Gewählter Direktkandidat</h3>
-<table class="table table-bordered">
-  <tr>
-    <th>Vorname</th>
-    <th>Name</th>
-    <th>Partei</th>
-  </tr>
-  <tr>
-    <td>{{wahlkreisuebersicht.gewinnerKandidat.vorname}}</td>
-    <td>{{wahlkreisuebersicht.gewinnerKandidat.name}}</td>
-    <td>{{wahlkreisuebersicht.gewinnerPartei.kurzbezeichnung}}</td>
-  </tr>
-</table>
-
-<h3>Parteiergebnisse</h3>
-<table class="table table-bordered">
-  <tr>
-    <th>Partei</th>
-    <th>Stimmenanteil</th>
-    <th>Vorjahr</th>
-    <th>Stimmenanzahl</th>
-    <th>Vorjahr</th>
-  </tr>
-  <tr ng-repeat="ergebnis in wahlkreisuebersicht.parteiergebnisse">
-    <td>{{ergebnis.partei.kurzbezeichnung}}</td>
-    <td>{{ergebnis.stimmenAnteil}}</td>
-    <td>{{ergebnis.stimmenAnteilVorjahr}}</td>
-    <td>{{ergebnis.stimmenAnzahl}}</td>
-    <td>{{ergebnis.stimmenAnzahlVorjahr}}</td>
-  </tr>
-</table>
+<div id="results">
+	<h3>Wahlkreis</h3>
+	<table class="table table-bordered">
+	  <tr>
+	    <th>Name</th>
+	    <th>Wahlbeteiligung</th>
+	    <th>Vorjahr</th>
+	  </tr>
+	  <tr>
+	    <td>{{wahlkreisuebersicht.wahlkreis.name}}</td>
+	    <td>{{wahlkreisuebersicht.wahlBeteiligung}}</td>
+	    <td>{{wahlkreisuebersicht.wahlBeteiligungVorjahr}}</td>
+	  </tr>
+	</table>
+	
+	<h3>Gewählter Direktkandidat</h3>
+	<table class="table table-bordered">
+	  <tr>
+	    <th>Name</th>
+	    <th>Partei</th>
+	  </tr>
+	  <tr>
+	    <td>{{wahlkreisuebersicht.gewinnerKandidat.vorname}} {{wahlkreisuebersicht.gewinnerKandidat.name}}</td>
+	    <td>{{wahlkreisuebersicht.gewinnerPartei.kurzbezeichnung}}</td>
+	  </tr>
+	</table>
+	
+	<h3>Parteiergebnisse</h3>
+	<table class="table table-bordered">
+	  <tr>
+	    <th>Partei</th>
+	    <th>Stimmenanteil</th>
+	    <th>Vorjahr</th>
+	    <th>Stimmenanzahl</th>
+	    <th>Vorjahr</th>
+	  </tr>
+	  <tr ng-repeat="ergebnis in wahlkreisuebersicht.parteiergebnisse">
+	    <td>{{ergebnis.partei.kurzbezeichnung}}</td>
+	    <td>{{ergebnis.stimmenAnteil}}</td>
+	    <td>{{ergebnis.stimmenAnteilVorjahr}}</td>
+	    <td>{{ergebnis.stimmenAnzahl}}</td>
+	    <td>{{ergebnis.stimmenAnzahlVorjahr}}</td>
+	  </tr>
+	</table>
+</div>

@@ -3,10 +3,25 @@
 /* Services */
 
 angular.module('wahlinfoServices', ['ngResource']).
+  factory('Deutschland', function($resource){
+	  return $resource('api/germany', {}, {});
+  }).
+  factory('Bundeslaender', function($resource){
+	  return $resource('api/germany/all', {}, {});
+  }).
+  factory('Wahlkreise', function($resource){
+	  return $resource('api/germany/all/all', {}, {});
+  }).
+  factory('Kandidaten', function($resource){
+	  return $resource('api/kandidaten/all', {}, {});
+  }).
+  factory('Parteien', function($resource){
+	  return $resource('api/parteien/all', {}, {});
+  }).
   factory('Sitzverteilung', function($resource){
 	  return $resource('api/sitzverteilung', {}, {});
   }).
-  factory('Bundestagmitglieder', function($resource){
+  factory('Bundestagsmitglieder', function($resource){
 	  return $resource('api/bundestagmitglieder', {}, {});
   }).
   factory('Ueberhangmandate', function($resource){

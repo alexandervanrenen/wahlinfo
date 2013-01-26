@@ -6,6 +6,41 @@ function WahlinfoCtrl() {
 	
 }
 
+function DeutschlandCtrl($scope, Deutschland) {
+	Deutschland.get({},
+		    function (data) {
+        		$scope.deutschland = data;
+    	}, {});
+}
+
+function BundeslaenderCtrl($scope, Bundeslaender) {
+	Bundeslaender.get({},
+		    function (data) {
+        		$scope.bundeslaender = data.bundesland;
+    	}, {});
+}
+
+function WahlkreiseCtrl($scope, Wahlkreise) {
+	Wahlkreise.get({},
+		    function (data) {
+        		$scope.wahlkreise = data.wahlkreis;
+    	}, {});
+}
+
+function KandidatenCtrl($scope, Kandidaten) {
+	Kandidaten.get({},
+		    function (data) {
+        		$scope.kandidaten = data;
+    	}, {});
+}
+
+function ParteienCtrl($scope, Parteien) {
+	Parteien.get({},
+		    function (data) {
+        		$scope.parteien = data.partei;
+    	}, {});
+}
+
 function SitzverteilungCtrl($scope, Sitzverteilung) {
 	Sitzverteilung.get({},
 		    function (data) {
@@ -13,10 +48,10 @@ function SitzverteilungCtrl($scope, Sitzverteilung) {
     	}, {});
 }
 
-function BundestagmitgliederCtrl($scope, Bundestagmitglieder) {
-	Bundestagmitglieder.get({},
+function BundestagsmitgliederCtrl($scope, Bundestagsmitglieder) {
+	Bundestagsmitglieder.get({},
 		    function (data) {
-        		$scope.bundestagmitglieder = data.bundestagMitglied;
+        		$scope.bundestagsmitglieder = data.bundestagMitglied;
     	}, {});
 }
 
@@ -28,10 +63,12 @@ function UeberhangmandateCtrl($scope, Ueberhangmandate) {
 }
 
 function WahlkreisuebersichtCtrl($scope, Wahlkreisuebersicht) {
+	$('#results').hide();
 	$scope.getWahlkreisResults = function () {
 		Wahlkreisuebersicht.get({ wahlkreisid: $scope.wahlkreisid },
 			    function (data) {
 	        		$scope.wahlkreisuebersicht = data;
+	        		$('#results').show();
 	    	}, {});
     };
 }
@@ -51,31 +88,33 @@ function KnappstesiegerCtrl($scope, Knappstesieger) {
 }
 
 function WahlomatCtrl($scope, Stimmzettel, Stimmabgabe) {
+	$('#stimmzettel').hide();
 	$scope.getStimmzettel = function () {
 		Stimmzettel.get({ wahlkreisid: $scope.wahlkreisid },
 			    function (data) {
 	        		$scope.stimmzettel = data;
+	        		$('#stimmzettel').show();
 	    	}, {});
     };
     
     $scope.selected = {kandidat: "", partei: ""};
-    
     $scope.submitStimme = function () {
-//    	if ($scope.selected.kandidat == -1)
-//    		$scope.selected.kandidat = 0;
-//    	
-//    	if ($scope.selected.partei == -1)
-//    		$scope.selected.partei = 0;
+//    	alert('Kandidat-ID: ' + $scope.selected.kandidat 
+//    			+ '\n' + 'Partei-ID: ' + $scope.selected.partei);
     	
-    	alert('Kandidat-ID: ' + $scope.selected.kandidat 
-    			+ '\n' + 'Partei-ID: ' + $scope.selected.partei);
-//    	Stimmabgabe.get({ wahlkreisid: $scope.wahlkreisid, kandidatid: $scope.kandidatid, parteiid: $scope.parteiid },
-//			    function (data) {
-//    				if (data.erfolg == 'true') {
-//    					alert('Die Stimmabgabe war erfolgreich!');
-//    				} else {
-//    					alert(data.fehler);
-//    				}
-//	    	}, {});
+    	if ($scope.selected.partei == 8) {
+    		alert('CSU alert');
+    		// TODO do something weird
+    	}
+    	
+    	Stimmabgabe.get({ wahlkreisid: $scope.wahlkreisid, 
+    		kandidatid: $scope.selected.kandidat, parteiid: $scope.selected.partei },
+			    function (data) {
+    				if (data.erfolg == 'true') {
+    					alert('Die Stimmabgabe war erfolgreich!');
+    				} else {
+    					alert(data.fehler);
+    				}
+	    	}, {});
     };
 }

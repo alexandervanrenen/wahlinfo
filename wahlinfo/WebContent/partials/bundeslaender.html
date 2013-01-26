@@ -1,0 +1,18 @@
+<h2>Bundesländer</h2>
+<input type="text" class="input-medium" placeholder="Suche" ng-model="query">
+<table class="table table-bordered">
+  <tr>
+    <th>Name</th>
+    <th>Anzahl der Wähler</th>
+    <th>Vorjahr</th>
+    <th>Anzahl der Wahlberechtigten</th>
+    <th>Vorjahr</th>
+  </tr>
+  <tr ng-repeat="item in bundeslaender | filter:query">
+  	<td>{{item.name}}</td>
+    <td>{{item.waehler}}</td>
+    <td>{{item.waehler2005}}</td>
+    <td>{{item.wahlberechtigte}}</td>
+    <td>{{item.wahlberechtigte2005}}</td>
+  </tr>
+</table>

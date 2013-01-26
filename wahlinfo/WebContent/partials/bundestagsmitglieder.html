@@ -2,14 +2,12 @@
 <input type="text" class="input-medium" placeholder="Suche" ng-model="query">
 <table class="table table-bordered">
   <tr>
-    <th>Vorname</th>
     <th>Name</th>
     <th>Partei</th>
     <th>Wahlkreis</th>
   </tr>
-  <tr ng-repeat="item in bundestagmitglieder | filter:query">
-    <td>{{item.kandidat.vorname}}</td>
-    <td>{{item.kandidat.name}}</td>
+  <tr ng-repeat="item in bundestagsmitglieder | filter:query">
+    <td>{{item.kandidat.vorname}} {{item.kandidat.name}}</td>
     <td>{{item.partei.kurzbezeichnung}}</td>
     <td>{{item.wahlkreis.name}}</td>
   </tr>

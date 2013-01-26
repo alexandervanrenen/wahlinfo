@@ -1,0 +1,12 @@
+<h2>Parteien</h2>
+<input type="text" class="input-medium" placeholder="Suche" ng-model="query">
+<table class="table table-bordered">
+  <tr>
+    <th>Partei</th>
+    <th>Bezeichnung</th>
+  </tr>
+  <tr ng-repeat="item in parteien | filter:query">
+  	<td>{{item.kurzbezeichnung}}</td>
+  	<td>{{item.name}}</td>
+  </tr>
+</table>
