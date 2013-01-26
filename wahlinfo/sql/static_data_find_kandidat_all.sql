@@ -3,4 +3,5 @@ select	k.id as kandidat_id, k.name as kandidat_name, k.vorname as kandidat_vorna
 		w.id as wahlkreis_id, w.name as wahlkreis_name
 from Kandidat k, Partei p, Wahlkreis w
 where k.partei_id = p.id
-  and k.wahlkreis_id = w.id;
+  and k.wahlkreis_id = w.id
+  and k.id <> 0;

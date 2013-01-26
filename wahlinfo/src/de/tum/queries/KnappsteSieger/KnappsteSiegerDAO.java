@@ -33,7 +33,6 @@ public class KnappsteSiegerDAO {
 				Kandidat kandidat = Kandidat.readFromResultSet(rs);
 				entry.setKandidat(kandidat);
 				entry.setStimmenVorsprung(rs.getInt("stimmenvorsprung"));
-				entry.setPlatzierung(rs.getInt("platzierung"));
 				boolean isWinner = rs.getBoolean("istGewinner");
 				if (isWinner)
 					result.getGewinner().add(entry);

@@ -1,4 +1,5 @@
 select w.*, b.name as bundesland_name
 from wahlkreis w, bundesland b
-where w.bundesland_id = b.id and
-      w.name like ?
+where w.bundesland_id = b.id
+  and w.name like ?
+  and w.id <> 0;
