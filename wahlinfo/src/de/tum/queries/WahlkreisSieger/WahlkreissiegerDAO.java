@@ -20,28 +20,48 @@ public class WahlkreissiegerDAO {
 		List<WahlkreisSieger> list = new ArrayList<WahlkreisSieger>();
 		Connection c = null;
 		try {
+			// Do monetdbs job and find find all parties in order to join them
+			List<Partei> parteien = new ArrayList<>();
+			{
+				String sql = SqlStatements.getQuery(Query.FindAllParteien);
+				c = ConnectionHelper.getConnection();
+				Statement s = c.createStatement();
+				ResultSet rs = s.executeQuery(sql);
+				while (rs.next()) {
+					Partei p = Partei.readFromResultSet(rs);
+					if (p != null)
+						parteien.add(p);
+				}
+			}
+
+			// Do the real job
 			String sql = SqlStatements.getQuery(Query.WahlkreisSieger);
-			c = ConnectionHelper.getConnection();
 			Statement s = c.createStatement();
 			ResultSet rs = s.executeQuery(sql);
 			while (rs.next()) {
+				// Read wahlkreis
 				WahlkreisSieger wahlkreisSieger = new WahlkreisSieger();
-
-				Partei erststimme = new Partei();
-				erststimme.setId(rs.getInt("partei_id1"));
-				erststimme.setName(rs.getString("partei_name1"));
-				erststimme.setKurzbezeichnung(rs.getString("partei_kurzbezeichnung1"));
-				erststimme.setFarbe(rs.getString("partei_farbe1"));
-				wahlkreisSieger.setSiegerParteiErststimme(erststimme);
-
-				Partei zweitstimme = new Partei();
-				zweitstimme.setId(rs.getInt("partei_id1"));
-				zweitstimme.setName(rs.getString("partei_name1"));
-				zweitstimme.setKurzbezeichnung(rs.getString("partei_kurzbezeichnung1"));
-				zweitstimme.setFarbe(rs.getString("partei_farbe1"));
-				wahlkreisSieger.setSiegerParteiZweitstimme(zweitstimme);
-
 				wahlkreisSieger.setWahlkreis(Wahlkreis.readFromResultSet(rs));
+
+				// Visit party one
+				{
+					int id = rs.getInt("partei_id1");
+					for (Partei partei : parteien)
+						if (partei.getId() == id) {
+							wahlkreisSieger.setSiegerParteiErststimme(partei);
+							break;
+						}
+				}
+
+				// Visit party two
+				{
+					int id = rs.getInt("partei_id2");
+					for (Partei partei : parteien)
+						if (partei.getId() == id) {
+							wahlkreisSieger.setSiegerParteiZweitstimme(partei);
+							break;
+						}
+				}
 				list.add(wahlkreisSieger);
 			}
 		} catch (SQLException e) {

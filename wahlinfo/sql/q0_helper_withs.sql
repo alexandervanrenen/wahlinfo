@@ -1,83 +1,113 @@
 
----------------------------------------------------------------
--- Schritt 0 - Berechne Aggregate
----------------------------------------------------------------
+--  ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___
+--  \./ \./ \./ \./ \./ \./ \./ \./ \./ \./ \./
+--   |   |   |   |   Schritt 0   |   |   |   |
+-- _/ \_/ \_/ \_/ \_/ \_/ \_/ \_/ \_/ \_/ \_/ \_
+-- 
+-- Berechne Aggregate für parteien und kandidaten
+--
 
--- Berechne die anzahl an erhaltenen stimmen pro kandidat
-with StimmenCountKandidatSimple as (
-         select s.kandidat_id, count(*) as stimmenAnzahl
-         from stimme s
-         group by s.kandidat_id
-
+-- Berechne die Stimmen Anzahl pro Kandidat
+with StimmenCountKandidatHand as (
+	 select s.kandidat_id, count(*) as stimmenAnzahl
+	 from stimme s
+	 group by s.kandidat_id
+	 having s.kandidat_id <> 0
 )
 
-, impl as ( select count(*) as anz from stimme)
-
+-- Use aggregiert oder hand
 , StimmenCountKandidat as (
-         select k.id as kandidat_id, k.partei_id, k.wahlkreis_id, d.stimmenAnzahl
-         from StimmenCountKandidatSimple d, Kandidat k
-         where d.kandidat_id = k.id
-         and k.id <> 0
+--	select * from StimmenCountKandidatHand
+	select * from StimmenCountKandidatAggregiert
 )
 
--- Berechne die anzahl an erhaltenen stimmen pro partei
-, StimmenCountParteiSimple as (
-         select s.partei_id, count(*) as Anzahl
-         from stimme s
-         group by s.partei_id
+-- Berechne die Stimmen Anzahl pro Partei pro Wahlkreis
+, StimmenCountParteiWahlkreisHand as (
+	 select s.partei_id, s.wahlkreis_id, count(*) as stimmenAnzahl
+	 from stimme s
+	 group by s.partei_id, s.wahlkreis_id
+	 having s.partei_id <> 0
 )
+
+-- Berechne die Stimmen Anzahl pro Partei pro Bundesland
+, StimmenCountParteiBundeslandHand as (
+	 select s.partei_id, w.bundesland_id, sum(s.stimmenAnzahl) as stimmenAnzahl
+	 from StimmenCountParteiWahlkreisHand s, Wahlkreis w
+	 where s.wahlkreis_id = w.id
+	 group by s.partei_id, w.bundesland_id
+ )
+
+-- Use aggregiert oder hand
+, StimmenCountParteiWahlkreis as (
+--	select * from StimmenCountParteiWahlkreisHand
+	select * from StimmenCountParteiWahlkreisAggregiert
+)
+
+-- Use aggregiert oder hand
+, StimmenCountParteiBundesland as (
+--	select * from StimmenCountParteiBundeslandHand
+	select * from StimmenCountParteiBundeslandAggregiert
+)
+
+-- Berechne die Stimmen Anzahl pro Partei
 , StimmenCountPartei as (
-         select *
-         from StimmenCountParteiSimple
-         where partei_id <> 0
-)
-, ZweitStimmenGesammt as (
-         select sum(z2.Anzahl)
-         from StimmenCountPartei z2
+	select s.partei_id, sum(stimmenAnzahl) as stimmenAnzahl
+	from StimmenCountParteiBundesland s
+	group by s.partei_id
 )
 
----------------------------------------------------------------
--- Schritt 1 - Berechne die Sitzplatzverteilung im Bundestag --
----------------------------------------------------------------
+--  ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___
+--  \./ \./ \./ \./ \./ \./ \./ \./ \./ \./ \./
+--   |   |   |   |   Schritt 1   |   |   |   |
+-- _/ \_/ \_/ \_/ \_/ \_/ \_/ \_/ \_/ \_/ \_/ \_
+-- 
+-- Berechne DirektMandate
+--
+
+, MaxStimmenCountProWahlkreis as (
+	select k.wahlkreis_id, max(s.stimmenAnzahl) as stimmenAnzahl
+	from StimmenCountKandidat s, Kandidat k
+	where s.kandidat_id =  k.id
+	group by k.wahlkreis_id
+)
 
 -- Berechne die gewinner in jedem wahlkreis
-, Direktmandate as ( -- RFI fuck monetdb ..
-         select d.kandidat_id, d.partei_id, d.wahlkreis_id, d.stimmenAnzahl
-         from StimmenCountKandidat d
-         where not exists ( select * from StimmenCountKandidat d2
-                           where d2.stimmenAnzahl > d.stimmenAnzahl
-                           and d2.kandidat_id <> d.kandidat_id -- WTF ?!
-                           and d2.wahlkreis_id = d.wahlkreis_id)
+-- PBP: schließt nicht aus, dass es nur einen kandidaten pro wahlkreis gibt
+, Direktmandate as (
+	select k.id as kandidat_id, k.partei_id, k.wahlkreis_id, m.stimmenAnzahl
+	from MaxStimmenCountProWahlkreis m, StimmenCountKandidat s, Kandidat k
+	where m.wahlkreis_id = k.wahlkreis_id
+	  and m.stimmenAnzahl = s.stimmenAnzahl
+	  and k.id = s.kandidat_id
 )
 
--- Zaehlt die Anzahl der Direktmandate pro Partei
-, AnzahlDirektmandatePartei as (
-        select a.partei_id, count(*) as Anzahl
-        from Direktmandate a
-        group by a.partei_id
-)
+--  ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___
+--  \./ \./ \./ \./ \./ \./ \./ \./ \./ \./ \./
+--   |   |   |   |   Schritt 2   |   |   |   |
+-- _/ \_/ \_/ \_/ \_/ \_/ \_/ \_/ \_/ \_/ \_/ \_
+-- 
+-- Berechne Erhaltene Sitmmen der Parteien in Porzent
+-- 
 
 -- Anteil der Zweitstimmen pro Partei in % (Gesamtdeutschland)
 , AnteilZweitStimmen as (
-         select z.partei_id, (sum(z.Anzahl)*100.0)/(select * from ZweitStimmenGesammt) as Anteil
-         from StimmenCountPartei z
-         where z.partei_id <> 0
-         group by z.partei_id
+	 select z.partei_id, (z.stimmenAnzahl*100.0)/(select sum(z2.stimmenAnzahl) from StimmenCountPartei z2) as ProzentualerAnteil
+	 from StimmenCountPartei z
 )
 
 -- Findet die Parteien die in den Bundestag gelangen
 -- Anteil der Zweitstimmen Partei unter Beruecksichtigung der Sperrklausel (mind. 5% oder drei Direktmandate)
 , AnteilZweitStimmenSperrklausel as (
-        select *
-        from AnteilZweitStimmen a
-        where a.Anteil >= 5
-        or 3 <= (select ad.Anzahl from AnzahlDirektmandatePartei ad where ad.partei_id = a.partei_id)
+	select *
+	from AnteilZweitStimmen a
+	where a.ProzentualerAnteil >= 5
+	or 3 <= (select count(*) from Direktmandate d where d.partei_id = a.partei_id)
 )
 
 -- Skaliere die %-Werte der Parteien, die in den bundestag kommen, auf 100% skalieren
 , ProzentualeSitzverteilungImBundestag as (
-        select a.partei_id, (select 1/(sum(b.Anteil)/100) from AnteilZweitStimmenSperrklausel b)*a.Anteil as Anteil
-        from AnteilZweitStimmenSperrklausel a
+	select a.partei_id, (select 1/(sum(b.ProzentualerAnteil)/100) from AnteilZweitStimmenSperrklausel b)*a.ProzentualerAnteil as ProzentualerAnteil
+	from AnteilZweitStimmenSperrklausel a
 )
 
 -------------------------------------------------------
@@ -96,7 +126,7 @@ with StimmenCountKandidatSimple as (
 -- Verteile die ganzzahligen Sitze sofort
 -- Die restlichen n Sitzplaetze werden dann den Parteien mit den hoechsten Nachkommastellen zugewiesen
 , PropVerteilungSitzeBundestag as (
-        select partei_id, anteil, cast(anteil*(598-(select Anzahl from AnzDirektmandateOhneBundestagspartei)) as integer)/100 as sitze, (((anteil*598)%100)/100) as rest
+        select partei_id, prozentualerAnteil, cast(prozentualerAnteil*(598-(select Anzahl from AnzDirektmandateOhneBundestagspartei)) as integer)/100 as sitze, (((prozentualerAnteil*598)%100)/100) as rest
         from ProzentualeSitzverteilungImBundestag
 )
 
@@ -108,27 +138,26 @@ with StimmenCountKandidatSimple as (
 
 -- Eine RowId hinzufuegen um die obersten n Rest anteile zu finden
 , PropVerteilungSitzeBundestagRowId as (
-        select partei_id, anteil, sitze, rest, ROW_NUMBER () OVER (ORDER BY rest DESC) AS rowNum
+        select partei_id, prozentualerAnteil as anteil, sitze, rest, ROW_NUMBER () OVER (ORDER BY rest DESC) AS rowNum
         from PropVerteilungSitzeBundestag
 )
 -- Verbleibende Sitze entsprechend der Rest-Anteile vergeben
 , ParteienBeguenstigt as (
-        select v.partei_id as partei_id2
+        select v.partei_id as partei_id
         from PropVerteilungSitzeBundestagRowId v
         where v.rowNum <= (select a.Anzahl from AnzZuVergebendeSitze a)
 )
 
--- Endgueltige Sitzverteilung (beguenstigte Parteien erhalten einen zusaetzlichen Sitz)
+-- Endgueltige SitzVerteilungOhneUeberhang (beguenstigte Parteien erhalten einen zusaetzlichen Sitz)
 -- Ordnet jeder Partei die Anzahl von Sitzen zu
-, SitzVerteilung as (
-        select v.partei_id, (case when b.partei_id2 is null then v.sitze else v.sitze+1 end) as sitze -- TODO: geht nicht, jede partei bekommt einen sitz dazu
+, SitzVerteilungOhneUeberhang as (
+        select v.partei_id, (case when (select count(*) from ParteienBeguenstigt p where v.partei_id = p.partei_id) = 1 then v.sitze +1  else v.sitze end) as sitze
         from PropVerteilungSitzeBundestag v
-        left outer join ParteienBeguenstigt b on v.partei_id = b.partei_id2
 )
 
 -- check point =)
 -- hier sind die sitze jeder partei auf die bundeslaender verteilt
--- select sum(sitze) from SitzVerteilung; -- == 601
+-- select sum(sitze) from SitzVerteilungOhneUeberhang; -- == 598
 
 /*
 select * from PropVerteilungSitzeBundestag;
@@ -139,49 +168,42 @@ select * from ParteienBeguenstigt b right outer join PropVerteilungSitzeBundesta
 ---------------------------------------------------------------------
 -- Schritt 3 - Verteile die Sitze pro Partei auf die Bundeslaender --
 ---------------------------------------------------------------------
--- Jede partei hat nun eine Anzahl von Sitzen zugewiesen bekommen. (in SitzVerteilung)
+-- Jede partei hat nun eine Anzahl von Sitzen zugewiesen bekommen. (in SitzVerteilungOhneUeberhang)
 -- Diese muessen nun fuer jede Partei auf die Listenkandidaten aus den Bundeslaendern gemappt werden.
 -- Dazu wird in diesem Schritt fuer jede Partei (mit dem d'Hondt) berechnet welches Bundesland wieviele sitze bekommt.
 
--- Anzahl der Zweitstimmen pro Bundesland pro Partei
-, AnzZweitstimmenBundesland as (
-        select k.bundesland_id, s.partei_id, count(*) as Anzahl
-        from stimme s, wahlkreis k
-        where s.partei_id <> 0
-        and s.wahlkreis_id = k.id
-        group by k.bundesland_id, s.partei_id
-)
-
--- Zaehlt die Anzahl der Direktmandate pro Bundesland pro Partei
-, AnzDirektmandateBundeslandPartei as (
-        select w.bundesland_id, d.partei_id, count(*) as Anzahl
-        from Direktmandate d, wahlkreis w
-        where d.wahlkreis_id = w.id
-        group by w.bundesland_id, d.partei_id
-)
-
 -- Anteil der Stimmen pro Bundesland an den Gesamtstimmen einer Partei in %
 -- Wie sind die Stimmen der Partei ueber die Bundeslaender verteilt
-, AnteilZweitstimmenBundeslandPartei as (
-        select a.partei_id, a.bundesland_id, a.anzahl, (a.anzahl*100.0)/(select sum(Anzahl) from AnzZweitstimmenBundesland b where a.partei_id = b.partei_id group by b.partei_id) as Anteil
-        from AnzZweitstimmenBundesland a, SitzVerteilung b
-        where a.partei_id = b.partei_id -- only use partys in the bundestag
+, StimmenAnteilParteiBundesland as (
+        select s.partei_id, s.bundesland_id, s.stimmenAnzahl, b.sitze as gesammtSitze,
+		      (s.stimmenAnzahl*100.0)/(select sum(s2.stimmenAnzahl) from StimmenCountPartei s2 where s2.partei_id = s.partei_id)as stimmenAnteil
+        from StimmenCountParteiBundesland s, SitzVerteilungOhneUeberhang b
+        where s.partei_id = b.partei_id -- only use partys in the bundestag
 )
 
 -- Verfahren nach d'Hondt: Proportionale Verteilung der Zweitstimmen pro Bundesland auf die Sitze einer Partei
 -- Ordne Sitzplaetze auf die Bundeslaender zu (ohne rest)
 , PropVerteilungSitzeBundesland as (
-        select a.partei_id, a.bundesland_id, a.anteil, cast(anteil*(select s.sitze from SitzVerteilung s where a.partei_id = s.partei_id) as integer)/100 as sitze, (((a.anteil*(select s.sitze from SitzVerteilung s where a.partei_id = s.partei_id))%100)/100) as rest
-        from AnteilZweitstimmenBundeslandPartei a
+        select a.partei_id, a.bundesland_id, a.stimmenAnteil, a.gesammtSitze,
+		       cast(a.stimmenAnteil * a.gesammtSitze as integer)/100 as sitzeBundesland,
+			   (((a.stimmenAnteil * a.gesammtSitze)%100)/100) as rest
+        from StimmenAnteilParteiBundesland a
 )
 
 -- Anzahl der noch zu vergebenden Sitze pro Partei.
 -- Berechnet pro Bundesland pro Partei weiviele Sitze noch durch den rest offen sind.
 , AnzahlZuVergebendeSitzePartei as (
-        select p.partei_id, sum(p.sitze) as SitzeBereitsVergeben, (select s.sitze from SitzVerteilung s where p.partei_id = s.partei_id)-SitzeBereitsVergeben as SitzeZuVergeben
+        select p.partei_id, sum(p.sitzeBundesland) as SitzeBereitsVergeben, p.gesammtSitze as gesammtSitze
         from PropVerteilungSitzeBundesland p
-        group by p.partei_id
+        group by p.partei_id, p.gesammtSitze
 )
+
+-- For some reason i cant integrate this in the query above
+, AnzahlZuVergebendeSitzeParteiHelper as (
+	select *, gesammtSitze - SitzeBereitsVergeben as verbleibend
+	from AnzahlZuVergebendeSitzePartei
+)
+
 
 -- Eine RowId hinzufuegen um den rest den obersten n Parteien geben zu koennen.
 , PropVerteilungSitzeBundeslandMitRowid as (
@@ -191,27 +213,26 @@ select * from ParteienBeguenstigt b right outer join PropVerteilungSitzeBundesta
 
 -- Die row id war bis jetzt nur global, diese muss aber lokal fuer jede Partei berechnet werden.
 , PropVerteilungSitzeBundeslandMitRowidLokal as (
-        select p1.partei_id, p1.bundesland_id, p1.anteil, p1.sitze, p1.rest, p1.rowNum - min(p2.rowNum) + 1 as rowNum
+        select p1.partei_id, p1.bundesland_id, p1.rowNum - min(p2.rowNum) + 1 as rowNum
         from PropVerteilungSitzeBundeslandMitRowid p1, PropVerteilungSitzeBundeslandMitRowid p2
         where p1.partei_id = p2.partei_id
-        group by p1.partei_id, p1.bundesland_id, p1.anteil, p1.sitze, p1.rest, p1.rowNum
+        group by p1.partei_id, p1.bundesland_id, p1.rowNum
 )
 
 -- Berechne fuer jede Partei in welchen Bundeslaendern sie durch den rest noch einen Sitz bekommt.
 -- Diese Tabelle enthaelt fuer Jede Partei die Bundelaender die noch einen Sitz bekommen.
 , BeguenstigteBundeslandParteien as (
         select a.partei_id as partei_id, p.bundesland_id as bundesland_id
-        from AnzahlZuVergebendeSitzePartei a, PropVerteilungSitzeBundeslandMitRowidLokal p
+        from AnzahlZuVergebendeSitzeParteiHelper a, PropVerteilungSitzeBundeslandMitRowidLokal p
         where a.partei_id = p.partei_id
-        and p.rowNum <= a.SitzeZuVergeben
+        and p.rowNum <= (a.verbleibend)
 )
 
 -- Addiere die bonus sitze entsprechend hinzu.
 , SitzeProBundeslandProPartei as (
-        select p.partei_id, p.bundesland_id, (case when b.partei_id is null then p.sitze else p.sitze+1 end) as sitze
-        from PropVerteilungSitzeBundesland p left outer join BeguenstigteBundeslandParteien b on p.partei_id=b.partei_id and p.bundesland_id=b.bundesland_id
+        select p.partei_id, p.bundesland_id, (case when (select count(*) from BeguenstigteBundeslandParteien b where p.partei_id=b.partei_id and p.bundesland_id=b.bundesland_id) = 1 then p.sitzeBundesland+1 else p.sitzeBundesland end) as sitzeBundesland
+        from PropVerteilungSitzeBundesland p
 )
-
 
 -----------------------------------------------
 -- Schritt 4 - Bestimme die Listenkandidaten --
@@ -219,12 +240,21 @@ select * from ParteienBeguenstigt b right outer join PropVerteilungSitzeBundesta
 -- Die Tabelle SitzeProBundeslandProPartei enthaelt wieviele Listenkandidaten jede Partei in jedem Bundsland auswaehlen darf.
 -- Mit dieser Information koennen nun die entsprechenden Listenkandidaten bestimmt werden.
 
+-- Zaehlt die Anzahl der Direktmandate pro Bundesland pro Partei
+, AnzDirektmandateBundeslandPartei as (
+        select w.bundesland_id, d.partei_id, count(*) as direktmandateAnzahl
+        from Direktmandate d, wahlkreis w
+        where d.wahlkreis_id = w.id
+        group by w.bundesland_id, d.partei_id
+)
+
 -- Rechnet die anzahl an sitzen pro Bundesland pro Partei aus, die an Kandidaten vergeben werden koennen
 -- left outer join da es parteien gibt die nicht in jedem bundesland einen kandidaten haben
 -- liefert zu JEDEM bundesland fuer JEDE partei die anzahl der direkt mandate
 , FreieSitzeProBundeslandProPartei as (
-        select p.partei_id, p.bundesland_id, (case when (p.sitze - a.anzahl) is null then p.sitze when p.sitze - a.anzahl < 0 then 0 else p.sitze - a.anzahl end) as freieSitze
-        from SitzeProBundeslandProPartei p left outer join AnzDirektmandateBundeslandPartei a on p.partei_id = a.partei_id and p.bundesland_id = a.bundesland_id
+        select p.partei_id, p.bundesland_id, (case when (p.sitzeBundesland - a.direktmandateAnzahl) is null then p.sitzeBundesland when p.sitzeBundesland - a.direktmandateanzahl < 0 then 0 else p.sitzeBundesland - a.direktmandateanzahl end) as freieSitze
+        from SitzeProBundeslandProPartei p left outer join AnzDirektmandateBundeslandPartei a
+		  on p.partei_id = a.partei_id and p.bundesland_id = a.bundesland_id
 )
 
 -- check point =)
@@ -262,7 +292,12 @@ select * from ParteienBeguenstigt b right outer join PropVerteilungSitzeBundesta
 , Listenmandate as (
         select l.partei_id, l.bundesland_id, l.kandidat_id
         from LandeslistenBereinigtRowIdLokal l
-        where 1 <= l.rowNum and l.rowNum <= (select f.freieSitze from FreieSitzeProBundeslandProPartei f where f.partei_id=l.partei_id and f.bundesland_id=l.bundesland_id)
+        where 1 <= l.rowNum and l.rowNum <= (select min(f.freieSitze) from FreieSitzeProBundeslandProPartei f where f.partei_id=l.partei_id and f.bundesland_id=l.bundesland_id)
+)
+
+, BundestagMitglierder as (
+	select *
+	from ((select kandidat_id, partei_id from Listenmandate) union all (select kandidat_id, partei_id from Direktmandate)) as tab
 )
 
 -- check point =)

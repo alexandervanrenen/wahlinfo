@@ -1,9 +1,8 @@
-drop view summesitze;
-drop view propverteilung;
-drop view antzweitstimmen;
-drop view zweitstimmen;
 
 drop table stimme;
+drop table StimmenCountKandidatAggregiert;
+drop table StimmenCountParteiBundeslandAggregiert;
+drop table StimmenCountParteiWahlkreisAggregiert;
 drop table landesliste;
 drop table kandidat;
 drop table kandidat2005;
@@ -75,4 +74,23 @@ create table stimme (
         kandidat_id integer not null references kandidat(id),
         partei_id integer not null references partei(id),
         wahlkreis_id integer not null references wahlkreis(id)
+);
+
+create table StimmenCountParteiWahlkreisAggregiert (
+	partei_id integer not null references partei(id),
+	wahlkreis_id integer not null references wahlkreis(id),
+	stimmenAnzahl int not null,
+	primary key(partei_id, wahlkreis_id)
+);
+
+create table StimmenCountParteiBundeslandAggregiert (
+	partei_id integer not null references partei(id),
+	bundesland_id integer not null references bundesland(id),
+	stimmenAnzahl int not null,
+	primary key(partei_id, bundesland_id)
+);
+
+create table StimmenCountKandidatAggregiert (
+	kandidat_id integer primary key not null,
+	stimmenAnzahl int not null
 );

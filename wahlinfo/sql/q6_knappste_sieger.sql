@@ -1,8 +1,14 @@
 
+, StimmenCountKandidatWahlkreis as (
+	select s.kandidat_id, k.wahlkreis_id, k.partei_id, s.stimmenAnzahl
+	from StimmenCountKandidat s, Kandidat k
+	where s.kandidat_id = k.id
+)
+
 -- Abstand von jedem kandidaten zu dem 2. gewinner in seinem wahlkreis
 , AbstandZumZweitenProKandidat as (
 		select d.kandidat_id, d.partei_id, d.stimmenAnzahl - max(s.stimmenAnzahl) as stimmenVorsprung
-		from Direktmandate d, StimmenCountKandidat s
+		from Direktmandate d, StimmenCountKandidatWahlkreis s
 		where d.wahlkreis_id = s.wahlkreis_id
 		  and d.kandidat_id <> s.kandidat_id
 		  and d.partei_id <> 0
@@ -35,7 +41,7 @@
 -- Abstand von jedem kandidaten zu dem gewinner in seines wahlkreises
 , AbstandZumGewinner as (
 		select s.kandidat_id, s.partei_id, s.wahlkreis_id, max(d.stimmenAnzahl) - s.stimmenAnzahl as stimmenVorsprung
-		from Direktmandate d, StimmenCountKandidat s
+		from Direktmandate d, StimmenCountKandidatWahlkreis s
 		where d.wahlkreis_id = s.wahlkreis_id
 		group by s.kandidat_id, s.wahlkreis_id, s.stimmenAnzahl, s.partei_id
 )

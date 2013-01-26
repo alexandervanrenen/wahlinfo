@@ -45,5 +45,4 @@ public class KnappsteSiegerTeilnehmer {
 	public void setStimmenVorsprung(int stimmenVorsprung) {
 		this.stimmenVorsprung = stimmenVorsprung;
 	}
-
 }
