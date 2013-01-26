@@ -30,7 +30,7 @@ function WahlkreiseCtrl($scope, Wahlkreise) {
 function KandidatenCtrl($scope, Kandidaten) {
 	Kandidaten.get({},
 		    function (data) {
-        		$scope.kandidaten = data;
+        		$scope.kandidaten = data.kandidat;
     	}, {});
 }
 
