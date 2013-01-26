@@ -13,7 +13,6 @@ public class KnappsteSiegerTeilnehmer {
 	private Kandidat kandidat;
 	private Wahlkreis wahlkreis;
 	private int stimmenVorsprung;
-	private int platzierung;
 
 	public Partei getPartei() {
 		return partei;
@@ -47,11 +46,4 @@ public class KnappsteSiegerTeilnehmer {
 		this.stimmenVorsprung = stimmenVorsprung;
 	}
 
-	public int getPlatzierung() {
-		return platzierung;
-	}
-
-	public void setPlatzierung(int platzierung) {
-		this.platzierung = platzierung;
-	}
 }
