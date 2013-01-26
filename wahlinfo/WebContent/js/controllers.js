@@ -103,8 +103,7 @@ function WahlomatCtrl($scope, Stimmzettel, Stimmabgabe) {
     		kandidatid: $scope.selected.kandidat, parteiid: $scope.selected.partei },
 			    function (data) {
     				if (data.erfolg == 'true') {
-//    					alert('Die Stimmabgabe war erfolgreich!');
-    					alert('Ihre Stimme(n) wurde zur Überprüfung an den Wahlleiter (CSU) übermittelt.');
+    					alert('Die Stimmabgabe war erfolgreich!');
     				} else {
     					alert(data.fehler);
     				}
