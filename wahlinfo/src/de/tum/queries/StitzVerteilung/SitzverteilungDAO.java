@@ -28,6 +28,8 @@ public class SitzverteilungDAO {
 				Sitzverteilung sitzverteilung = new Sitzverteilung();
 				sitzverteilung.setPartei(Partei.readFromResultSet(rs));
 				sitzverteilung.setSitze(rs.getInt("sitze"));
+				sitzverteilung.setErststimmen(rs.getInt("erststimmen"));
+				sitzverteilung.setZweitstimmen(rs.getInt("zweitstimmen"));
 				list.add(sitzverteilung);
 			}
 		} catch (SQLException e) {

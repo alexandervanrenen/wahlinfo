@@ -9,6 +9,8 @@ public class Sitzverteilung {
 
 	private Partei partei;
 	private int sitze;
+	private int erststimmen;
+	private int zweitstimmen;
 
 	public Partei getPartei() {
 		return partei;
@@ -24,5 +26,21 @@ public class Sitzverteilung {
 
 	public void setSitze(int sitze) {
 		this.sitze = sitze;
+	}
+
+	public int getErststimmen() {
+		return erststimmen;
+	}
+
+	public void setErststimmen(int erststimmen) {
+		this.erststimmen = erststimmen;
+	}
+
+	public void setZweitstimmen(int zweitstimmen) {
+		this.zweitstimmen = zweitstimmen;
+	}
+
+	public int getZweitstimmen() {
+		return zweitstimmen;
 	}
 }
