@@ -1,12 +1,16 @@
-﻿<div chart></div>
+<div chart></div>
 
 <table class="table table-bordered">
   <tr>
     <th>Partei</th>
     <th>Anzahl der Sitze</th>
+    <th>Anzahl der Erststimmen</th>
+    <th>Anzahl der Zweitstimmen</th>
   </tr>
   <tr ng-repeat="item in sitzverteilung">
     <td>{{item.partei.kurzbezeichnung}}</td>
     <td>{{item.sitze}}</td>
+    <td>{{item.erststimmen}}</td>
+    <td>{{item.zweitstimmen}}</td>
   </tr>
 </table>
