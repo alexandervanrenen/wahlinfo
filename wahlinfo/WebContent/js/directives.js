@@ -22,7 +22,7 @@ angular.module('wahlinfoDirectives', []).
 			        var options = {title: 'Sitzverteilung im Bundestag',
 			                       width: 900,
 			                       height: 500,
-			                       colors: ['4db075', '5d5d9a', '9e6dce', 'ffd34e', 'd3224e'],
+			                       colors: ['ffd34e', 'd3224e', '4db075', '9e6dce', '5d5d9a'],
 			                       is3D: true
 			        };
 		

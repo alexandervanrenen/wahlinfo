@@ -2,6 +2,7 @@
 <input type="text" class="input-medium" placeholder="Suche" ng-model="query">
 <table class="table table-bordered">
   <tr>
+  	<th>ID</th>
     <th>Name</th>
     <th>Bundesland</th>
     <th>Anzahl der Wähler</th>
@@ -10,6 +11,7 @@
     <th>Vorjahr</th>
   </tr>
   <tr ng-repeat="item in wahlkreise | filter:query">
+  	<td>{{item.id}}</td>
   	<td>{{item.name}}</td>
   	<td>{{item.bundeslandName}}</td>
     <td>{{item.waehler}}</td>
