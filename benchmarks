@@ -1,0 +1,58 @@
+================================
+
+Config:
+terminals: 1
+runtime: 10m
+average wait between queries time: 10s
+----------------------------------------
+
+Result:
+executed: 19 queries
+q1: bundestagmitglieder 23.764599s
+q2: sitzverteilung 4.8106666s
+q3: ueberhangmandate 20.115334s
+q4: wahlkreissieger 6.9876666s
+q5: wahlkreisuebersicht/42 2.722s
+================================
+
+Config:
+terminals: 2
+runtime: 10m
+average wait between queries time: 10s
+---------------------
+
+executed: 31 queries
+q1: bundestagmitglieder 28.912s
+q2: sitzverteilung 5.1018887s
+q3: ueberhangmandate 26.881624s
+q4: wahlkreissieger 9.031333s
+q5: wahlkreisuebersicht/42 3.2047s
+================================
+
+Config:
+terminals: 1
+runtime: 10m
+average wait between queries time: 5s
+---------------------
+
+executed: 32 queries
+q1: bundestagmitglieder 43.455803s
+q2: sitzverteilung 6.9617777s
+q3: ueberhangmandate 37.669666s
+q4: wahlkreissieger 11.6626s
+q5: wahlkreisuebersicht/42 4.7494s
+================================
+
+Config:
+terminals: 2
+runtime: 10m
+average wait between queries time: 5s
+---------------------
+
+executed: 62 queries
+q1: bundestagmitglieder 30.95957s
+q2: sitzverteilung 4.886579s
+q3: ueberhangmandate 29.971798s
+q4: wahlkreissieger 8.526875s
+q5: wahlkreisuebersicht/42 3.2277222s
+================================
